@@ -12,7 +12,6 @@ $ npm run copyFrontendUtil
 // start server for development
 $ npm run dev
 ```
-1. run 'npm run copyFrontendUtil'
 
 ## Production
 ```
