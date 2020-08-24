@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "ignore": [ ".git", "node_modules/**/node_modules"],
+  "ext": "ts,html,css,js",
+  "exec": "npm run copyFrontend && npm run copyDB && npm run build && npm run start"
+}
