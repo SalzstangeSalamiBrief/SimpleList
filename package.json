@@ -12,7 +12,8 @@
     "copyFrontendUtil": "npm run removeDist && Xcopy /E /I .\\src\\frontend\\util .\\dist\\frontend\\util /Y",
     "copyFrontend": "Xcopy /E /I .\\src\\frontend\\css .\\dist\\frontend\\css /Y && Xcopy /E /I .\\src\\frontend\\html .\\dist\\frontend\\html /Y",
     "copyDB": "Xcopy /E /I .\\src\\backend\\database .\\dist\\backend\\database /Y",
-    "database:setup": "node ./src/backend/database/seeder.js"
+    "database:setup": "node ./src/backend/database/seeder.js",
+    "init": "npm run database:setup && npm run copyDB && npm run copyFrontendUtil && npm run copyFrontend && npm run build"
   },
   "author": "SalzstangeSalamiBrief",
   "license": "MIT",
