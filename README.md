@@ -1,6 +1,6 @@
 # SimpleList
-A simple list for everyone
-
+A simple list for everyone.
+This Application is builded for widescreens (1920x1080).
 ## dev
 ```
 // setup db
@@ -21,3 +21,6 @@ $ npm run init
 // run app
 $ npm run start
 ```
+
+## Possible Improvements
+1. Add responsiveness for mobile devices (+refactor table)
