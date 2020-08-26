@@ -3,15 +3,15 @@ import {
 } from '../database/queries/queries';
 
 interface ListItem {
-  name: String,
-  tags: [],
-  isFavorite: Boolean,
+  name: String;
+  tags: String[];
+  isFavorite: Boolean;
 }
 
 // todo
 interface ResponseBody {
-  err: any,
-  succ: any
+  err: any;
+  succ: any;
 }
 
 // TODO: ctx type

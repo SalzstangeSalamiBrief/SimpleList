@@ -10,8 +10,17 @@ body{
   font-family: 'Roboto', sans-serif;
 }
 
-.btn--options{
+/* .btn--options{
   min-width: 80px;
+} */
+
+.btn--options,
+.btn--add-form{
+  min-width: 100px;
+}
+
+main{
+  position: relative;
 }
 
 main.w-full > div{
@@ -19,7 +28,26 @@ main.w-full > div{
   margin-bottom: 2.5rem;
 }
 
+.add-form > div{
+  margin-bottom: 2.5rem;
+}
+
 .site-title{
   font-weight: 600;
   font-size: 2rem;
+}
+
+.add-dialog-container{
+  position: absolute;
+  background: rgba(204, 204, 204, .9);
+  z-index: 1;
+  max-height: 100vh
+}
+
+.add-dialog__title{
+  font-weight: 600;
+}
+div#add-dialog-container.is-hidden,
+.is-hidden{
+  display: none;
 }

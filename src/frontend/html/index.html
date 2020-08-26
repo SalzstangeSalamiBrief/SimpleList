@@ -12,7 +12,6 @@
   <title>SimpleList</title>
 </head>
 <body>
-
   <main class="w-full flex flex-col items-center">
     <div class="intro-container">
       <h1 class="text-center site-title">SimpleList</h1>
@@ -20,7 +19,10 @@
     </div>
     <div class="add-btn-container flex justify-center">
       <p class="w-3/6 flex items-center justify-center">For adding an entry, click on the following button:</p>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options ml-8">
+      <button 
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options ml-8"
+        id="open-add-dialog"
+      >
         Add
       </button>
     </div>
@@ -110,7 +112,65 @@
         </tbody>
       </table>
     </div>  
+
+    <!-- TODO: delete Dialog -->
+    <!-- TODO: Edit DIalog -->
+    <!-- TODO: Error Dialog -->
+    <!-- add dialog -->
+    <div id="add-dialog-container" class="add-dialog-container w-full flex-col h-full flex justify-center items-center">
+      <h2 class="text-center add-dialog__title mb-10">Add Item</h2>
+      <form action="" class="add-form flex flex-col justify-content items-center w-4/5">
+        <!-- name -->
+        <div class="flex w-full">
+          <label for="add-dialog__tags" class="w-2/6 flex items-center justify-start">
+            Add Name
+          </label>
+          <input 
+          type="text" 
+          name="add-dialog__name" 
+          class="
+            bg-white focus:outline-none focus:shadow-outline
+            border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6
+            mx-4
+          "
+          placeholder="Add Name"
+          >
+        </div>
+       
+        <!-- tags -->
+        <div class="flex w-full">
+          <label for="add-dialog__tags" class="w-2/6 flex items-center justify-start">
+            Add Tags(separated by spaces)
+          </label>
+          <input 
+          type="text" 
+          name="add-dialog__tags" 
+          class="
+            bg-white focus:outline-none focus:shadow-outline
+            border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6
+            mx-4
+          "
+          placeholder="Add Tags (separated by spaces)"
+          >          
+        </div>   
+      </form> 
+       <!-- buttons -->
+       <div class="flex w-2/5 justify-around">
+          <button 
+          type="submit" 
+          value="Add Item" 
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--add-form"
+            >
+            Add Item
+          </button>
+          <button 
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn--add-form" 
+            id="cancel-adding">
+            Cancel
+          </button>
+        </div>     
   </main> 
   <script src="../js/index.js" type="text/javascript"></script>
+  <script src="../js/keyhandler.js" type="text/javascript"></script>
 </body>
 </html>
