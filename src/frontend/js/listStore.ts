@@ -1,8 +1,9 @@
-interface ListItem{
-  name: String;
-  tags: String[];
-  isFavorite: boolean;
-}
+// interface ListItem{
+//   name: String;
+//   tags: String[];
+//   isFavorite: boolean;
+// }
+import ListItem from '../../interfaces/list-item';
 
 interface Store{
   allListItems: ListItem[];

@@ -2,11 +2,13 @@ import {
 	findAllListItems, findListItemByName, updateListItem, deleteListItem, createListItem,
 } from '../database/queries/queries';
 
-interface ListItem {
-  name: String;
-  tags: String[];
-  isFavorite: Boolean;
-}
+import ListItem from '../../interfaces/list-item';
+
+// interface ListItem {
+//   name: String;
+//   tags: String[];
+//   isFavorite: Boolean;
+// }
 
 // todo
 interface ResponseBody {
