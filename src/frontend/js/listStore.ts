@@ -13,7 +13,8 @@ interface Store{
 interface StoreFunctions {
 	updateItem: Function;
 	filterByTags: Function;
-	addItem: Function
+	addItem: Function;
+	getSelectedListItems: Function;
 }
 
 function sortByName(arr: ListItem[]): ListItem[] {
@@ -28,7 +29,8 @@ function sortByName(arr: ListItem[]): ListItem[] {
 	});
 }
 
-export default function createStore(): StoreFunctions {
+// eslint-disable-next-line no-unused-vars
+function createStore(): StoreFunctions {
 	// todo check if closure is proper behaving
 	const store: Store = {
 		allListItems: [],
@@ -74,10 +76,22 @@ export default function createStore(): StoreFunctions {
 			store.selectedListItems = tempArray;
 		},
 		addItem(item: ListItem) {
-			console.log(item);
-			// 1. post to server
-			// 2. wait for response, then add to both arrays in the store
-			// 3. after adding the item, sort array
+			if (item.name && item.tags.length > 0) {
+				const newItem = item;
+				console.log(item);
+				newItem.isFavorite = false;
+				// 1. post to server
+				// 2. wait for response, then add to both arrays in the store
+				// 3. after adding the item, sort array
+				store.allListItems.push(newItem);
+				store.selectedListItems = sortByName(store.allListItems);
+				return item;
+			}
+			// todo: error
+			return null;
+		},
+		getSelectedListItems(): ListItem[] {
+			return store.selectedListItems;
 		},
 	};
 

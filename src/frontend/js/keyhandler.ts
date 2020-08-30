@@ -17,9 +17,8 @@ function resetForm() {
 	nameInput.value = '';
 	tagsInput.value = '';
 }
-
+// todo: if dialog is visible, set hidden if the user clicks outside of the dialog (in the gray area)
 document.querySelector('button#cancel-adding').addEventListener('click', () => {
-	console.log('click canscel');
 	addDialog.classList.add('is-hidden');
 	resetForm();
 });
