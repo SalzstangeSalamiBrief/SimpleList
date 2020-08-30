@@ -21,6 +21,7 @@ body{
 
 main{
   position: relative;
+  min-height: 100vh;
 }
 
 main.w-full > div{
@@ -39,7 +40,7 @@ main.w-full > div{
 
 .add-dialog-container{
   position: absolute;
-  background: rgba(204, 204, 204, .9);
+  background: rgba(51, 51, 51, .4);
   z-index: 1;
   max-height: 100vh
 }
@@ -47,7 +48,7 @@ main.w-full > div{
 .add-dialog__title{
   font-weight: 600;
 }
-div#add-dialog-container.is-hidden,
+dialog#add-dialog-container.is-hidden,
 .is-hidden{
   display: none;
 }

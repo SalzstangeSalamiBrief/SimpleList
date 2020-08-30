@@ -1,4 +1,4 @@
-const addDialog = document.querySelector('.add-dialog-container');
+const addDialog = document.querySelector('dialog.add-dialog-container');
 // const addForm = document.querySelector('.add-form');
 const nameInput = <HTMLInputElement>document.querySelector('[name="add-dialog__name"');
 const tagsInput = <HTMLInputElement>document.querySelector('[name="add-dialog__tags"');

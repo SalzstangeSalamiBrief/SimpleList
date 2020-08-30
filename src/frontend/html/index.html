@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,32 +12,27 @@
   <link rel="stylesheet" href="../util/fontawesome-free-5.14.0-web/css/all.min.css" type="text/css">
   <title>SimpleList</title>
 </head>
+
 <body>
-  <main class="w-full flex flex-col items-center">
+  <main class="w-full h-full flex flex-col items-center">
     <div class="intro-container">
       <h1 class="text-center site-title">SimpleList</h1>
-      <p>With this List you can mark items as favorite and search for items by their tags. As example "comedy !sports" will search for every entry who has the tag comedy and does not have the tag sports </p>
+      <p>With this List you can mark items as favorite and search for items by their tags. As example "comedy !sports"
+        will search for every entry who has the tag comedy and does not have the tag sports </p>
     </div>
     <div class="add-btn-container flex justify-center">
       <p class="w-3/6 flex items-center justify-center">For adding an entry, click on the following button:</p>
-      <button 
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options ml-8"
-        id="open-add-dialog"
-      >
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options ml-8"
+        id="open-add-dialog">
         Add
       </button>
     </div>
     <div class="search-container flex justify-center">
-      <input 
-        type="text" 
-        name="tag-search-input" 
-        class="
+      <input type="text" name="tag-search-input" class="
           bg-white focus:outline-none focus:shadow-outline
-          border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-3/6
-          mx-4
-        "
-        placeholder="Search for Tags"
-        >
+          border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-3/6
+          mx-4 placeholder-gray-500 placeholder-opacity-100
+        " placeholder="Search for Tags">
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options">
         Search
       </button>
@@ -106,71 +102,67 @@
               </button>
               <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn--options">
                 Delete
-              </button>      
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
-    </div>  
+    </div>
 
     <!-- TODO: delete Dialog -->
     <!-- TODO: Edit DIalog -->
     <!-- TODO: Error Dialog -->
     <!-- add dialog -->
-    <div id="add-dialog-container" class="add-dialog-container w-full flex-col h-full flex justify-center items-center">
-      <h2 class="text-center add-dialog__title mb-10">Add Item</h2>
-      <form action="" class="add-form flex flex-col justify-content items-center w-4/5">
-        <!-- name -->
-        <div class="flex w-full">
-          <label for="add-dialog__tags" class="w-2/6 flex items-center justify-start">
-            Add Name
-          </label>
-          <input 
-          type="text" 
-          name="add-dialog__name" 
-          class="
+    <dialog id="add-dialog-container"
+      class="add-dialog-container w-full flex-col h-full flex justify-center items-center is-hidden">
+      <div 
+        class="w-1/2 flex flex-col justify-center items-center
+          shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4"
+      >
+        <h2 class="text-center add-dialog__title mb-10">Add Item</h2>
+        <form action="" class="add-form flex flex-col justify-content items-center w-4/5">
+          <!-- name -->
+          <div class="flex w-full">
+            <label for="add-dialog__tags" class="w-2/6 flex items-center justify-start">
+              Add Name
+            </label>
+            <input type="text" name="add-dialog__name" class="
             bg-white focus:outline-none focus:shadow-outline
-            border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6
-            mx-4
-          "
-          placeholder="Add Name"
-          >
-        </div>
-       
-        <!-- tags -->
-        <div class="flex w-full">
-          <label for="add-dialog__tags" class="w-2/6 flex items-center justify-start">
-            Add Tags(separated by spaces)
-          </label>
-          <input 
-          type="text" 
-          name="add-dialog__tags" 
-          class="
+            border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6
+            mx-4 placeholder-gray-500 placeholder-opacity-100
+          " placeholder="Add Name">
+          </div>
+
+          <!-- tags -->
+          <div class="flex w-full">
+            <label for="add-dialog__tags" class="w-2/6 flex items-center justify-start">
+              Add Tags (separated by spaces)
+            </label>
+            <input type="text" name="add-dialog__tags" class="
             bg-white focus:outline-none focus:shadow-outline
-            border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6
-            mx-4
-          "
-          placeholder="Add Tags (separated by spaces)"
-          >          
-        </div>   
-      </form> 
-       <!-- buttons -->
-       <div class="flex w-2/5 justify-around">
-          <button 
+            border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6
+            mx-4 placeholder-gray-500 placeholder-opacity-100
+          " 
+          placeholder="Add Tags (separated by spaces)">
+          </div>
+        </form>
+        <!-- buttons -->
+        <div class="flex w-2/5 justify-around">
+          <input 
           type="submit" 
-          value="Add Item" 
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--add-form"
-            >
-            Add Item
-          </button>
-          <button 
-            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn--add-form" 
+          value="Add Item"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--add-form cursor-pointer"
+          >
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn--add-form"
             id="cancel-adding">
             Cancel
           </button>
-        </div>     
-  </main> 
+        </div>
+      </div>
+    </dialog>
+  </main>
   <script src="../js/index.js" type="text/javascript"></script>
   <script src="../js/keyhandler.js" type="text/javascript"></script>
 </body>
+
 </html>
