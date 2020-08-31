@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   width: 100vw;
   font-size: 16px;
   min-height: 100vh;
@@ -15,40 +15,45 @@ body{
 } */
 
 .btn--options,
-.btn--add-form{
+.btn--add-form {
   min-width: 100px;
 }
 
-main{
+main {
   position: relative;
   min-height: 100vh;
 }
 
-main.w-full > div{
+main.w-full > div {
   width: 50%;
   margin-bottom: 2.5rem;
 }
 
-.add-form > div{
+.add-form > div {
   margin-bottom: 2.5rem;
 }
 
-.site-title{
+.site-title {
   font-weight: 600;
   font-size: 2rem;
 }
 
-.add-dialog-container{
+.add-dialog-container {
   position: absolute;
-  background: rgba(51, 51, 51, .4);
+  background: rgba(51, 51, 51, 0.4);
   z-index: 1;
-  max-height: 100vh
+  max-height: 100vh;
 }
 
-.add-dialog__title{
+.add-dialog__title {
   font-weight: 600;
 }
 dialog#add-dialog-container.is-hidden,
-.is-hidden{
+.is-hidden {
   display: none;
+}
+
+/* todo better border */
+.icon-border {
+  text-shadow: 0 0 3px #000;
 }
