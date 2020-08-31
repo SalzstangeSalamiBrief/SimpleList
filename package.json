@@ -13,7 +13,8 @@
     "copyFrontend": "Xcopy /E /I .\\src\\frontend\\css .\\dist\\frontend\\css /Y && Xcopy /E /I .\\src\\frontend\\html .\\dist\\frontend\\html /Y",
     "copyDB": "Xcopy /E /I .\\src\\backend\\database .\\dist\\backend\\database /Y",
     "database:setup": "node ./src/backend/database/seeder.js",
-    "init": "npm run database:setup && npm run copyDB && npm run copyFrontendUtil && npm run copyFrontend && npm run build"
+    "init": "npm run database:setup && npm run copyDB && npm run copyFrontendUtil && npm run copyFrontend && npm run build",
+    "snowpack": "snowpack dev --polyfill-node"
   },
   "author": "SalzstangeSalamiBrief",
   "license": "MIT",
@@ -23,6 +24,7 @@
     "eslint": "^7.7.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "snowpack": "^2.9.3",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   },
