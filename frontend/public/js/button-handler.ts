@@ -37,20 +37,31 @@ export default function (
     });
 
   //TODO:  temp test
-  document.querySelector('main').addEventListener('click', ({ target }) => {
-    if (target.dataset['listIndex']) {
-      const listIndex = target.dataset['listIndex'];
-      const selectedItem = store.getItemByIndex(listIndex);
+  // TODO remove err
+  document.querySelector('body').addEventListener('click', ({ target }) => {
+    const { classList } = target;
+    console.log(target);
+    // handler for favorite-img
+    const favClassListRegex = new RegExp(
+      'fav(__(inner|outer)|-img)|btn-fav-img',
+    );
+    // check if fav-img clicked
+    if (favClassListRegex.test(classList)) {
+      let favItem = target;
+      // loop through the parents to get the parent with dataset _id and name (name only for savety-reasons)
+      do {
+        console.log(!favItem.dataset['_id'] && !favItem.dataset['name']);
+        favItem = favItem.parentNode;
+      } while (!favItem.dataset['_id'] && !favItem.dataset['name']);
+      const { _id } = favItem.dataset;
+      // toggle class on parent-svg-element for marking the icon
+      document
+        .querySelector(`svg[data-_id="${_id}"].fav-img`)
+        .classList.toggle('marked-as-fav');
+      // change isFavorite in store
+      const selectedItem = store.getItemByID(_id);
       selectedItem.isFavorite = !selectedItem.isFavorite;
       store.updateItem(selectedItem);
-      renderer(store.getSelectedListItems());
-      // store.
-      console.log(target);
     }
   });
 }
-
-// let item = <HTMLElement>e.target;
-// do {
-
-// } while (!item.dataset['list-index'])

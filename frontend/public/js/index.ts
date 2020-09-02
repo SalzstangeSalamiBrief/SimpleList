@@ -14,18 +14,26 @@ const temp = [
   {
     name: 'a',
     tags: ['öp'],
+    _id: '12',
+    isFavorite: false,
   },
   {
     name: 'c',
     tags: ['aaa'],
+    _id: '11',
+    isFavorite: true,
   },
   {
     name: 'b',
     tags: ['hs', 'jki'],
+    _id: '31',
+    isFavorite: false,
   },
   {
     name: 'd',
     tags: ['qq'],
+    _id: '97',
+    isFavorite: false,
   },
 ];
 

@@ -1,34 +1,34 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 // register schemas
-require('../schemas/listItem');
+require("../schemas/listItem");
 
-const ListItem = mongoose.model('listItems');
+const ListItem = mongoose.model("listItems");
 
 function createListItem(item) {
-	const newListItem = new ListItem(item);
-	return newListItem.save();
+  const newListItem = new ListItem(item);
+  return newListItem.save();
 }
 
 function findAllListItems() {
-	return ListItem.find({}).select('-_id -__v');
+  return ListItem.find({}).select("-__v");
 }
 
-function findListItemByName(name) {
-	return ListItem.findOne({ name }).select('-_id -__v');
+function findListItemByID(_id) {
+  return ListItem.findOne({ _id }).select("-__v");
 }
 
-function updateListItem({ name, tags = [], isFavorite = false }) {
-	return ListItem.where({ name }).updateOne({ tags, isFavorite });
+function updateListItem({ _id, name, tags = [], isFavorite = false }) {
+  return ListItem.where({ _id }).updateOne({ name, tags, isFavorite });
 }
 
-function deleteListItem(name) {
-	return ListItem.deleteOne({ name });
+function deleteListItem(_id) {
+  return ListItem.deleteOne({ _id });
 }
 
 module.exports = {
-	createListItem,
-	findAllListItems,
-	findListItemByName,
-	updateListItem,
-	deleteListItem,
+  createListItem,
+  findAllListItems,
+  findListItemByID,
+  updateListItem,
+  deleteListItem,
 };

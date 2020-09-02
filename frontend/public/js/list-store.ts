@@ -40,14 +40,14 @@ export default function (): StoreFunctions {
   const storeFunctions: StoreFunctions = {
     updateItem: () => (
       // indexOfItemToUpdate: number,
-      { tagsToUpdate = [], updateIsFavorite = undefined, index },
+      { tagsToUpdate = [], updateIsFavorite = undefined, _id },
     ): ListItem => {
-      const updateObject = this.getItemByIndex(index);
+      const updateObject = this.getItemByID(_id);
       updateObject.isFavorite = updateIsFavorite;
       // store.allListItems[indexOfItemToUpdate];
       if (tagsToUpdate) updateObject.tags = tagsToUpdate;
       // TODO: fetch METHOD PUT && save response in updatedObject
-      const updatedObject = { name: '', tags: [], isFavorite: false, index };
+      const updatedObject = { name: '', tags: [], isFavorite: false, _id };
       return updatedObject;
     },
     // updateItem: (
@@ -90,15 +90,13 @@ export default function (): StoreFunctions {
       store.selectedListItems = tempArray;
     },
     addItem(item: ListItem): ListItem | null {
-      if (item.name && item.tags.length > 0) {
-        const newItem = item;
+      if (item.name && item.tags.length > 0 && item._id) {
         console.log(item);
-        newItem.isFavorite = false;
-        newItem.index = store.allListItems.length;
+        // newItem.isFavorite = false;
         // 1. post to server
         // 2. wait for response, then add to both arrays in the store
         // 3. after adding the item, sort array
-        store.allListItems.push(newItem);
+        store.allListItems.push(item);
         store.selectedListItems = sortByName(store.allListItems);
         return item;
       }
@@ -108,11 +106,13 @@ export default function (): StoreFunctions {
     getSelectedListItems(): ListItem[] {
       return store.selectedListItems;
     },
-    getItemByIndex(index: Number | String): ListItem {
+    getItemByID(_id: Number | String): ListItem {
+      // TODO: Type of id
       return store.selectedListItems.find(
-        (item: ListItem) => item.index === Number(index),
+        (item: ListItem) => item['_id'] === _id,
       );
     },
+    // TODO: delete item
   };
 
   // init

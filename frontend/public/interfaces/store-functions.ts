@@ -3,5 +3,5 @@ export default interface StoreFunctions {
   filterByTags: Function;
   addItem: Function;
   getSelectedListItems: Function;
-  getItemByIndex: Function;
+  getItemByID: Function;
 }
