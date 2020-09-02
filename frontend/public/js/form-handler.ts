@@ -52,8 +52,6 @@ export default function (storeFunctions: StoreFunctions): Function {
     }
     //  no error occurred
     // clear form
-    nameInput.value = '';
-    tagsInput.value = '';
     // hide form
     addDialog.classList.add('is-hidden');
     console.log(storeFunctions.getSelectedListItems());

@@ -38,7 +38,7 @@ main.w-full > div {
   font-size: 2rem;
 }
 
-.add-dialog-container {
+#dialog-container {
   position: absolute;
   background: rgba(51, 51, 51, 0.4);
   z-index: 1;
@@ -48,7 +48,7 @@ main.w-full > div {
 .add-dialog__title {
   font-weight: 600;
 }
-dialog#add-dialog-container.is-hidden,
+dialog#dialog-container.is-hidden,
 .is-hidden {
   display: none;
 }
