@@ -1,12 +1,12 @@
-import CreateStore from './list-store';
+import Store from './list-store';
 import ButtonHandler from './button-handler';
 import FormHandler from './form-handler';
 // todo test
 import TableRenderer from './table-renderer';
 // add eventhandler
 // TODO: SUbmit event
-const store = CreateStore();
-const addAction = FormHandler(store);
+const store = new Store();
+const formHandler = new FormHandler(store);
 
 console.log(store);
 
@@ -42,4 +42,4 @@ temp.forEach((item) => {
 });
 
 TableRenderer(store.getSelectedListItems());
-ButtonHandler(addAction, store, TableRenderer);
+new ButtonHandler(formHandler, store, TableRenderer);

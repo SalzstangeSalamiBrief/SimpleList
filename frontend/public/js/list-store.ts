@@ -1,127 +1,102 @@
-// interface ListItem{
-//   name: String;
-//   tags: String[];
-//   isFavorite: boolean;
-// }
 import ListItem from '../interfaces/list-item';
-import StoreFunctions from '../interfaces/store-functions';
 
-interface Store {
-  allListItems: ListItem[];
-  selectedListItems: ListItem[];
-}
-
-// interface StoreFunctions {
-// 	updateItem: Function;
-// 	filterByTags: Function;
-// 	addItem: Function;
-// 	getSelectedListItems: Function;
-// }
-
-function sortByName(arr: ListItem[]): ListItem[] {
-  // copy input array
-  const temp: ListItem[] = [...arr];
-  return temp.sort((a: ListItem, b: ListItem): number => {
-    const lowercaseA = a.name.toLowerCase();
-    const lowercaseB = b.name.toLowerCase();
-    if (lowercaseA > lowercaseB) return 1;
-    if (lowercaseA < lowercaseB) return -1;
-    return 0;
-  });
-}
-
-// eslint-disable-next-line no-unused-vars
-export default function (): StoreFunctions {
-  // todo check if closure is proper behaving
-  const store: Store = {
-    allListItems: [],
-    selectedListItems: [],
-  };
-  const storeFunctions: StoreFunctions = {
-    updateItem: () => (
-      // indexOfItemToUpdate: number,
-      { tagsToUpdate = [], updateIsFavorite = undefined, _id },
-    ): ListItem => {
-      const updateObject = this.getItemByID(_id);
-      updateObject.isFavorite = updateIsFavorite;
-      // store.allListItems[indexOfItemToUpdate];
-      if (tagsToUpdate) updateObject.tags = tagsToUpdate;
-      // TODO: fetch METHOD PUT && save response in updatedObject
-      const updatedObject = { name: '', tags: [], isFavorite: false, _id };
-      return updatedObject;
-    },
-    // updateItem: (
-    //   // indexOfItemToUpdate: number,
-    //   { tagsToUpdate = [], updateIsFavorite = undefined, index },
-    // ): ListItem => {
-    //   const updateObject = getItemByIndex(index);
-    //   updateObject.isFavorite = updateIsFavorite;
-    //   // store.allListItems[indexOfItemToUpdate];
-    //   if (tagsToUpdate) updateObject.tags = tagsToUpdate;
-    //   // TODO: fetch METHOD PUT && save response in updatedObject
-    //   const updatedObject = { name: '', tags: [], isFavorite: false, index };
-    //   return updatedObject;
-    // },
-    filterByTags: (tagsToSearch: String): void => {
-      const tempArray: ListItem[] = [...store.allListItems];
-      const tagsArray = tagsToSearch.split(' ');
-      // for each item in tags Array
-      for (let i = 0; i < tagsArray.length; i += 1) {
-        let actualTag = tagsArray[i];
-        if (actualTag.includes('!')) {
-          // search if the item does not include this tag
-          // !comedy => ['!', 'comedy']
-          [, actualTag] = actualTag.split('!');
-          for (let j = 0; j < tempArray.length; j += 1) {
-            // remove each item with the unwanted tag
-            if (tempArray[j].tags.includes(actualTag)) {
-              tempArray.splice(j, 1);
-            }
+export default class Store {
+  private allListItems: Array<ListItem>;
+  private selectedListItems: Array<ListItem>;
+  constructor(newListItemArray: Array<ListItem> = []) {
+    // sort and add to allListItems-Array
+    this.allListItems = [...this.sortByName(newListItemArray)];
+    // Copy allListItems into selectedListItems
+    this.selectedListItems = [...this.allListItems];
+  }
+  sortByName(arr: Array<ListItem>): Array<ListItem> {
+    const temp: Array<ListItem> = [...arr];
+    return temp.sort((a: ListItem, b: ListItem): number => {
+      const lowerCaseA = a.name.toLowerCase();
+      const lowerCaseB = b.name.toLowerCase();
+      if (lowerCaseA > lowerCaseB) return 1;
+      if (lowerCaseA < lowerCaseB) return -1;
+      return 0;
+    });
+  }
+  updateItem({
+    tags: tagsToUpdate = undefined,
+    isFavorite: updateIsFavorite = undefined,
+    name: nameToUpdate = undefined,
+    _id,
+  }: ListItem): ListItem {
+    const objectToUpdate = this.getItemByID(_id);
+    // Update only fields who are passed
+    if (tagsToUpdate) objectToUpdate.tags = tagsToUpdate;
+    if (updateIsFavorite !== undefined)
+      objectToUpdate.isFavorite = updateIsFavorite;
+    if (name) objectToUpdate.name = name;
+    // todo fetch Method PUT
+    return objectToUpdate;
+  }
+  filterByTags(tagsToSearch: String): void {
+    const tempArray: Array<ListItem> = [...this.allListItems];
+    const tagsArray: Array<String> = tagsToSearch.trim().split(' ');
+    // for each item in tagsArray
+    for (let i = 0; i < tagsArray.length; i += 1) {
+      let actualTag = tagsArray[i];
+      if (actualTag.includes('!')) {
+        // items shall not include this tag;
+        [, actualTag] = actualTag.split('!');
+        // loop through each entry in tempArray and remove items with the corresponding tag
+        for (let j = 0; j < tempArray.length; j += 1) {
+          if (tempArray[j].tags.includes(actualTag)) {
+            tempArray.splice(j, 1);
           }
-        } else {
-          // remove each item which does not has the searched tag
-          for (let j = 0; j < tempArray.length; j += 1) {
-            if (!tempArray[j].tags.includes(actualTag)) {
-              tempArray.splice(j, 1);
-            }
+        }
+      } else {
+        // item shall be include this tag
+        for (let j = 0; j < tempArray.length; j += 1) {
+          if (!tempArray[j].tags.includes(actualTag)) {
+            tempArray.splice(j, 1);
           }
         }
       }
-      store.selectedListItems = tempArray;
-    },
-    addItem(item: ListItem): ListItem | null {
-      if (item.name && item.tags.length > 0 && item._id) {
-        console.log(item);
-        // newItem.isFavorite = false;
-        // 1. post to server
-        // 2. wait for response, then add to both arrays in the store
-        // 3. after adding the item, sort array
-        store.allListItems.push(item);
-        store.selectedListItems = sortByName(store.allListItems);
-        return item;
+    }
+    this.selectedListItems = tempArray;
+  }
+  addItem({
+    name,
+    tags,
+    isFavorite = false,
+    _id = undefined,
+  }: ListItem): ListItem | null {
+    if (name && tags.length > 0) {
+      const newItem = {
+        name,
+        tags,
+        isFavorite,
+        // todo remove dummy id
+        // _id: _id,
+        _id: name,
+      };
+      // check if id is defined, if not, postreq to server and set id with response id
+      if (newItem['_id'] === undefined) {
+        // TODO: Post-Req to backend and set response _id as id for the new item
+        // newItem._id = response._id
       }
-      // todo: error
-      return null;
-    },
-    getSelectedListItems(): ListItem[] {
-      return store.selectedListItems;
-    },
-    getItemByID(_id: Number | String): ListItem {
-      // TODO: Type of id
-      return store.selectedListItems.find(
-        (item: ListItem) => item['_id'] === _id,
+      // add to all ListItems
+      this.allListItems.push(newItem);
+      // sort allListItems and set selectedListItems
+      this.selectedListItems = this.sortByName(this.allListItems);
+      return newItem;
+    }
+    return null;
+  }
+  getItemByID(_id: Number | String): ListItem {
+    const _idType = typeof _id;
+    if (_idType === 'number' || _idType === 'string') {
+      return this.selectedListItems.find(
+        (item: ListItem): Boolean => item['_id'] === _id,
       );
-    },
-    // TODO: delete item
-  };
-
-  // init
-  // 1. fetch data and Sort
-  // todo: fetch
-  const result = sortByName([]);
-  // 3. add result to both arrays
-  store.allListItems = [...result];
-  store.selectedListItems = [...result];
-  return storeFunctions;
+    }
+  }
+  getSelectedListItems(): Array<ListItem> {
+    return this.selectedListItems;
+  }
 }
-// todo: outsource renderer for list

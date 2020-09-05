@@ -1,32 +1,30 @@
-import StoreFunctions from '../interfaces/store-functions';
+export default class FormHandler {
+  private store: any;
+  private nameInput: HTMLInputElement;
+  private tagsInput: HTMLInputElement;
+  constructor(store) {
+    this.store = store;
+    this.nameInput = <HTMLInputElement>(
+      document.querySelector('[name="add-dialog__name"')
+    );
+    this.tagsInput = <HTMLInputElement>(
+      document.querySelector('[name="add-dialog__tags"')
+    );
+  }
 
-const nameInput = <HTMLInputElement>(
-  document.querySelector('[name="add-dialog__name"')
-);
-const tagsInput = <HTMLInputElement>(
-  document.querySelector('[name="add-dialog__tags"')
-);
-
-// function
-function createForm(store: StoreFunctions): Function {
-  const storeObject: StoreFunctions = store;
-  return function (): void | Array<String> {
-    const name: String = nameInput.value.trim();
-    const tags: Array<String> = tagsInput.value.trim().split(' ');
-    // check if a name and tags are passed
+  addItem(): void | Array<String> {
+    const name: String = this.nameInput.value.trim();
+    const tags: Array<String> = this.tagsInput.value.trim().split(' ');
     const err = [];
-    // validation for the form
+    // check if name and tags exist
     if (name === '') err.push('Please add a name for your entry');
     if (tags.length <= 0) err.push('Please add some tags to your entry');
-    // check if no errors exist
     if (err.length === 0) {
-      const newListItem = {
-        name,
-        tags,
-      };
-      const addResult = storeObject.addItem(newListItem);
-      // an error occurred at adding the new item
-      if (addResult === null) {
+      const newItem = { name, tags };
+      // add to store
+      // TODO: async await because this creates a new item on the server side with id etc
+      const addToStoreResult = this.store.addItem(newItem);
+      if (addToStoreResult === null) {
         err.push('Error: Could not add the item to the list');
       }
     }
@@ -35,42 +33,6 @@ function createForm(store: StoreFunctions): Function {
       // todo: error handling
       return err;
     }
-  };
-}
-
-export default function (storeFunctions: StoreFunctions): Function {
-  const addDialog: HTMLFormElement = document.querySelector(
-    'dialog#add-dialog-container',
-  );
-  const createdFormAddItem: Function = createForm(storeFunctions);
-  return function (): any {
-    const resultOfCreation = createdFormAddItem();
-    if (Array.isArray(resultOfCreation)) {
-      // an error occurred
-      // TODO: Error Handling
-      return;
-    }
-    //  no error occurred
-    // clear form
-    // hide form
-    addDialog.classList.add('is-hidden');
-    console.log(storeFunctions.getSelectedListItems());
-    return;
-  };
-  // addDialog.addEventListener('submit', (e) => {
-  //   console.log('submit event');
-  //   e.preventDefault();
-  //   const resultOfCreation = createdForm();
-  //   if (Array.isArray(resultOfCreation)) {
-  //     // an error occurred
-  //     // TODO: Error Handling
-  //     return;
-  //   }
-  //   //  no error occurred
-  //   // clear form
-  //   nameInput.value = '';
-  //   tagsInput.value = '';
-  //   // hide form
-  //   addDialog.classList.add('is-hidden');
-  // });
+    console.log(this.store.getSelectedListItems());
+  }
 }

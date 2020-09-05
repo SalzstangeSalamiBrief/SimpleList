@@ -1,92 +1,74 @@
 import StoreFunctions from '../interfaces/store-functions';
 
-const addDialog = <HTMLDialogElement>(
-  document.querySelector('dialog#dialog-container')
-);
-const nameInput = <HTMLInputElement>(
-  document.querySelector('[name="add-dialog__name"')
-);
-const tagsInput = <HTMLInputElement>(
-  document.querySelector('[name="add-dialog__tags"')
-);
+// TODO: This class is actually only build for adding stuff
+//            Add Dynamic choices between add, delete, update
+export default class ButtonHandler {
+  private addDialog: HTMLDialogElement;
+  private nameInput: HTMLInputElement;
+  private tagsInput: HTMLInputElement;
+  private isDialogOpen: Boolean;
+  private store;
+  private formHandler;
+  private renderer;
+  constructor(formHandler, store, renderer) {
+    this.addDialog = <HTMLDialogElement>(
+      document.querySelector('dialog#dialog-container')
+    );
+    this.nameInput = <HTMLInputElement>(
+      document.querySelector('[name="add-dialog__name"')
+    );
+    this.tagsInput = <HTMLInputElement>(
+      document.querySelector('[name="add-dialog__tags"')
+    );
+    this.isDialogOpen = false;
+    this.store = store;
+    this.formHandler = formHandler;
+    this.renderer = renderer;
+    this.addEventListenerToBody();
+  }
 
-let isDialogOpen: Boolean = false;
+  addEventListenerToBody() {
+    document.querySelector('body').addEventListener('click', (e) => {
+      this.bodyEventHandler.call(this, e);
+    });
+  }
 
-function resetAddForm() {
-  nameInput.value = '';
-  tagsInput.value = '';
-}
-
-/**
- * Function for changing the isFavorite property of the corresponding listEntry
- * @param target DOMElement
- * @param store StoreFunctions
- */
-function handleChangeInIsFavorite(target, store: StoreFunctions) {
-  let favItem = target;
-  // loop through the parents to get the parent with dataset _id and name (name only for savety-reasons)
-  do {
-    console.log(!favItem.dataset['_id'] && !favItem.dataset['name']);
-    favItem = favItem.parentNode;
-  } while (!favItem.dataset['_id'] && !favItem.dataset['name']);
-  const { _id } = favItem.dataset;
-  // toggle class on parent-svg-element for marking the icon
-  document
-    .querySelector(`svg[data-_id="${_id}"].fav-img`)
-    .classList.toggle('marked-as-fav');
-  // change isFavorite in store
-  const selectedItem = store.getItemByID(_id);
-  selectedItem.isFavorite = !selectedItem.isFavorite;
-  store.updateItem(selectedItem);
-  return;
-}
-
-// TODO: maybe remove dummy renderer
-// function to add eventListeners
-export default function (
-  submitDialogHandler: Function,
-  store: StoreFunctions,
-  renderer,
-) {
-  //TODO:  temp test
-  // TODO remove err
-  document.querySelector('body').addEventListener('click', ({ target }) => {
-    console.log(target);
+  bodyEventHandler({ target }) {
+    // console.log(target);
     const targetClassList: DOMTokenList = target.classList;
     const targetID: String = target.id;
     // const targetTag: String = target.tagName.toLowerCase();
 
     // handler for open-add-btn
     if (targetID === 'open-add-dialog') {
-      addDialog.classList.remove('is-hidden');
-      isDialogOpen = true;
+      this.addDialog.classList.remove('is-hidden');
+      this.isDialogOpen = true;
       return;
     }
 
     // handler for submitting the add-form
     if (targetID === 'submit-add-item') {
       // todo: maybe problems because submitDialogHandler will be async => fix with async-await
-      submitDialogHandler();
-      resetAddForm();
-      isDialogOpen = false;
+      this.formHandler.addItem();
+      this.renderer(this.store.getSelectedListItems());
+      this.resetForm();
+      this.closeAddDialog();
       return;
     }
 
     // handler for cancel adding the form
     if (targetID === 'cancel-adding') {
-      resetAddForm();
-      addDialog.classList.add('is-hidden');
-      isDialogOpen = false;
+      this.resetForm();
+      this.closeAddDialog();
       return;
     }
 
     // handler  for clicking on the dialog-container
-    if (isDialogOpen) {
+    if (this.isDialogOpen) {
       if (targetID === 'dialog-container') {
         // TODO: reset dynamic form (Add || Delete || Edit)
-        resetAddForm();
-        addDialog.classList.add('is-hidden');
-        isDialogOpen = false;
+        this.resetForm();
+        this.closeAddDialog();
         return;
       }
     }
@@ -98,8 +80,38 @@ export default function (
     // check if fav-img clicked
     if (favClassListRegex.test(targetClassList)) {
       // Potential problems because of update: async-await
-      handleChangeInIsFavorite(target, store);
+      this.changeIsFavorite(target);
       return;
     }
-  });
+  }
+  /**
+   * Function for changing the isFavorite property of the corresponding listEntry
+   * @param target DOMElement
+   */
+  changeIsFavorite(target) {
+    let favItem = target;
+    // loop through the parents to get the parent with dataset _id and name (name only for savety-reasons)
+    do {
+      console.log(!favItem.dataset['_id'] && !favItem.dataset['name']);
+      favItem = favItem.parentNode;
+    } while (!favItem.dataset['_id'] && !favItem.dataset['name']);
+    const { _id } = favItem.dataset;
+    // toggle class on parent-svg-element for marking the icon
+    document
+      .querySelector(`svg[data-_id="${_id}"].fav-img`)
+      .classList.toggle('marked-as-fav');
+    // change isFavorite in store
+    const selectedItem = this.store.getItemByID(_id);
+    selectedItem.isFavorite = !selectedItem.isFavorite;
+    this.store.updateItem(selectedItem);
+    return;
+  }
+  closeAddDialog() {
+    this.addDialog.classList.add('is-hidden');
+    this.isDialogOpen = false;
+  }
+  resetForm() {
+    this.nameInput.value = '';
+    this.tagsInput.value = '';
+  }
 }

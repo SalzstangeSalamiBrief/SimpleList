@@ -2,7 +2,7 @@ import ListItem from '../interfaces/list-item';
 
 const tbody: HTMLElement = document.querySelector('tbody');
 
-function createSVG(item: ListItem) {
+function createFavoriteSVG(item: ListItem) {
   return `
   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <svg
@@ -48,7 +48,7 @@ export default function (itemList: Array<ListItem>): void {
       selectedItem.name
     }>
         <button class="flex justify-center item-center w-12 btn-fav-img">
-          ${createSVG(selectedItem)}
+          ${createFavoriteSVG(selectedItem)}
         </button>        
       </td>
       <td class="px-4 py-2 text-center">${selectedItem.name}</td>
