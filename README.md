@@ -1,6 +1,6 @@
 # SimpleList
 A simple list for everyone.
-This Application is builded for widescreens (1920x1080).
+This Application is builded for widescreens (1920x1080, 16:9).
 ## dev
 in ./backend
 ```
