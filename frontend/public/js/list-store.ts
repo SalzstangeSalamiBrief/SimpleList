@@ -2,13 +2,18 @@ import ListItem from '../interfaces/list-item';
 
 export default class Store {
   private allListItems: Array<ListItem>;
-  private selectedListItems: Array<ListItem>;
+  public selectedListItems: Array<ListItem>;
   constructor(newListItemArray: Array<ListItem> = []) {
     // sort and add to allListItems-Array
     this.allListItems = [...this.sortByName(newListItemArray)];
     // Copy allListItems into selectedListItems
     this.selectedListItems = [...this.allListItems];
   }
+  /**
+   * Take the passed array and return an sorted array (asc)
+   * the criterion for sorting the array is the name
+   * @param arr Array<ListItem>
+   */
   sortByName(arr: Array<ListItem>): Array<ListItem> {
     const temp: Array<ListItem> = [...arr];
     return temp.sort((a: ListItem, b: ListItem): number => {
@@ -19,6 +24,10 @@ export default class Store {
       return 0;
     });
   }
+  /**
+   *
+   * @param ListItem ListItem
+   */
   updateItem({
     tags: tagsToUpdate = undefined,
     isFavorite: updateIsFavorite = undefined,
@@ -34,6 +43,14 @@ export default class Store {
     // todo fetch Method PUT
     return objectToUpdate;
   }
+  /**
+   * Filter the Entries in allListItems-Array by their tags and safe the result in the selectedListItems-Array
+   * There are two cases considered:
+   *  1. filter for absence of a tag (e.g. !comedy)
+   *  2. filter for existence of a tag
+   *
+   * @param tagsToSearch string
+   */
   filterByTags(tagsToSearch: string): void {
     const tempArray: Array<ListItem> = [...this.allListItems];
     const tagsArray: Array<string> = tagsToSearch.trim().split(' ');
@@ -86,14 +103,21 @@ export default class Store {
     }
     return null;
   }
+  /**
+   * get an Element from the allListItems-Array by their _id
+   * @param _id number | string
+   */
   getItemByID(_id: number | string): ListItem {
     const _idType = typeof _id;
     if (_idType === 'number' || _idType === 'string') {
-      return this.selectedListItems.find(
+      return this.allListItems.find(
         (item: ListItem): Boolean => item['_id'] === _id,
       );
     }
   }
+  /**
+   * Get the selectedListItems-array
+   */
   getSelectedListItems(): Array<ListItem> {
     return this.selectedListItems;
   }

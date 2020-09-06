@@ -13,6 +13,7 @@ export default class ButtonHandler {
   private formHandler;
   private renderer;
   constructor(formHandler, store, renderer) {
+    // TODO: save html-elems as const before class-declaration? usefull?
     this.dialog = <HTMLDialogElement>(
       document.querySelector('dialog#dialog-container')
     );
