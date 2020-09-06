@@ -33,6 +33,21 @@ function createFavoriteSVG(item: ListItem) {
   `;
 }
 
+function renderTagList(tags: Array<string>) {
+  let list =
+    '<ul class="list-none flex w-full justify-center item-center overflow-hidden">';
+  for (const tag of tags) {
+    const negateTag = tag[0] === '!';
+    list += `
+    <li class="mx-2 ${negateTag ? 'text-gray-600' : ''}" >
+      ${tag} 
+    </li>   
+  `;
+  }
+  list += '</ul>';
+  return list;
+}
+
 // function to render the actual table
 export default function (itemList: Array<ListItem>): void {
   // clear child nodes
@@ -40,22 +55,25 @@ export default function (itemList: Array<ListItem>): void {
   // TODO: Add Listeners
   for (let i = 0; i < itemList.length; i += 1) {
     const selectedItem = itemList[i];
-    const tagList: String = selectedItem.tags.join(' ');
     const entry: HTMLElement = document.createElement('tr');
     entry.classList.add('hover:bg-gray-200');
+    entry.dataset['_id'] = selectedItem._id;
+    entry.dataset.name = selectedItem.name;
     const entryBody = `
-      <td class="py-2" data-_id="${selectedItem._id}" data-name=${
-      selectedItem.name
-    }>
+      <td class="py-2">
         <button class="flex justify-center item-center w-12 btn-fav-img">
           ${createFavoriteSVG(selectedItem)}
         </button>        
       </td>
-      <td class="px-4 py-2 text-center">${selectedItem.name}</td>
-      <td class="px-4 py-2 text-center">${tagList}</td>
+      <td class="px-4 py-2 text-center">
+        <button class="row-item-name w-full h-full overflow-hidden">
+          ${selectedItem.name}
+        </button>      
+      </td>
+      <td class="px-4 py-2 text-center">${renderTagList(selectedItem.tags)}</td>
       <td class="flex justify-around px-4 py-2">
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options edit-btn"
         >
           Edit
         </button>

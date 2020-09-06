@@ -133,24 +133,27 @@
         <div
           class="w-1/2 flex flex-col justify-center items-center shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4"
         >
-          <h2 class="text-center add-dialog__title mb-10">Add Item</h2>
+          <h2 class="text-center form__title mb-10" id="form__title">
+            Add Item
+          </h2>
           <form
-            class="add-form flex flex-col justify-content items-center w-4/5"
-            name="add-item-form"
+            class="form flex flex-col justify-content items-center w-4/5"
+            name="item-form"
           >
             <!-- name -->
             <div class="flex w-full">
               <label
-                for="add-dialog__tags"
+                for="dialog__tags"
                 class="w-2/6 flex items-center justify-start"
               >
                 Add Name
               </label>
               <input
                 type="text"
-                name="add-dialog__name"
+                name="dialog__name"
                 class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6 mx-4 placeholder-gray-500 placeholder-opacity-100"
                 placeholder="Add Name"
+                pattern="^[A-Za-z0-9]{6,}$"
                 required
               />
             </div>
@@ -158,17 +161,18 @@
             <!-- tags -->
             <div class="flex w-full">
               <label
-                for="add-dialog__tags"
+                for="dialog__tags"
                 class="w-2/6 flex items-center justify-start"
               >
                 Add Tags (separated by spaces)
               </label>
               <input
                 type="text"
-                name="add-dialog__tags"
+                name="dialog__tags"
                 class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6 mx-4 placeholder-gray-500 placeholder-opacity-100"
                 placeholder="Add Tags (separated by spaces)"
                 required
+                pattern="^[A-Za-z0-9 ]+$"
               />
             </div>
           </form>
@@ -176,16 +180,25 @@
           <div class="flex w-2/5 justify-around">
             <button
               type="submit"
-              class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--add-form cursor-pointer"
-              id="submit-add-item"
-              form="add-item-form"
-              value="submit"
+              class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
+              id="submit-add-form"
+              form="item-form"
+              value="add item"
             >
               Add Item
             </button>
             <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn--add-form"
-              id="cancel-adding"
+              type="submit"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
+              id="submit-update-form"
+              form="item-form"
+              value="update item"
+            >
+              Update
+            </button>
+            <button
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-form"
+              id="cancel-form"
             >
               Cancel
             </button>

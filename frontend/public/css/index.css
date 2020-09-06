@@ -15,7 +15,7 @@ body {
 } */
 
 .btn--options,
-.btn--add-form {
+.btn-form {
   min-width: 100px;
 }
 
@@ -29,7 +29,7 @@ main.w-full > div {
   margin-bottom: 2.5rem;
 }
 
-.add-form > div {
+.form > div {
   margin-bottom: 2.5rem;
 }
 
@@ -45,7 +45,7 @@ main.w-full > div {
   max-height: 100vh;
 }
 
-.add-dialog__title {
+.form__title {
   font-weight: 600;
 }
 dialog#dialog-container.is-hidden,

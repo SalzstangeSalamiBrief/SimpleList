@@ -13,7 +13,7 @@ console.log(store);
 const temp = [
   {
     name: 'a',
-    tags: ['öp'],
+    tags: ['ap'],
     _id: '12',
     isFavorite: false,
   },

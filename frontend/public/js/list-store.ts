@@ -30,17 +30,17 @@ export default class Store {
     if (tagsToUpdate) objectToUpdate.tags = tagsToUpdate;
     if (updateIsFavorite !== undefined)
       objectToUpdate.isFavorite = updateIsFavorite;
-    if (name) objectToUpdate.name = name;
+    if (name !== undefined) objectToUpdate.name = nameToUpdate;
     // todo fetch Method PUT
     return objectToUpdate;
   }
-  filterByTags(tagsToSearch: String): void {
+  filterByTags(tagsToSearch: string): void {
     const tempArray: Array<ListItem> = [...this.allListItems];
-    const tagsArray: Array<String> = tagsToSearch.trim().split(' ');
+    const tagsArray: Array<string> = tagsToSearch.trim().split(' ');
     // for each item in tagsArray
     for (let i = 0; i < tagsArray.length; i += 1) {
       let actualTag = tagsArray[i];
-      if (actualTag.includes('!')) {
+      if (actualTag[0] === '!') {
         // items shall not include this tag;
         [, actualTag] = actualTag.split('!');
         // loop through each entry in tempArray and remove items with the corresponding tag
@@ -71,9 +71,7 @@ export default class Store {
         name,
         tags,
         isFavorite,
-        // todo remove dummy id
-        // _id: _id,
-        _id: name,
+        _id,
       };
       // check if id is defined, if not, postreq to server and set id with response id
       if (newItem['_id'] === undefined) {
@@ -88,7 +86,7 @@ export default class Store {
     }
     return null;
   }
-  getItemByID(_id: Number | String): ListItem {
+  getItemByID(_id: number | string): ListItem {
     const _idType = typeof _id;
     if (_idType === 'number' || _idType === 'string') {
       return this.selectedListItems.find(

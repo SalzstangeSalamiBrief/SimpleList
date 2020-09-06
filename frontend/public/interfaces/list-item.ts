@@ -1,6 +1,6 @@
 export default interface ListItem {
-  name: String;
-  tags: String[];
-  isFavorite: Boolean;
-  _id: String;
+  name: string;
+  tags: string[];
+  isFavorite: boolean;
+  _id: string;
 }

@@ -1,29 +1,39 @@
-import StoreFunctions from '../interfaces/store-functions';
-
 // TODO: This class is actually only build for adding stuff
 //            Add Dynamic choices between add, delete, update
 export default class ButtonHandler {
-  private addDialog: HTMLDialogElement;
+  private idItemToUpdate: String;
+  private dialog: HTMLDialogElement;
+  private formTitle: HTMLHeadingElement;
   private nameInput: HTMLInputElement;
   private tagsInput: HTMLInputElement;
-  private isDialogOpen: Boolean;
+  private btnSubmitAdd: HTMLButtonElement;
+  private btnSubmitUpdate: HTMLButtonElement;
+  private isDialogOpen: boolean;
   private store;
   private formHandler;
   private renderer;
   constructor(formHandler, store, renderer) {
-    this.addDialog = <HTMLDialogElement>(
+    this.dialog = <HTMLDialogElement>(
       document.querySelector('dialog#dialog-container')
     );
     this.nameInput = <HTMLInputElement>(
-      document.querySelector('[name="add-dialog__name"')
+      document.querySelector('[name="dialog__name"]')
     );
     this.tagsInput = <HTMLInputElement>(
-      document.querySelector('[name="add-dialog__tags"')
+      document.querySelector('[name="dialog__tags"]')
     );
+    this.btnSubmitAdd = <HTMLButtonElement>(
+      document.querySelector('button#submit-add-form')
+    );
+    this.btnSubmitUpdate = <HTMLButtonElement>(
+      document.querySelector('button#submit-update-form')
+    );
+    this.formTitle = <HTMLHeadingElement>document.querySelector('#form__title');
     this.isDialogOpen = false;
     this.store = store;
     this.formHandler = formHandler;
     this.renderer = renderer;
+    this.idItemToUpdate = '';
     this.addEventListenerToBody();
   }
 
@@ -33,33 +43,82 @@ export default class ButtonHandler {
     });
   }
 
-  bodyEventHandler({ target }) {
+  /**
+   * use to hide update||add-btn and hide the other one
+   * @param btnToHide string
+   * @param btnToShow string
+   */
+  toggleFormButtons(btnToHide: string, btnToShow: string) {
+    this[btnToHide].classList.add('is-hidden');
+    this[btnToShow].classList.remove('is-hidden');
+  }
+
+  // todo: async because of comm with server
+  // todo: validation of input
+  async bodyEventHandler({ target }) {
     // console.log(target);
     const targetClassList: DOMTokenList = target.classList;
-    const targetID: String = target.id;
-    // const targetTag: String = target.tagName.toLowerCase();
+    const targetID: string = target.id;
+
+    // handler for copy the name
+    if (targetClassList.contains('row-item-name')) {
+      try {
+        // copy name of the button/entry/row into the clipboard
+        await navigator.clipboard.writeText(target.textContent.trim());
+      } catch (err) {
+        console.log(err);
+      }
+    }
 
     // handler for open-add-btn
     if (targetID === 'open-add-dialog') {
-      this.addDialog.classList.remove('is-hidden');
-      this.isDialogOpen = true;
+      this.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
+      this.formTitle.textContent = 'Add Item';
+      this.openDialog();
       return;
     }
 
     // handler for submitting the add-form
-    if (targetID === 'submit-add-item') {
+    if (targetID === 'submit-add-form') {
       // todo: maybe problems because submitDialogHandler will be async => fix with async-await
-      this.formHandler.addItem();
+      this.formHandler.submitAddItem();
       this.renderer(this.store.getSelectedListItems());
       this.resetForm();
-      this.closeAddDialog();
+      // TODO: Only close dialog if no error occured
+      this.closeDialog();
       return;
     }
 
-    // handler for cancel adding the form
-    if (targetID === 'cancel-adding') {
+    // handler for open updating form
+    if (targetClassList.contains('edit-btn')) {
+      const _id = this.loopThroughParentsToGetID(target);
+      this.idItemToUpdate = _id;
+      this.formHandler.prepareUpdateInputs(_id);
+      this.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
+      this.formTitle.textContent = 'Update Item';
+      this.openDialog();
+      return;
+    }
+
+    // handler for submitting the updateform
+    if (targetID === 'submit-update-form') {
+      const newItem = {
+        name: this.nameInput.value,
+        tags: this.tagsInput.value.trim().split(' '),
+        _id: this.idItemToUpdate,
+      };
+      this.store.updateItem(newItem);
       this.resetForm();
-      this.closeAddDialog();
+      this.closeDialog();
+      // console.log(updateResult);
+      this.renderer(this.store.getSelectedListItems());
+      return;
+    }
+
+    // handler for cancel the form
+    if (targetID === 'cancel-form') {
+      this.resetForm();
+      this.closeDialog();
       return;
     }
 
@@ -68,7 +127,7 @@ export default class ButtonHandler {
       if (targetID === 'dialog-container') {
         // TODO: reset dynamic form (Add || Delete || Edit)
         this.resetForm();
-        this.closeAddDialog();
+        this.closeDialog();
         return;
       }
     }
@@ -89,13 +148,8 @@ export default class ButtonHandler {
    * @param target DOMElement
    */
   changeIsFavorite(target) {
-    let favItem = target;
-    // loop through the parents to get the parent with dataset _id and name (name only for savety-reasons)
-    do {
-      console.log(!favItem.dataset['_id'] && !favItem.dataset['name']);
-      favItem = favItem.parentNode;
-    } while (!favItem.dataset['_id'] && !favItem.dataset['name']);
-    const { _id } = favItem.dataset;
+    let _id = this.loopThroughParentsToGetID(target);
+    console.log(_id);
     // toggle class on parent-svg-element for marking the icon
     document
       .querySelector(`svg[data-_id="${_id}"].fav-img`)
@@ -106,12 +160,29 @@ export default class ButtonHandler {
     this.store.updateItem(selectedItem);
     return;
   }
-  closeAddDialog() {
-    this.addDialog.classList.add('is-hidden');
+  /**
+   * Loop through the parents of the target to get the _id of the selected row/item
+   * @param target
+   */
+  loopThroughParentsToGetID(target): string {
+    let itemToSelect = target;
+    // loop through the parents to get the parent with dataset _id and name (name only for savety-reasons)
+    while (!itemToSelect.dataset['_id'] || !itemToSelect.dataset['name']) {
+      itemToSelect = itemToSelect.parentNode;
+    }
+    return itemToSelect.dataset['_id'];
+  }
+  openDialog() {
+    this.dialog.classList.remove('is-hidden');
+    this.isDialogOpen = true;
+  }
+  closeDialog() {
+    this.dialog.classList.add('is-hidden');
     this.isDialogOpen = false;
   }
   resetForm() {
     this.nameInput.value = '';
     this.tagsInput.value = '';
+    this.idItemToUpdate = '';
   }
 }

@@ -1,20 +1,36 @@
+import ListItem from '../interfaces/list-item';
+
 export default class FormHandler {
-  private store: any;
+  private store;
   private nameInput: HTMLInputElement;
   private tagsInput: HTMLInputElement;
   constructor(store) {
     this.store = store;
     this.nameInput = <HTMLInputElement>(
-      document.querySelector('[name="add-dialog__name"')
+      document.querySelector('[name="dialog__name"')
     );
     this.tagsInput = <HTMLInputElement>(
-      document.querySelector('[name="add-dialog__tags"')
+      document.querySelector('[name="dialog__tags"')
     );
   }
 
-  addItem(): void | Array<String> {
-    const name: String = this.nameInput.value.trim();
-    const tags: Array<String> = this.tagsInput.value.trim().split(' ');
+  /**
+   * Open the update-form and prefill the name- and tagsInput
+   * @param _id string || number
+   */
+  prepareUpdateInputs(_id: string | number) {
+    const { name, tags }: ListItem = this.store.getItemByID(_id);
+    // check if name and tags exist
+    if (name && tags) {
+      // set value in the inputfields
+      this.nameInput.value = name;
+      this.tagsInput.value = tags.join(' ').trim();
+    }
+  }
+
+  submitAddItem(): void | Array<string> {
+    const name: string = this.nameInput.value.trim();
+    const tags: Array<string> = this.tagsInput.value.trim().split(' ');
     const err = [];
     // check if name and tags exist
     if (name === '') err.push('Please add a name for your entry');
