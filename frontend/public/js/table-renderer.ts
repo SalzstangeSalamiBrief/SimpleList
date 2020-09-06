@@ -33,6 +33,10 @@ function createFavoriteSVG(item: ListItem) {
   `;
 }
 
+/**
+ * render the
+ * @param tags Array<string>
+ */
 function renderTagList(tags: Array<string>) {
   let list =
     '<ul class="list-none flex w-full justify-center item-center overflow-hidden">';
