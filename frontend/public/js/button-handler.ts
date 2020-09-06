@@ -13,7 +13,6 @@ export default class ButtonHandler {
   private formHandler;
   private renderer;
   constructor(formHandler, store, renderer) {
-    // TODO: save html-elems as const before class-declaration? usefull?
     this.dialog = <HTMLDialogElement>(
       document.querySelector('dialog#dialog-container')
     );
@@ -73,61 +72,46 @@ export default class ButtonHandler {
 
     // handler for open-add-btn
     if (targetID === 'open-add-dialog') {
-      this.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
-      this.formTitle.textContent = 'Add Item';
-      this.openDialog();
+      this.initOpenAddDialog();
       return;
     }
 
     // handler for submitting the add-form
     if (targetID === 'submit-add-form') {
       // todo: maybe problems because submitDialogHandler will be async => fix with async-await
-      this.formHandler.submitAddItem();
-      this.renderer(this.store.getSelectedListItems());
-      this.resetForm();
-      // TODO: Only close dialog if no error occured
-      this.closeDialog();
+      this.submitAddForm();
+
       return;
     }
 
     // handler for open updating form
     if (targetClassList.contains('edit-btn')) {
-      const _id = this.loopThroughParentsToGetID(target);
-      this.idItemToUpdate = _id;
-      this.formHandler.prepareUpdateInputs(_id);
-      this.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
-      this.formTitle.textContent = 'Update Item';
-      this.openDialog();
+      this.openUpdateDialog(target);
       return;
     }
 
     // handler for submitting the updateform
     if (targetID === 'submit-update-form') {
-      const newItem = {
-        name: this.nameInput.value,
-        tags: this.tagsInput.value.trim().split(' '),
-        _id: this.idItemToUpdate,
-      };
-      this.store.updateItem(newItem);
-      this.resetForm();
-      this.closeDialog();
-      // console.log(updateResult);
-      this.renderer(this.store.getSelectedListItems());
+      this.updateItem();
       return;
     }
 
     // handler for cancel the form
     if (targetID === 'cancel-form') {
-      this.resetForm();
       this.closeDialog();
       return;
+    }
+
+    if (targetClassList.contains('open-delete-dialog')) {
+      // todo: add dialog, new handler for dialog etc
+      // open delete Dialog
+      this.store.deleteItemByID(this.loopThroughParentsToGetID(target));
+      this.renderer(this.store.getSelectedListItems());
     }
 
     // handler  for clicking on the dialog-container
     if (this.isDialogOpen) {
       if (targetID === 'dialog-container') {
-        // TODO: reset dynamic form (Add || Delete || Edit)
-        this.resetForm();
         this.closeDialog();
         return;
       }
@@ -173,12 +157,58 @@ export default class ButtonHandler {
     }
     return itemToSelect.dataset['_id'];
   }
+
+  /**
+   * function which inits the add-dialog and displays the dialog
+   */
+  initOpenAddDialog() {
+    this.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
+    this.formTitle.textContent = 'Add Item';
+    this.openDialog();
+  }
+  /**
+   * function which submits the add-form
+   */
+  submitAddForm() {
+    // TODO: Only close dialog if no error occured
+    // todo: errorhandling
+    this.formHandler.submitAddItem();
+    this.renderer(this.store.getSelectedListItems());
+    this.closeDialog();
+  }
+  /**
+   * init the updateDialog (prepare the form-fields), change the buttons and display the updateDialog
+   *
+   * @param target HTMLElement
+   */
+  openUpdateDialog(target) {
+    const _id = this.loopThroughParentsToGetID(target);
+    this.idItemToUpdate = _id;
+    this.formHandler.prepareUpdateInputs(_id);
+    this.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
+    this.formTitle.textContent = 'Update Item';
+    this.openDialog();
+  }
+  updateItem() {
+    const newItem = {
+      name: this.nameInput.value,
+      tags: this.tagsInput.value.trim().split(' '),
+      _id: this.idItemToUpdate,
+    };
+    // todo errorhandling for response
+    this.store.updateItem(newItem);
+    this.resetForm();
+    this.closeDialog();
+    // console.log(updateResult);
+    this.renderer(this.store.getSelectedListItems());
+  }
   openDialog() {
     this.dialog.classList.remove('is-hidden');
     this.isDialogOpen = true;
   }
   closeDialog() {
     this.dialog.classList.add('is-hidden');
+    this.resetForm();
     this.isDialogOpen = false;
   }
   resetForm() {

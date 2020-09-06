@@ -1,7 +1,7 @@
 import ListItem from '../interfaces/list-item';
 
 const tbody: HTMLElement = document.querySelector('tbody');
-
+// TODO: VDOM or osmething like that
 function createFavoriteSVG(item: ListItem) {
   return `
   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -78,7 +78,7 @@ export default function (itemList: Array<ListItem>): void {
           Edit
         </button>
         <button
-            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn--options"
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn--options open-delete-dialog"
         >
           Delete
         </button>

@@ -56,7 +56,8 @@ export default class Store {
     const tagsArray: Array<string> = tagsToSearch.trim().split(' ');
     // for each item in tagsArray
     for (let i = 0; i < tagsArray.length; i += 1) {
-      let actualTag = tagsArray[i];
+      // trim each entry in tagsArray before consume the tag
+      let actualTag = tagsArray[i].trim();
       if (actualTag[0] === '!') {
         // items shall not include this tag;
         [, actualTag] = actualTag.split('!');
@@ -88,7 +89,7 @@ export default class Store {
         name,
         tags,
         isFavorite,
-        _id,
+        _id: String(_id),
       };
       // check if id is defined, if not, postreq to server and set id with response id
       if (newItem['_id'] === undefined) {
@@ -104,12 +105,23 @@ export default class Store {
     return null;
   }
   /**
-   * get an Element from the allListItems-Array by their _id
-   * @param _id number | string
+   * delete an entry from the allListItems-Array and re-sort the selectedListItems Array
+   * @param _id string
    */
-  getItemByID(_id: number | string): ListItem {
-    const _idType = typeof _id;
-    if (_idType === 'number' || _idType === 'string') {
+  deleteItemByID(_id: string) {
+    const indexOfEntry = this.allListItems.findIndex(
+      (item: ListItem) => item['_id'] === _id,
+    );
+    this.allListItems.splice(indexOfEntry, 1);
+    this.selectedListItems = this.sortByName(this.allListItems);
+    console.log(this.allListItems);
+  }
+  /**
+   * get an Element from the allListItems-Array by their _id
+   * @param _id string
+   */
+  getItemByID(_id: string): ListItem {
+    if (typeof _id === 'string') {
       return this.allListItems.find(
         (item: ListItem): Boolean => item['_id'] === _id,
       );
