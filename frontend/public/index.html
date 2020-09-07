@@ -126,12 +126,12 @@
       <!-- TODO: Edit DIalog -->
       <!-- TODO: Error Dialog -->
       <!-- dialog -->
-      <dialog
+      <div
         id="dialog-container"
         class="dialog-container w-full flex-col h-full flex justify-center items-center is-hidden"
       >
-        <div
-          class="w-1/2 flex flex-col justify-center items-center shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4"
+        <dialog
+          class="w-1/2 flex flex-col justify-center items-center shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4 add-update-dialog"
         >
           <h2 class="text-center form__title mb-10" id="form__title">
             Add Item
@@ -203,8 +203,8 @@
               Cancel
             </button>
           </div>
-        </div>
-      </dialog>
+        </dialog>
+      </div>
     </main>
     <script src="../js/index.js" type="module"></script>
   </body>

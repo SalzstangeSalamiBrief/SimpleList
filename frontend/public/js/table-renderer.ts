@@ -34,12 +34,20 @@ function createFavoriteSVG(item: ListItem) {
 }
 
 function renderTagList(tags: Array<string>) {
-  let list =
+  let list: string =
     '<ul class="list-none flex w-full justify-center item-center overflow-hidden">';
+  // for (let i = 0; i < tags.length; i += 1) {
+  //   const isNegatedTag = tags[i][0] === '!';
+  //   list += `
+  //   <li class="mx-2 ${isNegatedTag ? 'text-gray-600' : ''}" >
+  //     ${tags[i]}
+  //   </li>
+  // `;
+  // }
+  // todo hightlight for filtered tags
   for (let i = 0; i < tags.length; i += 1) {
-    const isNegatedTag = tags[i][0] === '!';
     list += `
-    <li class="mx-2 ${isNegatedTag ? 'text-gray-600' : ''}" >
+    <li class="mx-2" >
       ${tags[i]} 
     </li>   
   `;
@@ -54,7 +62,7 @@ export default function (itemList: Array<ListItem>): void {
   tbody.textContent = '';
   // TODO: Add Listeners
   for (let i = 0; i < itemList.length; i += 1) {
-    const selectedItem = itemList[i];
+    const selectedItem: ListItem = itemList[i];
     const entry: HTMLElement = document.createElement('tr');
     entry.classList.add('hover:bg-gray-200');
     entry.dataset['_id'] = selectedItem._id;

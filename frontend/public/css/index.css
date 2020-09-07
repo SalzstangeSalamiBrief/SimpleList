@@ -24,7 +24,7 @@ main {
   min-height: 100vh;
 }
 
-main.w-full > div {
+main.w-full > div:not(.dialog-container) {
   width: 50%;
   margin-bottom: 2.5rem;
 }
@@ -48,7 +48,7 @@ main.w-full > div {
 .form__title {
   font-weight: 600;
 }
-dialog#dialog-container.is-hidden,
+div#dialog-container.is-hidden,
 .is-hidden {
   display: none;
 }

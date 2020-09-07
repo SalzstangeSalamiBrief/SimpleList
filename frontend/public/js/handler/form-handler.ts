@@ -1,17 +1,19 @@
-import ListItem from '../interfaces/list-item';
+import ListItem from '../../interfaces/list-item';
 
 export default class FormHandler {
   private store;
   private nameInput: HTMLInputElement;
   private tagsInput: HTMLInputElement;
-  constructor(store) {
-    this.store = store;
+  private formTitle: HTMLHeadingElement;
+  constructor() {
+    this.store = undefined;
     this.nameInput = <HTMLInputElement>(
       document.querySelector('[name="dialog__name"')
     );
     this.tagsInput = <HTMLInputElement>(
       document.querySelector('[name="dialog__tags"')
     );
+    this.formTitle = <HTMLHeadingElement>document.querySelector('#form__title');
   }
 
   /**
@@ -75,5 +77,21 @@ export default class FormHandler {
       }
     }
     return tags;
+  }
+  resetFormInputFields() {
+    this.nameInput.value = '';
+    this.tagsInput.value = '';
+  }
+  setFormTitleText(txt: string) {
+    this.formTitle.textContent = txt;
+  }
+  getNameInputValue(): string {
+    return this.nameInput.value;
+  }
+  getTagsInputValue(): string {
+    return this.tagsInput.value;
+  }
+  setStore(store) {
+    this.store = store;
   }
 }
