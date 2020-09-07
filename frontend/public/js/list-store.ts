@@ -109,10 +109,15 @@ export default class Store {
    * @param _id string
    */
   deleteItemByID(_id: string) {
-    const indexOfEntry = this.allListItems.findIndex(
-      (item: ListItem) => item['_id'] === _id,
-    );
-    this.allListItems.splice(indexOfEntry, 1);
+    const temp = [];
+    for (let i = 0; i < this.allListItems.length; i += 1) {
+      // push every item, which does not have the wanted _id into temp
+      //  skip the entry with the wanted _id;
+      if (this.allListItems[i]['_id'] === _id) continue;
+      temp.push(this.allListItems[i]);
+    }
+    // set allListItems with the temp (result of the for-of loop)
+    this.allListItems = temp;
     this.selectedListItems = this.sortByName(this.allListItems);
     console.log(this.allListItems);
   }

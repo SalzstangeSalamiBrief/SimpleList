@@ -36,11 +36,11 @@ function createFavoriteSVG(item: ListItem) {
 function renderTagList(tags: Array<string>) {
   let list =
     '<ul class="list-none flex w-full justify-center item-center overflow-hidden">';
-  for (const tag of tags) {
-    const negateTag = tag[0] === '!';
+  for (let i = 0; i < tags.length; i += 1) {
+    const isNegatedTag = tags[i][0] === '!';
     list += `
-    <li class="mx-2 ${negateTag ? 'text-gray-600' : ''}" >
-      ${tag} 
+    <li class="mx-2 ${isNegatedTag ? 'text-gray-600' : ''}" >
+      ${tags[i]} 
     </li>   
   `;
   }
