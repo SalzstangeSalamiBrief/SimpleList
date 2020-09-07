@@ -133,7 +133,7 @@
         <dialog
           class="w-1/2 flex flex-col justify-center items-center shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4 add-update-dialog"
         >
-          <h2 class="text-center form__title mb-10" id="form__title">
+          <h2 class="text-center form__title mb-5" id="form__title">
             Add Item
           </h2>
           <form
@@ -197,8 +197,31 @@
               Update
             </button>
             <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-form"
-              id="cancel-form"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-form btn--cancel-dialog"
+              id="cancel-add-update-form"
+            >
+              Cancel
+            </button>
+          </div>
+        </dialog>
+        <dialog
+          class="w-1/3 flex flex-col justify-center items-center shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4 delete-dialog"
+        >
+          <h2 class="text-center form__title">Delete Item</h2>
+          <p class="mt-5">Do you realy want to delete the Item:</p>
+          <p class="delete-text__id mb-5"></p>
+          <div class="flex w-2/5 justify-around">
+            <button
+              type="submit"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
+              id="submit-delete-dialog"
+              value="delete item"
+            >
+              Delete
+            </button>
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-form btn--cancel-dialog"
+              id="cancel-delete-dialog"
             >
               Cancel
             </button>

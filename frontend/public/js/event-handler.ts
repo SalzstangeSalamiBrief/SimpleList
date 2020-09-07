@@ -6,7 +6,7 @@ export default class EventHandler {
   private formHandler;
   private tableRenderer;
   private store;
-  private idItemToUpdate: string;
+  private IdOfSelectedItem: string;
   private favClassListRegex: RegExp;
   constructor(buttonHandler, dialogHandler, formHandler, tableRenderer, store) {
     this.buttonHandler = buttonHandler;
@@ -15,7 +15,7 @@ export default class EventHandler {
     this.tableRenderer = tableRenderer;
     this.store = store;
     this.formHandler.setStore(store);
-    this.idItemToUpdate = '';
+    this.IdOfSelectedItem = '';
     this.favClassListRegex = new RegExp(
       'fav(__(inner|outer)|-img)|btn-fav-img',
     );
@@ -45,16 +45,26 @@ export default class EventHandler {
         }
       }
       if (actualClassEntry === 'edit-btn') {
-        this.idItemToUpdate = this.loopThroughParentsToGetID(target);
-        this.formHandler.prepareUpdateInputs(this.idItemToUpdate);
+        this.IdOfSelectedItem = this.loopThroughParentsToGetID(target);
+        this.formHandler.prepareUpdateInputs(this.IdOfSelectedItem);
         this.buttonHandler.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
         this.formHandler.setFormTitleText('Update Item');
-        this.dialogHandler.openDialog();
+        this.dialogHandler.openDialog('AddUpdate');
+        return;
+      }
+      if (actualClassEntry === 'btn--cancel-dialog') {
+        this.dialogHandler.closeDialog();
+        this.formHandler.resetFormInputFields();
+        this.IdOfSelectedItem = '';
         return;
       }
       if (actualClassEntry === 'open-delete-dialog') {
-        this.store.deleteItemByID(this.loopThroughParentsToGetID(target));
-        this.tableRenderer(this.store.getSelectedListItems());
+        const _id = this.loopThroughParentsToGetID(target);
+        const { name }: ListItem = this.store.getItemByID(_id);
+        this.IdOfSelectedItem = _id;
+        this.dialogHandler.openDialog('Delete', name);
+        // this.store.deleteItemByID(this.loopThroughParentsToGetID(target));
+        // this.tableRenderer(this.store.getSelectedListItems());
         return;
       }
       if (this.favClassListRegex.test(targetClassList[i])) {
@@ -74,7 +84,7 @@ export default class EventHandler {
       case 'open-add-dialog':
         this.buttonHandler.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
         this.formHandler.setFormTitleText('Add Item');
-        this.dialogHandler.openDialog();
+        this.dialogHandler.openDialog('AddUpdate');
         return;
       case 'submit-add-form':
         // todo: maybe problems because submitDialogHandler will be async => fix with async-await
@@ -87,18 +97,20 @@ export default class EventHandler {
         const newItem = {
           name: this.formHandler.getNameInputValue(),
           tags: this.formHandler.getTagsInputValue().trim().split(' '),
-          _id: this.idItemToUpdate,
+          _id: this.IdOfSelectedItem,
         };
         // todo errorhandling for response
         this.store.updateItem(newItem);
         this.formHandler.resetFormInputFields();
         this.dialogHandler.closeDialog();
         this.tableRenderer(this.store.getSelectedListItems());
-        this.idItemToUpdate = '';
+        this.IdOfSelectedItem = '';
         return;
-      case 'cancel-form':
+      case 'submit-delete-dialog':
+        this.store.deleteItemByID(this.IdOfSelectedItem);
         this.dialogHandler.closeDialog();
-        this.formHandler.resetFormInputFields();
+        this.IdOfSelectedItem = '';
+        this.tableRenderer(this.store.getSelectedListItems());
         return;
       case 'dialog-container':
         if (this.dialogHandler.getIsDialogOpen()) {

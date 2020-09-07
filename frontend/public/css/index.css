@@ -49,6 +49,7 @@ main.w-full > div:not(.dialog-container) {
   font-weight: 600;
 }
 div#dialog-container.is-hidden,
+dialog.is-hidden,
 .is-hidden {
   display: none;
 }

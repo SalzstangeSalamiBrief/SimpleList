@@ -1,26 +1,37 @@
+const enum PossibleDialogues {
+  openEditDialog = 'AddUpdate',
+  deleteDialog = 'Delete',
+}
+
 const dialogContainer = <HTMLDivElement>(
   document.querySelector('div#dialog-container')
 );
+const dialogAddUpdate = <HTMLDialogElement>(
+  document.querySelector('dialog.add-update-dialog')
+);
+const dialogDelete = <HTMLDialogElement>(
+  document.querySelector('dialog.delete-dialog')
+);
+
+const deleteTextSpan = <HTMLSpanElement>(
+  document.querySelector('p.delete-text__id')
+);
+
 export default class DialogHandler {
   private isDialogOpen: boolean;
   constructor() {
     this.isDialogOpen = false;
   }
-  /**
-   * init the updateDialog (prepare the form-fields), change the buttons and display the updateDialog
-   *
-   * @param target HTMLElement
-   */
-  openUpdateDialog(target) {
-    const _id: string = this.loopThroughParentsToGetID(target);
-    this.idItemToUpdate = _id;
-    this.formHandler.prepareUpdateInputs(_id);
-    this.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
-    formTitle.textContent = 'Update Item';
-    this.openDialog();
-  }
-  openDialog() {
+  openDialog(type: PossibleDialogues, name = '') {
     dialogContainer.classList.remove('is-hidden');
+    if (type === PossibleDialogues.openEditDialog) {
+      dialogAddUpdate.classList.remove('is-hidden');
+      dialogDelete.classList.add('is-hidden');
+    } else {
+      dialogDelete.classList.remove('is-hidden');
+      dialogAddUpdate.classList.add('is-hidden');
+      deleteTextSpan.textContent = name;
+    }
     this.isDialogOpen = true;
   }
   closeDialog() {

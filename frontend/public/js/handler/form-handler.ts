@@ -21,7 +21,6 @@ export default class FormHandler {
    * @param _id string || number
    */
   prepareUpdateInputs(_id: string) {
-    console.log(_id);
     const { name, tags }: ListItem = this.store.getItemByID(_id);
     // check if name and tags exist
     if (name && tags) {
