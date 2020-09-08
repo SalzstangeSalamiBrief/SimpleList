@@ -60,6 +60,7 @@ export async function getListItem(ctx, next) {
 // todo checks for body
 export async function createNewListItem(ctx, next) {
   const newListItem: ListItem = ctx.request.body;
+  newListItem.name = String(newListItem.name);
   let status: Number = 400;
   const responseObject: ResponseBody = { err: "", succ: "" };
   const listItem = await findListItemByID(newListItem._id);

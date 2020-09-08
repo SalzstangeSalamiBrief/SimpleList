@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const ListItemSchema = new Schema({
   name: {
-    type: Number,
+    type: String,
     required: true,
     trim: true,
     unique: true,
