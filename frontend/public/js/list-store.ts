@@ -3,11 +3,13 @@ import ListItem from '../interfaces/list-item';
 export default class Store {
   private allListItems: Array<ListItem>;
   public selectedListItems: Array<ListItem>;
-  constructor(newListItemArray: Array<ListItem> = []) {
+  private fetchController;
+  constructor(fetchController, newListItemArray: Array<ListItem> = []) {
     // sort and add to allListItems-Array
     this.allListItems = [...this.sortByName(newListItemArray)];
     // Copy allListItems into selectedListItems
     this.selectedListItems = [...this.allListItems];
+    this.fetchController = fetchController;
   }
   /**
    * Take the passed array and return an sorted array (asc)
@@ -28,12 +30,12 @@ export default class Store {
    *
    * @param ListItem ListItem
    */
-  updateItem({
+  async updateItem({
     tags: tagsToUpdate = undefined,
     isFavorite: updateIsFavorite = undefined,
     name: nameToUpdate = undefined,
     _id,
-  }: ListItem): ListItem {
+  }: ListItem) {
     const objectToUpdate = this.getItemByID(_id);
     // Update only fields who are passed
     if (tagsToUpdate) objectToUpdate.tags = tagsToUpdate;
@@ -41,7 +43,10 @@ export default class Store {
       objectToUpdate.isFavorite = updateIsFavorite;
     if (name !== undefined) objectToUpdate.name = nameToUpdate;
     // todo fetch Method PUT
-    return objectToUpdate;
+    const resultObject = await this.fetchController.updateEntryOnServer(
+      objectToUpdate,
+    );
+    return resultObject;
   }
   /**
    * Filter the Entries in allListItems-Array by their tags and safe the result in the selectedListItems-Array
@@ -78,23 +83,24 @@ export default class Store {
     }
     this.selectedListItems = tempArray;
   }
-  addItem({
-    name,
-    tags,
-    isFavorite = false,
-    _id = undefined,
-  }: ListItem): ListItem | null {
+  async addItem({ name, tags, isFavorite = false, _id = undefined }: ListItem) {
+    console.log({ name, tags, isFavorite, _id });
     if (name && tags.length > 0) {
       const newItem = {
         name,
         tags,
         isFavorite,
-        _id: String(_id),
+        _id,
       };
       // check if id is defined, if not, postreq to server and set id with response id
+      console.log(newItem['_id'], newItem['_id'] === undefined);
       if (newItem['_id'] === undefined) {
         // TODO: Post-Req to backend and set response _id as id for the new item
         // newItem._id = response._id
+        newItem._id = await this.fetchController.postNewEntryToServer(
+          name,
+          tags,
+        );
       }
       // add to all ListItems
       this.allListItems.push(newItem);
@@ -108,7 +114,7 @@ export default class Store {
    * delete an entry from the allListItems-Array and re-sort the selectedListItems Array
    * @param _id string
    */
-  deleteItemByID(_id: string) {
+  async deleteItemByID(_id: string) {
     const temp = [];
     for (let i = 0; i < this.allListItems.length; i += 1) {
       // push every item, which does not have the wanted _id into temp
@@ -119,6 +125,7 @@ export default class Store {
     // set allListItems with the temp (result of the for-of loop)
     this.allListItems = temp;
     this.selectedListItems = this.sortByName(this.allListItems);
+    await this.fetchController.deleteEntryOnServer(_id);
     console.log(this.allListItems);
   }
   /**

@@ -34,7 +34,7 @@ export default class FormHandler {
    * this function grabs the form-inputs, generates a Item and sends the item to the server
    * the response from the server will be stored inside the local store
    */
-  submitAddItem(): void | Array<string> {
+  async submitAddItem() {
     const name: string = this.nameInput.value.trim();
     const tags: Array<string> = this.createTagsArray();
     const err = [];
@@ -46,8 +46,8 @@ export default class FormHandler {
       // add to store
       // TODO: async await because this creates a new item on the server side with id etc
       // TODO: remove dummyID
-      newItem['_id'] = String(Math.ceil(Math.random() * 100000));
-      const addToStoreResult = this.store.addItem(newItem);
+      // newItem['_id'] = String(Math.ceil(Math.random() * 100000));
+      const addToStoreResult = await this.store.addItem(newItem);
       if (addToStoreResult === null) {
         err.push('Error: Could not add the item to the list');
       }

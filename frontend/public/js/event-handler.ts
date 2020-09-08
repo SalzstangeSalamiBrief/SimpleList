@@ -1,4 +1,5 @@
 import ListItem from '../interfaces/list-item';
+// TODO: Enter-Handler
 
 export default class EventHandler {
   private buttonHandler;
@@ -88,7 +89,7 @@ export default class EventHandler {
         return;
       case 'submit-add-form':
         // todo: maybe problems because submitDialogHandler will be async => fix with async-await
-        this.formHandler.submitAddItem();
+        await this.formHandler.submitAddItem();
         this.tableRenderer(this.store.getSelectedListItems());
         this.dialogHandler.closeDialog();
         this.formHandler.resetFormInputFields();
