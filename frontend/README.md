@@ -27,3 +27,5 @@ No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
 
 - Add Validation for Input
 - Error handler
+- export list
+- import list

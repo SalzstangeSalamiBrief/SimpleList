@@ -33,9 +33,10 @@ function createFavoriteSVG(item: ListItem) {
   `;
 }
 
+// TODO Style tags (e.g. label of some sort)
 function renderTagList(tags: Array<string>) {
   let list: string =
-    '<ul class="list-none flex w-full justify-center item-center overflow-hidden">';
+    '<ul class="list-none flex w-full justify-center item-center overscroll-y-auto">';
   // for (let i = 0; i < tags.length; i += 1) {
   //   const isNegatedTag = tags[i][0] === '!';
   //   list += `
@@ -47,7 +48,7 @@ function renderTagList(tags: Array<string>) {
   // todo hightlight for filtered tags
   for (let i = 0; i < tags.length; i += 1) {
     list += `
-    <li class="mx-2" >
+    <li class="mx-1 px-4 py-2 tag bg-gray-300" >
       ${tags[i]} 
     </li>   
   `;

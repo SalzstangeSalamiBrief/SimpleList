@@ -75,6 +75,7 @@ export default class EventHandler {
           .querySelector(`svg[data-_id="${_id}"].fav-img`)
           .classList.toggle('marked-as-fav');
         const selectedItem: ListItem = this.store.getItemByID(_id);
+        selectedItem.isFavorite = !selectedItem.isFavorite;
         this.store.updateItem(selectedItem);
         return;
       }

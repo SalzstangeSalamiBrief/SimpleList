@@ -73,3 +73,7 @@ dialog.is-hidden,
   fill: #f6e05e;
   opacity: 1;
 }
+
+.tag {
+  border-radius: 0.5rem;
+}
