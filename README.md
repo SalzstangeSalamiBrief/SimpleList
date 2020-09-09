@@ -22,5 +22,7 @@ $ npm run dev
 ```
 ```
 
+## TODO
+1. Add export and import from an actual list as functionality
 ## Possible Improvements
 1. Add responsiveness for mobile devices (+refactor table)
