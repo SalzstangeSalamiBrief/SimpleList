@@ -1,5 +1,4 @@
 import ListItem from '../interfaces/list-item';
-import ResponseObject from '../interfaces/response-object';
 // TODO: JSON.parse the responses and handle the resulting json-object
 export default class FetchHandler {
   private backendURL;
@@ -7,6 +6,7 @@ export default class FetchHandler {
     this.backendURL = 'http://127.0.0.1:8081/api/list-item/';
   }
   async deleteEntryOnServer(_id: string) {
+    // TODO: Responsetype
     try {
       const response = await fetch(this.backendURL, {
         method: 'DELETE',
@@ -21,7 +21,7 @@ export default class FetchHandler {
       console.error(err);
     }
   }
-  async updateEntryOnServer(itemToUpdate: ListItem) {
+  async updateEntryOnServer(itemToUpdate: ListItem): Promise<ListItem> {
     if (
       itemToUpdate.name === undefined ||
       itemToUpdate.tags.length < 1 ||
@@ -32,7 +32,7 @@ export default class FetchHandler {
       return;
     }
     try {
-      const response: ResponseObject = await (
+      const response = await (
         await fetch(this.backendURL, {
           method: 'PUT',
           mode: 'cors',
@@ -44,14 +44,18 @@ export default class FetchHandler {
       ).json();
       console.log(response);
       // return something
+      return response.succ;
     } catch (err) {
       console.error(err);
     }
   }
-  async postNewEntryToServer(name: string, tags: Array<string>) {
+  async postNewEntryToServer(
+    name: string,
+    tags: Array<string>,
+  ): Promise<string> {
     console.log(name, tags);
     try {
-      const response: ResponseObject = await (
+      const response = await (
         await fetch(this.backendURL, {
           method: 'POST',
           mode: 'cors',
@@ -69,9 +73,9 @@ export default class FetchHandler {
       console.error(err);
     }
   }
-  async getAllEntriesFromServer() {
+  async getAllEntriesFromServer(): Promise<Array<ListItem>> {
     try {
-      const response: ResponseObject = await (
+      const response = await (
         await fetch(this.backendURL, {
           method: 'GET',
           mode: 'cors',
