@@ -1,5 +1,13 @@
 import ListItem from '../interfaces/list-item';
 
+/**
+ * TODO:
+ *  1. change sort on init
+ *    a. first favorites by name
+ *    b. rest by name
+ *  2. change sortByName
+ *  3. add filter-function
+ */
 export default class Store {
   private allListItems: Array<ListItem>;
   public selectedListItems: Array<ListItem>;
