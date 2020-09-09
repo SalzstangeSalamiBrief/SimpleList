@@ -1,22 +1,32 @@
-import ListItem from '../interfaces/list-item';
+import ListItem from './interfaces/list-item';
 // TODO: Enter-Handler
+import Validator from './util/validator';
 
 export default class EventHandler {
   private buttonHandler;
   private dialogHandler;
   private formHandler;
   private tableRenderer;
+  private errorController;
   private store;
-  private IdOfSelectedItem: string;
+  private idOfSelectedItem: string;
   private favClassListRegex: RegExp;
-  constructor(buttonHandler, dialogHandler, formHandler, tableRenderer, store) {
+  constructor(
+    buttonHandler,
+    dialogHandler,
+    formHandler,
+    tableRenderer,
+    store,
+    errorController,
+  ) {
     this.buttonHandler = buttonHandler;
     this.dialogHandler = dialogHandler;
     this.formHandler = formHandler;
     this.tableRenderer = tableRenderer;
+    this.errorController = errorController;
     this.store = store;
     this.formHandler.setStore(store);
-    this.IdOfSelectedItem = '';
+    this.idOfSelectedItem = '';
     this.favClassListRegex = new RegExp(
       'fav(__(inner|outer)|-img)|btn-fav-img',
     );
@@ -46,73 +56,38 @@ export default class EventHandler {
         }
       }
       if (actualClassEntry === 'edit-btn') {
-        this.IdOfSelectedItem = this.loopThroughParentsToGetID(target);
-        this.formHandler.prepareUpdateInputs(this.IdOfSelectedItem);
-        this.buttonHandler.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
-        this.formHandler.setFormTitleText('Update Item');
-        this.dialogHandler.openDialog('AddUpdate');
+        this.prepareUpdateDialog(target);
         return;
       }
       if (actualClassEntry === 'btn--cancel-dialog') {
-        this.dialogHandler.closeDialog();
-        this.formHandler.resetFormInputFields();
-        this.IdOfSelectedItem = '';
+        this.cancelDialog();
         return;
       }
       if (actualClassEntry === 'open-delete-dialog') {
-        const _id = this.loopThroughParentsToGetID(target);
-        const { name }: ListItem = this.store.getItemByID(_id);
-        this.IdOfSelectedItem = _id;
-        this.dialogHandler.openDialog('Delete', name);
-        // this.store.deleteItemByID(this.loopThroughParentsToGetID(target));
-        // this.tableRenderer(this.store.getSelectedListItems());
+        this.openDeleteDialog(target);
         return;
       }
       if (this.favClassListRegex.test(targetClassList[i])) {
-        let _id: string = this.loopThroughParentsToGetID(target);
-        console.log(_id);
-        document
-          .querySelector(`svg[data-_id="${_id}"].fav-img`)
-          .classList.toggle('marked-as-fav');
-        const selectedItem: ListItem = this.store.getItemByID(_id);
-        selectedItem.isFavorite = !selectedItem.isFavorite;
-        this.store.updateItem(selectedItem);
+        this.toggleIsFavorite(target);
         return;
       }
     }
 
+    // todo: maybe problems because submitDialogHandler will be async => fix with async-await
+    // todo await
     // handler for id's
     switch (targetID) {
       case 'open-add-dialog':
-        this.buttonHandler.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
-        this.formHandler.setFormTitleText('Add Item');
-        this.dialogHandler.openDialog('AddUpdate');
+        this.openAddDialog();
         return;
       case 'submit-add-form':
-        // todo: maybe problems because submitDialogHandler will be async => fix with async-await
-        await this.formHandler.submitAddItem();
-        this.tableRenderer(this.store.getSelectedListItems());
-        this.dialogHandler.closeDialog();
-        this.formHandler.resetFormInputFields();
+        await this.submitAddForm();
         return;
       case 'submit-update-form':
-        const newItem = {
-          name: this.formHandler.getNameInputValue(),
-          tags: this.formHandler.getTagsInputValue().trim().split(' '),
-          _id: this.IdOfSelectedItem,
-        };
-        // todo errorhandling for response
-        this.store.updateItem(newItem);
-        this.formHandler.resetFormInputFields();
-        this.dialogHandler.closeDialog();
-        this.tableRenderer(this.store.getSelectedListItems());
-        this.IdOfSelectedItem = '';
+        this.submitUpdateForm();
         return;
       case 'submit-delete-dialog':
-        this.store.deleteItemByID(this.IdOfSelectedItem);
-        this.dialogHandler.closeDialog();
-        this.IdOfSelectedItem = '';
-        this.tableRenderer(this.store.getSelectedListItems());
+        this.submitDeleteDialog();
         return;
       case 'dialog-container':
         if (this.dialogHandler.getIsDialogOpen()) {
@@ -122,6 +97,7 @@ export default class EventHandler {
         }
     }
   }
+
   /**
    * Loop through the parents of the target to get the _id of the selected row/item
    * @param target
@@ -133,5 +109,131 @@ export default class EventHandler {
       itemToSelect = itemToSelect.parentNode;
     }
     return itemToSelect.dataset['_id'];
+  }
+
+  /**
+   * function to submit the update form
+   */
+  submitUpdateForm() {
+    const newItem = {
+      name: this.formHandler.getNameInputValue(),
+      tags: this.formHandler.createTagsArray(),
+      _id: this.idOfSelectedItem,
+    };
+    // check if the name is valid
+    if (Validator.validateName(newItem.name)) {
+      // check if the tags-array is valid
+      if (Validator.validateTagsArray(newItem.tags)) {
+        // todo errorhandling for response
+        this.store.updateItem(newItem);
+        this.formHandler.resetFormInputFields();
+        this.dialogHandler.closeDialog();
+        this.tableRenderer(this.store.getSelectedListItems());
+        this.idOfSelectedItem = '';
+      } else {
+        // case invalid tags
+        this.errorController.setErrorMessage(
+          'The input for the tags is invalid! A Tag must have a minimal length of 2 characters!',
+        );
+      }
+    } else {
+      // case: invalid name
+      this.errorController.setErrorMessage(
+        'The value of the name-field is invalid!',
+      );
+    }
+  }
+
+  /**
+   * function for submitting the add form
+   * if the name and the tags in the input-field are valid, a POST-REquest to the backend is send and in the local list-store an item will be added
+   */
+  async submitAddForm() {
+    const name: string = this.formHandler.getNameInputValue();
+    const tags: Array<string> = this.formHandler.createTagsArray();
+    // validate name
+    if (Validator.validateName(name)) {
+      if (Validator.validateTagsArray(tags)) {
+        await this.formHandler.submitAddItem(name, tags);
+        this.tableRenderer(this.store.getSelectedListItems());
+        this.dialogHandler.closeDialog();
+        this.formHandler.resetFormInputFields();
+      } else {
+        this.errorController.setErrorMessage(
+          'The input for the tags is invalid! A Tag must have a minimal length of 2 characters!',
+        );
+      }
+    } else {
+      this.errorController.setErrorMessage(
+        'The value of the name-field is invalid!',
+      );
+    }
+  }
+
+  /**
+   * function for submiting the dele delete dialog
+   * delete the selected entry in the list-store and on the backend-server
+   */
+  submitDeleteDialog() {
+    this.store.deleteItemByID(this.idOfSelectedItem);
+    this.dialogHandler.closeDialog();
+    this.idOfSelectedItem = '';
+    this.tableRenderer(this.store.getSelectedListItems());
+  }
+
+  /**
+   * function for opening the add dialog
+   */
+  openAddDialog() {
+    this.buttonHandler.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
+    this.formHandler.setFormTitleText('Add Item');
+    this.dialogHandler.openDialog('AddUpdate');
+  }
+
+  /**
+   * function for preparing the update-dialog
+   * set idOfSelectedItem to the id of the target and load the corresponding data in the input-fields
+   * @param target Button
+   */
+  prepareUpdateDialog(target) {
+    this.idOfSelectedItem = this.loopThroughParentsToGetID(target);
+    this.formHandler.prepareUpdateInputs(this.idOfSelectedItem);
+    this.buttonHandler.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
+    this.formHandler.setFormTitleText('Update Item');
+    this.dialogHandler.openDialog('AddUpdate');
+  }
+
+  /**
+   * prepare the delete dialog by setting idOfSelectedItem with the id of the selected item and open the delete Dialog
+   * @param target Button
+   */
+  openDeleteDialog(target) {
+    const _id = this.loopThroughParentsToGetID(target);
+    const { name }: ListItem = this.store.getItemByID(_id);
+    this.idOfSelectedItem = _id;
+    this.dialogHandler.openDialog('Delete', name);
+  }
+
+  /**
+   * function to toggle the isFavorit value of the selected item
+   * @param target EventTarget
+   */
+  toggleIsFavorite(target) {
+    let _id: string = this.loopThroughParentsToGetID(target);
+    document
+      .querySelector(`svg[data-_id="${_id}"].fav-img`)
+      .classList.toggle('marked-as-fav');
+    const selectedItem: ListItem = this.store.getItemByID(_id);
+    selectedItem.isFavorite = !selectedItem.isFavorite;
+    this.store.updateItem(selectedItem);
+  }
+
+  /**
+   * this function closes the open dialog
+   */
+  cancelDialog() {
+    this.dialogHandler.closeDialog();
+    this.formHandler.resetFormInputFields();
+    this.idOfSelectedItem = '';
   }
 }

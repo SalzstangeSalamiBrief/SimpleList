@@ -57,17 +57,13 @@
           <tbody></tbody>
         </table>
       </div>
-
-      <!-- TODO: delete Dialog -->
-      <!-- TODO: Edit DIalog -->
-      <!-- TODO: Error Dialog -->
       <!-- dialog -->
       <div
         id="dialog-container"
         class="dialog-container w-full flex-col h-full flex justify-center items-center is-hidden"
       >
         <dialog
-          class="w-1/2 flex flex-col justify-center items-center shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4 add-update-dialog"
+          class="w-1/2 flex flex-col justify-center items-center shadow-lg bg-white px-4 py-4 add-update-dialog"
         >
           <h2 class="text-center form__title mb-5" id="form__title">
             Add Item
@@ -163,6 +159,13 @@
             </button>
           </div>
         </dialog>
+      </div>
+      <!-- error notification -->
+      <div
+        class="w-1/2 flex flex-col justify-center items-center border-solid border-2 border-red-600 shadow-lg bg-white px-4 py-4 error-container is-hidden"
+      >
+        <h2 class="font-bold">Error:</h2>
+        <p id="error-text"></p>
       </div>
     </main>
     <script src="../js/index.js" type="module"></script>

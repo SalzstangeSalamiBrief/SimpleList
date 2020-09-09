@@ -1,4 +1,4 @@
-import ListItem from '../../interfaces/list-item';
+import ListItem from '../interfaces/list-item';
 
 export default class FormHandler {
   private store;
@@ -34,29 +34,9 @@ export default class FormHandler {
    * this function grabs the form-inputs, generates a Item and sends the item to the server
    * the response from the server will be stored inside the local store
    */
-  async submitAddItem() {
-    const name: string = this.nameInput.value.trim();
-    const tags: Array<string> = this.createTagsArray();
-    const err = [];
-    // check if name and tags exist
-    if (name === '') err.push('Please add a name for your entry');
-    if (tags.length <= 0) err.push('Please add some tags to your entry');
-    if (err.length === 0) {
-      const newItem = { name, tags };
-      // add to store
-      // TODO: async await because this creates a new item on the server side with id etc
-      // TODO: remove dummyID
-      // newItem['_id'] = String(Math.ceil(Math.random() * 100000));
-      const addToStoreResult = await this.store.addItem(newItem);
-      if (addToStoreResult === null) {
-        err.push('Error: Could not add the item to the list');
-      }
-    }
-    // some errors exist
-    if (err.length > 0) {
-      // todo: error handling
-      return err;
-    }
+  async submitAddItem(name: string, tags: Array<string>) {
+    const newItem = { name, tags };
+    await this.store.addItem(newItem);
     console.log(this.store.getSelectedListItems());
   }
 
@@ -85,10 +65,10 @@ export default class FormHandler {
     this.formTitle.textContent = txt;
   }
   getNameInputValue(): string {
-    return this.nameInput.value;
+    return this.nameInput.value.trim();
   }
   getTagsInputValue(): string {
-    return this.tagsInput.value;
+    return this.tagsInput.value.trim();
   }
   setStore(store) {
     this.store = store;

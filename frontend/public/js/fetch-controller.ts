@@ -1,4 +1,4 @@
-import ListItem from '../interfaces/list-item';
+import ListItem from './interfaces/list-item';
 // TODO: JSON.parse the responses and handle the resulting json-object
 export default class FetchHandler {
   private backendURL;

@@ -1,4 +1,4 @@
-import ListItem from '../interfaces/list-item';
+import ListItem from './interfaces/list-item';
 
 import Store from './model/list-store';
 import ButtonHandler from './handler/button-handler';
@@ -7,6 +7,7 @@ import DialogHandler from './handler/dialog-handler';
 import EventHandler from './event-handler';
 import TableRenderer from './table-renderer';
 import FetchController from './fetch-controller';
+import ErrorController from './error-controller';
 // add eventhandler
 // TODO: SUbmit event
 
@@ -16,12 +17,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   const formHandler = new FormHandler();
   const buttonHandler = new ButtonHandler();
   const dialogHandler = new DialogHandler();
+  const errorController = new ErrorController();
   const eventHandler = new EventHandler(
     buttonHandler,
     dialogHandler,
     formHandler,
     TableRenderer,
     store,
+    errorController,
   );
   const initListEntries = <Array<ListItem>>(
     await fetchController.getAllEntriesFromServer()

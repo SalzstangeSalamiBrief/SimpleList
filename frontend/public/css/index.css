@@ -50,6 +50,7 @@ main.w-full > div:not(.dialog-container) {
 }
 div#dialog-container.is-hidden,
 dialog.is-hidden,
+div.is-hidden,
 .is-hidden {
   display: none;
 }
@@ -76,4 +77,10 @@ dialog.is-hidden,
 
 .tag {
   border-radius: 0.5rem;
+}
+
+.error-container {
+  position: absolute;
+  z-index: 2;
+  top: 2.5rem;
 }

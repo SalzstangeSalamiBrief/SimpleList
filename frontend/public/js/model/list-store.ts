@@ -1,4 +1,4 @@
-import ListItem from '../../interfaces/list-item';
+import ListItem from '../interfaces/list-item';
 
 export default class Store {
   private allListItems: Array<ListItem>;
@@ -93,7 +93,6 @@ export default class Store {
         _id,
       };
       // check if id is defined, if not, postreq to server and set id with response id
-      console.log(newItem['_id'], newItem['_id'] === undefined);
       if (newItem['_id'] === undefined) {
         // TODO: Post-Req to backend and set response _id as id for the new item
         // newItem._id = response._id
