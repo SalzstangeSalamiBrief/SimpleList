@@ -1,6 +1,6 @@
 import ListItem from '../interfaces/list-item';
 
-import Store from './list-store';
+import Store from './model/list-store';
 import ButtonHandler from './handler/button-handler';
 import FormHandler from './handler/form-handler';
 import DialogHandler from './handler/dialog-handler';
