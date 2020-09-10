@@ -84,32 +84,45 @@ export default class Store {
    *
    * @param tagsToSearch string
    */
-  filterByTags(tagsToSearch: string): void {
+  filterByTags(tagsToSearch: Array<string>): void {
+    // case if the tagsToSearch array is empty: display all items
+    if (tagsToSearch.length === 0) {
+      this.selectedListItems = this.sortListsByFav(this.allListItems);
+      return;
+    }
+    // case: tagsToSearch.length is greater than 1
     const tempArray: Array<ListItem> = [...this.allListItems];
-    const tagsArray: Array<string> = tagsToSearch.trim().split(' ');
+    const indexArrayToAdd: Array<number> = [];
     // for each item in tagsArray
-    for (let i = 0; i < tagsArray.length; i += 1) {
-      // trim each entry in tagsArray before consume the tag
-      let actualTag = tagsArray[i].trim();
-      if (actualTag[0] === '!') {
-        // items shall not include this tag;
-        [, actualTag] = actualTag.split('!');
-        // loop through each entry in tempArray and remove items with the corresponding tag
-        for (let j = 0; j < tempArray.length; j += 1) {
-          if (tempArray[j].tags.includes(actualTag)) {
-            tempArray.splice(j, 1);
-          }
-        }
-      } else {
-        // item shall be include this tag
-        for (let j = 0; j < tempArray.length; j += 1) {
-          if (!tempArray[j].tags.includes(actualTag)) {
-            tempArray.splice(j, 1);
-          }
+    for (let i = 0; i < tempArray.length; i += 1) {
+      // for each item in tempArray
+      const { tags: tagsOfEntry } = tempArray[i];
+      let shallEntryBeIncluded = true;
+      for (let j = 0; j < tagsToSearch.length; j += 1) {
+        // for each item in tagsToSearchArray
+        const actualTag = tagsToSearch[j];
+        if (actualTag[0] === '!') {
+          shallEntryBeIncluded =
+            shallEntryBeIncluded &&
+            !tagsOfEntry.includes(actualTag.split('!')[1]);
+        } else {
+          //  else case: item has to include the tag
+          shallEntryBeIncluded =
+            shallEntryBeIncluded && tagsOfEntry.includes(actualTag);
         }
       }
+      // if an item shall be included, push the index of the item to indexArrayToAdd
+      if (shallEntryBeIncluded) {
+        indexArrayToAdd.push(i);
+      }
     }
-    this.selectedListItems = tempArray;
+    //
+    const resultArray: Array<ListItem> = [];
+    // add each item from tempArray to resultArray with the corresponding index saved in indexArrayToAdd
+    for (let k = 0; k < indexArrayToAdd.length; k += 1) {
+      resultArray.push(tempArray[indexArrayToAdd[k]]);
+    }
+    this.selectedListItems = this.sortListsByFav(resultArray);
   }
   addItem(newItem: ListItem) {
     if (newItem.name && newItem.tags.length > 0 && newItem._id !== undefined) {

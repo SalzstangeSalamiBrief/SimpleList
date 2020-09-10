@@ -5,6 +5,7 @@ export default class FormHandler {
   private nameInput: HTMLInputElement;
   private tagsInput: HTMLInputElement;
   private formTitle: HTMLHeadingElement;
+  private filterInput: HTMLInputElement;
   constructor() {
     this.store = undefined;
     this.nameInput = <HTMLInputElement>(
@@ -14,6 +15,9 @@ export default class FormHandler {
       document.querySelector('[name="dialog__tags"')
     );
     this.formTitle = <HTMLHeadingElement>document.querySelector('#form__title');
+    this.filterInput = <HTMLInputElement>(
+      document.querySelector('input[name="tag-search-input"]')
+    );
   }
 
   /**
@@ -33,8 +37,8 @@ export default class FormHandler {
    * this function grabs the value of the tagsInput-Input and converts this value
    * intro an array of strings which represents the tags-array
    */
-  createTagsArray(): Array<string> {
-    const tempTags: Array<string> = this.tagsInput.value.trim().split(' ');
+  createTagsArray(tagString: string): Array<string> {
+    const tempTags: Array<string> = tagString.trim().split(' ');
     const tags: Array<string> = [];
     for (let i = 0; i < tempTags.length; i += 1) {
       // trim teach tag
@@ -49,6 +53,7 @@ export default class FormHandler {
   resetFormInputFields() {
     this.nameInput.value = '';
     this.tagsInput.value = '';
+    this.filterInput.value = '';
   }
   setFormTitleText(txt: string) {
     this.formTitle.textContent = txt;
@@ -58,6 +63,9 @@ export default class FormHandler {
   }
   getTagsInputValue(): string {
     return this.tagsInput.value.trim();
+  }
+  getFilterInputValue(): string {
+    return this.filterInput.value.trim();
   }
   setStore(store) {
     this.store = store;

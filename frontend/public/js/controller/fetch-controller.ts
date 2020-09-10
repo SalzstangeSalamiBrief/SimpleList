@@ -1,22 +1,19 @@
-import ListItem from './interfaces/list-item';
-// TODO: JSON.parse the responses and handle the resulting json-object
+import ListItem from '../interfaces/list-item';
+
 export default class FetchHandler {
   private backendURL;
   constructor() {
     this.backendURL = 'http://127.0.0.1:8081/api/list-item/';
   }
   async deleteEntryOnServer(_id: string) {
-    // TODO: Responsetype
     try {
-      const response = await fetch(this.backendURL, {
+      await fetch(this.backendURL, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ _id }),
       });
-      // return something
-      // console.log(response);
     } catch (err) {
       console.error(err);
     }
@@ -28,8 +25,7 @@ export default class FetchHandler {
       itemToUpdate._id === undefined ||
       itemToUpdate.isFavorite === undefined
     ) {
-      console.error('error update: passed entry');
-      return;
+      return null;
     }
     try {
       const response = await fetch(this.backendURL, {
@@ -40,13 +36,10 @@ export default class FetchHandler {
         },
         body: JSON.stringify(itemToUpdate),
       });
-      console.log(response);
       if (response.status !== 200) {
         return null;
       }
       const { succ } = await response.json();
-      console.log(response);
-      // return something
       return succ;
     } catch (err) {
       console.error(err);

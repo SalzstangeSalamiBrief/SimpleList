@@ -1,11 +1,11 @@
-import ListItem from './interfaces/list-item';
+import ListItem from '../interfaces/list-item';
 // TODO: Enter-Handler
-import Validator from './util/validator';
+import Validator from '../util/validator';
 
 export default class EventHandler {
   private buttonHandler;
   private dialogHandler;
-  private formHandler;
+  private inputFieldController;
   private tableRenderer;
   private errorController;
   private fetchController;
@@ -15,7 +15,7 @@ export default class EventHandler {
   constructor(
     buttonHandler,
     dialogHandler,
-    formHandler,
+    inputFieldController,
     tableRenderer,
     store,
     errorController,
@@ -23,12 +23,12 @@ export default class EventHandler {
   ) {
     this.buttonHandler = buttonHandler;
     this.dialogHandler = dialogHandler;
-    this.formHandler = formHandler;
+    this.inputFieldController = inputFieldController;
     this.tableRenderer = tableRenderer;
     this.errorController = errorController;
     this.fetchController = fetchController;
     this.store = store;
-    this.formHandler.setStore(store);
+    this.inputFieldController.setStore(store);
     this.idOfSelectedItem = '';
     this.favClassListRegex = new RegExp(
       'fav(__(inner|outer)|-img)|btn-fav-img',
@@ -40,8 +40,7 @@ export default class EventHandler {
       this.clickEventHandler.call(this, e);
     });
   }
-  // todo: async because of comm with server
-  // todo: validation of input
+
   async clickEventHandler({ target }) {
     const targetClassList: DOMTokenList = target.classList;
     const targetID: string = target.id;
@@ -76,10 +75,11 @@ export default class EventHandler {
       }
     }
 
-    // todo: maybe problems because submitDialogHandler will be async => fix with async-await
-    // todo await
     // handler for id's
     switch (targetID) {
+      case 'filter-btn':
+        this.filterTags();
+        return;
       case 'open-add-dialog':
         this.openAddDialog();
         return;
@@ -95,7 +95,7 @@ export default class EventHandler {
       case 'dialog-container':
         if (this.dialogHandler.getIsDialogOpen()) {
           this.dialogHandler.closeDialog();
-          this.formHandler.resetFormInputFields();
+          this.inputFieldController.resetFormInputFields();
           return;
         }
     }
@@ -107,7 +107,7 @@ export default class EventHandler {
    */
   loopThroughParentsToGetID(target): string {
     let itemToSelect = target;
-    // loop through the parents to get the parent with dataset _id and name (name only for savety-reasons)
+    // loop through the parents to get the parent with dataset _id and name (name only for safety-reasons)
     while (!itemToSelect.dataset['_id'] || !itemToSelect.dataset['name']) {
       itemToSelect = itemToSelect.parentNode;
     }
@@ -119,8 +119,10 @@ export default class EventHandler {
    */
   async submitUpdateForm() {
     const newItem = {
-      name: this.formHandler.getNameInputValue(),
-      tags: this.formHandler.createTagsArray(),
+      name: this.inputFieldController.getNameInputValue(),
+      tags: this.inputFieldController.createTagsArray(
+        this.inputFieldController.getTagsInputValue(),
+      ),
       _id: this.idOfSelectedItem,
       isFavorite: this.store.getItemByID(this.idOfSelectedItem).isFavorite,
     };
@@ -140,7 +142,7 @@ export default class EventHandler {
           return;
         }
         this.store.updateItem(newItem);
-        this.formHandler.resetFormInputFields();
+        this.inputFieldController.resetFormInputFields();
         this.dialogHandler.closeDialog();
         this.tableRenderer(this.store.getSelectedListItems());
         this.idOfSelectedItem = '';
@@ -163,8 +165,10 @@ export default class EventHandler {
    * if the name and the tags in the input-field are valid, a POST-REquest to the backend is send and in the local list-store an item will be added
    */
   async submitAddForm() {
-    const name: string = this.formHandler.getNameInputValue();
-    const tags: Array<string> = this.formHandler.createTagsArray();
+    const name: string = this.inputFieldController.getNameInputValue();
+    const tags: Array<string> = this.inputFieldController.createTagsArray(
+      this.inputFieldController.getTagsInputValue(),
+    );
     // validate name
     if (Validator.validateName(name)) {
       if (Validator.validateTagsArray(tags)) {
@@ -184,7 +188,7 @@ export default class EventHandler {
           this.store.addItem(newItem);
           this.tableRenderer(this.store.getSelectedListItems());
           this.dialogHandler.closeDialog();
-          this.formHandler.resetFormInputFields();
+          this.inputFieldController.resetFormInputFields();
         } catch (err) {
           console.log(err);
         }
@@ -217,7 +221,7 @@ export default class EventHandler {
    */
   openAddDialog() {
     this.buttonHandler.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
-    this.formHandler.setFormTitleText('Add Item');
+    this.inputFieldController.setFormTitleText('Add Item');
     this.dialogHandler.openDialog('AddUpdate');
   }
 
@@ -228,9 +232,9 @@ export default class EventHandler {
    */
   prepareUpdateDialog(target) {
     this.idOfSelectedItem = this.loopThroughParentsToGetID(target);
-    this.formHandler.prepareUpdateInputs(this.idOfSelectedItem);
+    this.inputFieldController.prepareUpdateInputs(this.idOfSelectedItem);
     this.buttonHandler.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
-    this.formHandler.setFormTitleText('Update Item');
+    this.inputFieldController.setFormTitleText('Update Item');
     this.dialogHandler.openDialog('AddUpdate');
   }
 
@@ -265,7 +269,16 @@ export default class EventHandler {
    */
   cancelDialog() {
     this.dialogHandler.closeDialog();
-    this.formHandler.resetFormInputFields();
+    this.inputFieldController.resetFormInputFields();
     this.idOfSelectedItem = '';
+  }
+
+  filterTags() {
+    const tagsToFilter: Array<string> = this.inputFieldController.createTagsArray(
+      this.inputFieldController.getFilterInputValue(),
+    );
+    this.store.filterByTags(tagsToFilter);
+    this.tableRenderer(this.store.getSelectedListItems());
+    // console.log(tagsToFilter);
   }
 }
