@@ -16,7 +16,7 @@ export default class FetchHandler {
         body: JSON.stringify({ _id }),
       });
       // return something
-      console.log(response);
+      // console.log(response);
     } catch (err) {
       console.error(err);
     }
@@ -32,63 +32,65 @@ export default class FetchHandler {
       return;
     }
     try {
-      const response = await (
-        await fetch(this.backendURL, {
-          method: 'PUT',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(itemToUpdate),
-        })
-      ).json();
+      const response = await fetch(this.backendURL, {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(itemToUpdate),
+      });
+      console.log(response);
+      if (response.status !== 200) {
+        return null;
+      }
+      const { succ } = await response.json();
       console.log(response);
       // return something
-      return response.succ;
+      return succ;
     } catch (err) {
       console.error(err);
+      return null;
     }
   }
   async postNewEntryToServer(
     name: string,
     tags: Array<string>,
-  ): Promise<string> {
-    console.log(name, tags);
+  ): Promise<ListItem> | null {
     try {
-      const response = await (
-        await fetch(this.backendURL, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, tags }),
-        })
-      ).json();
-      console.log(response);
-      // return response.succ['_id'];
-      // return something
-      return response.succ['_id'];
+      const response = await fetch(this.backendURL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, tags }),
+      });
+      if (response.status !== 201) {
+        return null;
+      }
+      const { succ } = await response.json();
+      return succ;
     } catch (err) {
       console.error(err);
+      return null;
     }
   }
   async getAllEntriesFromServer(): Promise<Array<ListItem>> {
     try {
-      const response = await (
-        await fetch(this.backendURL, {
-          method: 'GET',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-      ).json();
-      // const responseData = await JSON.parse(response);
-      console.log(response);
-      // return response.succ;
-      // return something
-      return response.succ;
+      const response = await fetch(this.backendURL, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status === 200) {
+        const { succ } = await response.json();
+        // return all entries
+        return succ;
+      }
+      return null;
     } catch (err) {
       console.error(err);
     }

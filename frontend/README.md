@@ -25,7 +25,8 @@ No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
 
 ## TODO
 
-- Add Validation for Input
-- Error handler
 - export list
 - import list
+- refactor list-store? sorting maybe inefficient?
+- search by tags
+  -- highlight searched tags

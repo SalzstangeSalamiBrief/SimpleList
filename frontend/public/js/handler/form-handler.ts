@@ -29,17 +29,6 @@ export default class FormHandler {
       this.tagsInput.value = tags.join(' ').trim();
     }
   }
-
-  /**
-   * this function grabs the form-inputs, generates a Item and sends the item to the server
-   * the response from the server will be stored inside the local store
-   */
-  async submitAddItem(name: string, tags: Array<string>) {
-    const newItem = { name, tags };
-    await this.store.addItem(newItem);
-    console.log(this.store.getSelectedListItems());
-  }
-
   /**
    * this function grabs the value of the tagsInput-Input and converts this value
    * intro an array of strings which represents the tags-array

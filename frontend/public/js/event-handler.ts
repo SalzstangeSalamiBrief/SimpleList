@@ -8,6 +8,7 @@ export default class EventHandler {
   private formHandler;
   private tableRenderer;
   private errorController;
+  private fetchController;
   private store;
   private idOfSelectedItem: string;
   private favClassListRegex: RegExp;
@@ -18,12 +19,14 @@ export default class EventHandler {
     tableRenderer,
     store,
     errorController,
+    fetchController,
   ) {
     this.buttonHandler = buttonHandler;
     this.dialogHandler = dialogHandler;
     this.formHandler = formHandler;
     this.tableRenderer = tableRenderer;
     this.errorController = errorController;
+    this.fetchController = fetchController;
     this.store = store;
     this.formHandler.setStore(store);
     this.idOfSelectedItem = '';
@@ -87,7 +90,7 @@ export default class EventHandler {
         this.submitUpdateForm();
         return;
       case 'submit-delete-dialog':
-        this.submitDeleteDialog();
+        await this.submitDeleteDialog();
         return;
       case 'dialog-container':
         if (this.dialogHandler.getIsDialogOpen()) {
@@ -114,17 +117,28 @@ export default class EventHandler {
   /**
    * function to submit the update form
    */
-  submitUpdateForm() {
+  async submitUpdateForm() {
     const newItem = {
       name: this.formHandler.getNameInputValue(),
       tags: this.formHandler.createTagsArray(),
       _id: this.idOfSelectedItem,
+      isFavorite: this.store.getItemByID(this.idOfSelectedItem).isFavorite,
     };
+    console.log(newItem);
     // check if the name is valid
     if (Validator.validateName(newItem.name)) {
       // check if the tags-array is valid
       if (Validator.validateTagsArray(newItem.tags)) {
         // todo errorhandling for response
+        const updatedItem = await this.fetchController.updateEntryOnServer(
+          newItem,
+        );
+        if (updatedItem === null) {
+          this.errorController.setErrorMessage(
+            'Could not Update the item on the server. Please try another name for your item.',
+          );
+          return;
+        }
         this.store.updateItem(newItem);
         this.formHandler.resetFormInputFields();
         this.dialogHandler.closeDialog();
@@ -154,10 +168,26 @@ export default class EventHandler {
     // validate name
     if (Validator.validateName(name)) {
       if (Validator.validateTagsArray(tags)) {
-        await this.formHandler.submitAddItem(name, tags);
-        this.tableRenderer(this.store.getSelectedListItems());
-        this.dialogHandler.closeDialog();
-        this.formHandler.resetFormInputFields();
+        try {
+          // post new entry to server
+          const newItem = await this.fetchController.postNewEntryToServer(
+            name,
+            tags,
+          );
+          if (newItem === null) {
+            this.errorController.setErrorMessage(
+              'Item already exists! Please try another to add another item. ',
+            );
+            return;
+          }
+          // add response entry (with _id) to store
+          this.store.addItem(newItem);
+          this.tableRenderer(this.store.getSelectedListItems());
+          this.dialogHandler.closeDialog();
+          this.formHandler.resetFormInputFields();
+        } catch (err) {
+          console.log(err);
+        }
       } else {
         this.errorController.setErrorMessage(
           'The input for the tags is invalid! A Tag must have a minimal length of 2 characters!',
@@ -174,7 +204,8 @@ export default class EventHandler {
    * function for submiting the dele delete dialog
    * delete the selected entry in the list-store and on the backend-server
    */
-  submitDeleteDialog() {
+  async submitDeleteDialog() {
+    await this.fetchController.deleteEntryOnServer(this.idOfSelectedItem);
     this.store.deleteItemByID(this.idOfSelectedItem);
     this.dialogHandler.closeDialog();
     this.idOfSelectedItem = '';
@@ -218,13 +249,14 @@ export default class EventHandler {
    * function to toggle the isFavorit value of the selected item
    * @param target EventTarget
    */
-  toggleIsFavorite(target) {
+  async toggleIsFavorite(target) {
     let _id: string = this.loopThroughParentsToGetID(target);
     document
       .querySelector(`svg[data-_id="${_id}"].fav-img`)
       .classList.toggle('marked-as-fav');
     const selectedItem: ListItem = this.store.getItemByID(_id);
     selectedItem.isFavorite = !selectedItem.isFavorite;
+    await this.fetchController.updateEntryOnServer(selectedItem);
     this.store.updateItem(selectedItem);
   }
 

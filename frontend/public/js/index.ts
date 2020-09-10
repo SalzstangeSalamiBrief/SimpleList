@@ -8,12 +8,10 @@ import EventHandler from './event-handler';
 import TableRenderer from './table-renderer';
 import FetchController from './fetch-controller';
 import ErrorController from './error-controller';
-// add eventhandler
-// TODO: SUbmit event
 
 window.addEventListener('DOMContentLoaded', async () => {
   const fetchController = new FetchController();
-  const store = new Store(fetchController);
+  const store = new Store();
   const formHandler = new FormHandler();
   const buttonHandler = new ButtonHandler();
   const dialogHandler = new DialogHandler();
@@ -25,50 +23,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     TableRenderer,
     store,
     errorController,
+    fetchController,
   );
   const initListEntries = <Array<ListItem>>(
     await fetchController.getAllEntriesFromServer()
   );
-  // console.log(initListEntries);
-  for (let i = 0; i < initListEntries.length; i += 1) {
-    store.addItem(initListEntries[i]);
+  if (initListEntries !== null) {
+    for (let i = 0; i < initListEntries.length; i += 1) {
+      store.addItem(initListEntries[i]);
+    }
+    console.log(store.getSelectedListItems());
+    TableRenderer(store.getSelectedListItems());
+  } else {
+    errorController.setErrorMessage(
+      'An error happened on loading the site. Please refresh the site.',
+    );
   }
-  console.log(store.getSelectedListItems());
-  TableRenderer(store.getSelectedListItems());
-  // console.log(initListEntries);
 });
-
-// console.log(store);
-
-// const temp = [
-//   {
-//     name: 'a',
-//     tags: ['ap'],
-//     _id: '12',
-//     isFavorite: false,
-//   },
-//   {
-//     name: 'c',
-//     tags: ['aaa'],
-//     _id: '11',
-//     isFavorite: true,
-//   },
-//   {
-//     name: 'b',
-//     tags: ['hs', 'jki'],
-//     _id: '31',
-//     isFavorite: false,
-//   },
-//   {
-//     name: 'd',
-//     tags: ['qq'],
-//     _id: '97',
-//     isFavorite: false,
-//   },
-// ];
-
-// temp.forEach((item) => {
-//   store.addItem(item);
-// });
-
-// TableRenderer(store.getSelectedListItems());

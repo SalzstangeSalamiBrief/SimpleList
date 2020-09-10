@@ -11,13 +11,11 @@ import ListItem from '../interfaces/list-item';
 export default class Store {
   private allListItems: Array<ListItem>;
   public selectedListItems: Array<ListItem>;
-  private fetchController;
-  constructor(fetchController, newListItemArray: Array<ListItem> = []) {
+  constructor(newListItemArray: Array<ListItem> = []) {
     // sort and add to allListItems-Array
     this.allListItems = [...this.sortByName(newListItemArray)];
     // Copy allListItems into selectedListItems
     this.selectedListItems = [...this.allListItems];
-    this.fetchController = fetchController;
   }
   /**
    * Take the passed array and return an sorted array (asc)
@@ -35,10 +33,35 @@ export default class Store {
     });
   }
   /**
+   * Take an array of list-items and sort them
+   * first split both lists  by isFavorite and then sort both lists by name.
+   * return a merged result of both lists
+   * @param arr Array<ListItem>
+   */
+  sortListsByFav(arr: Array<ListItem>): Array<ListItem> {
+    // 1. split list into favorites and not favorites
+    const isFavList = [];
+    const notFavList = [];
+
+    for (let i = 0; i < arr.length; i += 1) {
+      if (arr[i].isFavorite === true) {
+        isFavList.push(arr[i]);
+      } else {
+        notFavList.push(arr[i]);
+      }
+    }
+    // 2. sort both lists by name
+    const sortedIsFavList = this.sortByName(isFavList);
+    const sortedNotFavList = this.sortByName(notFavList);
+    // 3. merge both lists into one and return the result;
+    return sortedIsFavList.concat(sortedNotFavList);
+  }
+
+  /**
    *
    * @param ListItem ListItem
    */
-  async updateItem({
+  updateItem({
     tags: tagsToUpdate = undefined,
     isFavorite: updateIsFavorite = undefined,
     name: nameToUpdate = undefined,
@@ -50,11 +73,8 @@ export default class Store {
     if (updateIsFavorite !== undefined)
       objectToUpdate.isFavorite = updateIsFavorite;
     if (name !== undefined) objectToUpdate.name = nameToUpdate;
-    // todo fetch Method PUT
-    const resultObject = await this.fetchController.updateEntryOnServer(
-      objectToUpdate,
-    );
-    return resultObject;
+    this.selectedListItems = this.sortListsByFav(this.allListItems);
+    return objectToUpdate;
   }
   /**
    * Filter the Entries in allListItems-Array by their tags and safe the result in the selectedListItems-Array
@@ -91,37 +111,23 @@ export default class Store {
     }
     this.selectedListItems = tempArray;
   }
-  async addItem({ name, tags, isFavorite = false, _id = undefined }: ListItem) {
-    console.log({ name, tags, isFavorite, _id });
-    if (name && tags.length > 0) {
-      const newItem = {
-        name,
-        tags,
-        isFavorite,
-        _id,
-      };
-      // check if id is defined, if not, postreq to server and set id with response id
-      if (newItem['_id'] === undefined) {
-        // TODO: Post-Req to backend and set response _id as id for the new item
-        // newItem._id = response._id
-        newItem._id = await this.fetchController.postNewEntryToServer(
-          name,
-          tags,
-        );
+  addItem(newItem: ListItem) {
+    if (newItem.name && newItem.tags.length > 0 && newItem._id !== undefined) {
+      if (newItem.isFavorite === undefined) {
+        newItem.isFavorite = false;
       }
       // add to all ListItems
       this.allListItems.push(newItem);
       // sort allListItems and set selectedListItems
-      this.selectedListItems = this.sortByName(this.allListItems);
+      this.selectedListItems = this.sortListsByFav(this.allListItems);
       return newItem;
     }
-    return null;
   }
   /**
    * delete an entry from the allListItems-Array and re-sort the selectedListItems Array
    * @param _id string
    */
-  async deleteItemByID(_id: string) {
+  deleteItemByID(_id: string) {
     const temp = [];
     for (let i = 0; i < this.allListItems.length; i += 1) {
       // push every item, which does not have the wanted _id into temp
@@ -131,9 +137,7 @@ export default class Store {
     }
     // set allListItems with the temp (result of the for-of loop)
     this.allListItems = temp;
-    this.selectedListItems = this.sortByName(this.allListItems);
-    await this.fetchController.deleteEntryOnServer(_id);
-    console.log(this.allListItems);
+    this.selectedListItems = this.sortListsByFav(this.allListItems);
   }
   /**
    * get an Element from the allListItems-Array by their _id
