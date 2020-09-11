@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 // register schemas
-require("../schemas/listItem");
+require("../schemas/list-item");
 
 const ListItem = mongoose.model("listItems");
 
