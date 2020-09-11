@@ -286,6 +286,7 @@ export default class EventController {
     selectedItem.isFavorite = !selectedItem.isFavorite;
     await this.fetchController.updateEntryOnServer(selectedItem);
     this.store.updateItem(selectedItem);
+    this.tableRenderer(this.store.getSelectedListItems());
   }
 
   /**

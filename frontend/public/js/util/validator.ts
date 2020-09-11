@@ -2,7 +2,7 @@ class Validator {
   validateName(nameToValidate: string): boolean {
     return (
       typeof nameToValidate === 'string' &&
-      /^[A-Za-z0-9]{6,}$/.test(nameToValidate)
+      /^[A-Za-z0-9]{5,}$/.test(nameToValidate)
     );
   }
   validateTagsArray(tagsToValidate: Array<String>): boolean {

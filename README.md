@@ -23,6 +23,15 @@ $ npm run dev
 ```
 
 ## TODO
-1. Add export and import from an actual list as functionality
+
+## TODO
+- Add export and import from an actual list as functionality
+-- export list
+-- import list
+- refactor list-store? sorting maybe inefficient?
+- add favicon
+- add vdom/refactor table-renderer
+- maybe cache on server?
 ## Possible Improvements
 1. Add responsiveness for mobile devices (+refactor table)
+2. add wai aria 2.0

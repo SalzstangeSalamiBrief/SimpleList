@@ -8,6 +8,7 @@ body {
   min-height: 100vh;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+  position: relative;
 }
 
 /* .btn--options{
@@ -20,8 +21,7 @@ body {
 }
 
 main {
-  position: relative;
-  min-height: 100vh;
+  max-height: 100vh;
 }
 
 main.w-full > div:not(.dialog-container) {
@@ -44,6 +44,12 @@ main.w-full > div:not(.dialog-container) {
   z-index: 1;
   min-height: 100vh;
   height: 100%;
+}
+
+#dialog-container dialog{
+  position: relative;
+  top: 0;
+  /* todo */
 }
 
 .form__title {
@@ -84,4 +90,54 @@ div.is-hidden,
   position: absolute;
   z-index: 2;
   top: 2.5rem;
+}
+
+main.main-grid-container{
+  display: grid;
+  grid-template-columns: 50vw;
+  row-gap: 1rem;
+  grid-template-rows: 10vh 15vh calc(75vh - 3rem);
+  grid-template-areas: 
+  "intro-area"
+  "add-filter-area"
+  "table-area";
+  justify-items: center;
+  align-items: center;
+}
+
+div.into-container{
+  grid-area: intro-area;
+}
+
+div.table-container{
+  grid-area: table-area;
+}
+
+div.add-filter-container{
+  grid-area: add-filter-area;
+  display: grid;
+  grid-template-columns: 10% repeat(4, 20%) 10%;
+  grid-template-rows: repeat(2, 50%);
+  row-gap: 0.5rem;
+  grid-template-areas: 
+  ". add-text-area add-text-area add-text-area add-btn-area ."
+  ". filter-input-area filter-input-area filter-input-area filter-btn-area .";
+  justify-items: center;
+  align-items: center;
+}
+
+p.add-text-p{
+  grid-area: add-text-area;
+}
+
+button#open-add-dialog{
+  grid-area: add-btn-area;
+}
+
+input[name="tag-search-input"]{
+  grid-area: filter-input-area;
+}
+
+button#filter-btn{
+  grid-area: filter-btn-area;
 }

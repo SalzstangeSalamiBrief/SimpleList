@@ -1,175 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="SalzstangeSalamiBrief" />
-    <meta name="description" content="This is a simple List for everyone" />
-    <link rel="stylesheet" href="../css/fonts.css" type="text/css" />
-    <link rel="stylesheet" href="../css/index.css" type="text/css" />
-    <link rel="stylesheet" href="../css/tailwindcss.css" type="text/css" />
-    <title>SimpleList</title>
-  </head>
-  <body>
-    <main class="w-full h-full flex flex-col items-center">
-      <div class="intro-container">
-        <h1 class="text-center site-title">SimpleList</h1>
-        <p>
-          With this List you can mark items as favorite and search for items by
-          their tags. As example "comedy !sports" will search for every entry
-          who has the tag comedy and does not have the tag sports
-        </p>
-      </div>
-      <div class="add-btn-container flex justify-center">
-        <p class="w-3/6 flex items-center justify-center">
-          For adding an entry, click on the following button:
-        </p>
-        <button
-          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options ml-8"
-          id="open-add-dialog"
-        >
-          Add
-        </button>
-      </div>
-      <div class="search-container flex justify-center">
-        <input
-          type="text"
-          name="tag-search-input"
-          class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-3/6 mx-4 placeholder-gray-500 placeholder-opacity-100"
-          placeholder="Search for Tags"
-        />
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options"
-          id="filter-btn"
-        >
-          Search
-        </button>
-      </div>
-      <div class="table-container">
-        <table class="table-fixed">
-          <thead>
-            <tr>
-              <th class="w-12"></th>
-              <th class="w-1/6">Name</th>
-              <th class="w-3/6">Tags</th>
-              <th class="w-2/6">Options</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <!-- dialog -->
-      <div
-        id="dialog-container"
-        class="dialog-container w-full flex-col h-full flex justify-center items-center is-hidden"
-      >
-        <dialog
-          class="w-1/2 flex flex-col justify-center items-center shadow-lg bg-white px-4 py-4 add-update-dialog"
-        >
-          <h2 class="text-center form__title mb-5" id="form__title">
-            Add Item
-          </h2>
-          <form
-            class="form flex flex-col justify-content items-center w-4/5"
-            name="item-form"
-          >
-            <!-- name -->
-            <div class="flex w-full">
-              <label
-                for="dialog__tags"
-                class="w-2/6 flex items-center justify-start"
-              >
-                Add Name
-              </label>
-              <input
-                type="text"
-                name="dialog__name"
-                class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6 mx-4 placeholder-gray-500 placeholder-opacity-100"
-                placeholder="Add Name"
-                pattern="^[A-Za-z0-9]{6,}$"
-                required
-              />
-            </div>
 
-            <!-- tags -->
-            <div class="flex w-full">
-              <label
-                for="dialog__tags"
-                class="w-2/6 flex items-center justify-start"
-              >
-                Add Tags (separated by spaces)
-              </label>
-              <input
-                type="text"
-                name="dialog__tags"
-                class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6 mx-4 placeholder-gray-500 placeholder-opacity-100"
-                placeholder="Add Tags (separated by spaces)"
-                required
-                pattern="^[A-Za-z0-9 ]+$"
-              />
-            </div>
-          </form>
-          <!-- buttons -->
-          <div class="flex w-2/5 justify-around">
-            <button
-              type="submit"
-              class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
-              id="submit-add-form"
-              form="item-form"
-              value="add item"
-            >
-              Add Item
-            </button>
-            <button
-              type="submit"
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
-              id="submit-update-form"
-              form="item-form"
-              value="update item"
-            >
-              Update
-            </button>
-            <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-form btn--cancel-dialog"
-              id="cancel-add-update-form"
-            >
-              Cancel
-            </button>
-          </div>
-        </dialog>
-        <dialog
-          class="w-1/3 flex flex-col justify-center items-center shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4 delete-dialog"
-        >
-          <h2 class="text-center form__title">Delete Item</h2>
-          <p class="mt-5">Do you realy want to delete the Item:</p>
-          <p class="delete-text__id mb-5"></p>
-          <div class="flex w-2/5 justify-around">
-            <button
-              type="submit"
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
-              id="submit-delete-dialog"
-              value="delete item"
-            >
-              Delete
-            </button>
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-form btn--cancel-dialog"
-              id="cancel-delete-dialog"
-            >
-              Cancel
-            </button>
-          </div>
-        </dialog>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="SalzstangeSalamiBrief" />
+  <meta name="description" content="This is a simple List for everyone" />
+  <link rel="stylesheet" href="../css/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="../css/index.css" type="text/css" />
+  <link rel="stylesheet" href="../css/tailwindcss.css" type="text/css" />
+  <title>SimpleList</title>
+</head>
+
+<body class="flex justify-center">
+  <!-- <main class="w-full h-screen flex flex-col items-center"> -->
+  <main class="main-grid-container">
+    <div class="intro-container px-4 py-2">
+      <h1 class="text-center site-title">SimpleList</h1>
+      <p>
+        With this List you can mark items as favorite and search for items by
+        their tags. As example "comedy !sports" will search for every entry
+        who has the tag comedy and does not have the tag sports
+      </p>
+    </div>
+    <div class="w-full add-filter-container px-4 py-2">
+      <p class="add-text-p">For adding an entry, click on the following button:</p>
+      <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options"
+        id="open-add-dialog">
+        Add
+      </button>
+      <input type="text" name="tag-search-input"
+        class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-3/6 placeholder-gray-500 placeholder-opacity-100 w-full"
+        placeholder="Search for Tags" />
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options" id="filter-btn">
+        Search
+      </button>
+    </div>
+    <!-- table -->
+    <div class="table-container w-full h-full overflow-y-scroll overflow-x-hidden">
+      <table class="table-fixed">
+        <thead>
+          <tr>
+            <th class="w-12 py-4"></th>
+            <th class="w-1/6 py-4">Name</th>
+            <th class="w-3/6 py-4">Tags</th>
+            <th class="w-2/6 py-4">Options</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <!-- dialog -->
+
+  </main>
+  <div id="dialog-container" class="dialog-container w-full  flex flex-col h-full items-center is-hidden">
+    <dialog class="w-1/2 flex flex-col justify-center items-center shadow-lg bg-white px-4 py-4 add-update-dialog">
+      <h2 class="text-center form__title mb-5" id="form__title">
+        Add Item
+      </h2>
+      <form class="form flex flex-col justify-content items-center w-4/5" name="item-form">
+        <!-- name -->
+        <div class="flex w-full">
+          <label for="dialog__tags" class="w-2/6 flex items-center justify-start">
+            Add Name
+          </label>
+          <input type="text" name="dialog__name"
+            class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6 mx-4 placeholder-gray-500 placeholder-opacity-100"
+            placeholder="Add Name" pattern="^[A-Za-z0-9]{5,}$" required />
+        </div>
+
+        <!-- tags -->
+        <div class="flex w-full">
+          <label for="dialog__tags" class="w-2/6 flex items-center justify-start">
+            Add Tags (separated by spaces)
+          </label>
+          <input type="text" name="dialog__tags"
+            class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-4/6 mx-4 placeholder-gray-500 placeholder-opacity-100"
+            placeholder="Add Tags (separated by spaces)" required pattern="^[A-Za-z0-9 ]+$" />
+        </div>
+      </form>
+      <!-- buttons -->
+      <div class="flex w-2/5 justify-around">
+        <button type="submit"
+          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
+          id="submit-add-form" form="item-form" value="add item">
+          Add Item
+        </button>
+        <button type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
+          id="submit-update-form" form="item-form" value="update item">
+          Update
+        </button>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-form btn--cancel-dialog"
+          id="cancel-add-update-form">
+          Cancel
+        </button>
       </div>
-      <!-- error notification -->
-      <div
-        class="w-1/2 flex flex-col justify-center items-center border-solid border-2 border-red-600 shadow-lg bg-white px-4 py-4 error-container is-hidden"
-      >
-        <h2 class="font-bold">Error:</h2>
-        <p id="error-text"></p>
+    </dialog>
+    <dialog
+      class="w-1/3 flex flex-col justify-center items-center shadow-lg border-solid border-1 border-gray-600 bg-white px-4 py-4 delete-dialog">
+      <h2 class="text-center form__title">Delete Item</h2>
+      <p class="mt-5">Do you realy want to delete the Item:</p>
+      <p class="delete-text__id mb-5"></p>
+      <div class="flex w-2/5 justify-around">
+        <button type="submit"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn-form cursor-pointer"
+          id="submit-delete-dialog" value="delete item">
+          Delete
+        </button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-form btn--cancel-dialog"
+          id="cancel-delete-dialog">
+          Cancel
+        </button>
       </div>
-    </main>
-    <script src="../js/index.js" type="module"></script>
-  </body>
-  <!-- TODO: width of document is larger than 100vw -->
+    </dialog>
+  </div>
+  <!-- error notification -->
+  <div
+    class="w-1/2 flex flex-col justify-center items-center border-solid border-2 border-red-600 shadow-lg bg-white px-4 py-4 error-container is-hidden">
+    <h2 class="font-bold">Error:</h2>
+    <p id="error-text"></p>
+  </div>
+  <script src="../js/index.js" type="module"></script>
+</body>
+<!-- TODO: width of document is larger than 100vw -->
+
 </html>
