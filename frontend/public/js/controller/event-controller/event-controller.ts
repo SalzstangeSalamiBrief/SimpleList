@@ -1,10 +1,14 @@
-import ListItem from '../interfaces/list-item';
-// TODO: Enter-Handler
-import Validator from '../util/validator';
+import ListItem from '../../interfaces/list-item';
 
-export default class EventHandler {
-  private buttonHandler;
-  private dialogHandler;
+import Validator from '../../util/validator';
+
+import ButtonController from '../HTMLElementController/button-controller';
+import DialogController from '../HTMLElementController/dialog-controller';
+import InputFieldController from '../HTMLElementController/input-field-controller';
+
+export default class EventController {
+  private buttonController;
+  private dialogController;
   private inputFieldController;
   private tableRenderer;
   private errorController;
@@ -12,18 +16,10 @@ export default class EventHandler {
   private store;
   private idOfSelectedItem: string;
   private favClassListRegex: RegExp;
-  constructor(
-    buttonHandler,
-    dialogHandler,
-    inputFieldController,
-    tableRenderer,
-    store,
-    errorController,
-    fetchController,
-  ) {
-    this.buttonHandler = buttonHandler;
-    this.dialogHandler = dialogHandler;
-    this.inputFieldController = inputFieldController;
+  constructor(tableRenderer, store, errorController, fetchController) {
+    this.buttonController = new ButtonController();
+    this.dialogController = new DialogController();
+    this.inputFieldController = new InputFieldController();
     this.tableRenderer = tableRenderer;
     this.errorController = errorController;
     this.fetchController = fetchController;
@@ -34,10 +30,17 @@ export default class EventHandler {
       'fav(__(inner|outer)|-img)|btn-fav-img',
     );
     this.addClickEventListenerToBody();
+    this.addKeyUpEventHandlerToBody();
   }
   addClickEventListenerToBody() {
     document.querySelector('body').addEventListener('click', (e) => {
       this.clickEventHandler.call(this, e);
+    });
+  }
+
+  addKeyUpEventHandlerToBody() {
+    document.querySelector('body').addEventListener('keyup', (e) => {
+      this.keyUpHandler.call(this, e);
     });
   }
 
@@ -93,11 +96,32 @@ export default class EventHandler {
         await this.submitDeleteDialog();
         return;
       case 'dialog-container':
-        if (this.dialogHandler.getIsDialogOpen()) {
-          this.dialogHandler.closeDialog();
+        if (this.dialogController.getIsDialogOpen()) {
+          this.dialogController.closeDialog();
           this.inputFieldController.resetFormInputFields();
           return;
         }
+    }
+  }
+
+  async keyUpHandler({ target: { tagName, name }, keyCode }) {
+    // 13 respresents space
+    if (keyCode === 13) {
+      // check if the tagname of the target is an input-field
+      if (tagName === 'INPUT') {
+        // check the name of the input field
+        switch (name) {
+          case 'tag-search-input':
+            this.filterTags();
+            return;
+          case 'dialog__name':
+            await this.submitAddForm();
+            return;
+          case 'dialog__tags':
+            await this.submitUpdateForm();
+            return;
+        }
+      }
     }
   }
 
@@ -143,7 +167,7 @@ export default class EventHandler {
         }
         this.store.updateItem(newItem);
         this.inputFieldController.resetFormInputFields();
-        this.dialogHandler.closeDialog();
+        this.dialogController.closeDialog();
         this.tableRenderer(this.store.getSelectedListItems());
         this.idOfSelectedItem = '';
       } else {
@@ -187,7 +211,7 @@ export default class EventHandler {
           // add response entry (with _id) to store
           this.store.addItem(newItem);
           this.tableRenderer(this.store.getSelectedListItems());
-          this.dialogHandler.closeDialog();
+          this.dialogController.closeDialog();
           this.inputFieldController.resetFormInputFields();
         } catch (err) {
           console.log(err);
@@ -211,7 +235,7 @@ export default class EventHandler {
   async submitDeleteDialog() {
     await this.fetchController.deleteEntryOnServer(this.idOfSelectedItem);
     this.store.deleteItemByID(this.idOfSelectedItem);
-    this.dialogHandler.closeDialog();
+    this.dialogController.closeDialog();
     this.idOfSelectedItem = '';
     this.tableRenderer(this.store.getSelectedListItems());
   }
@@ -220,9 +244,9 @@ export default class EventHandler {
    * function for opening the add dialog
    */
   openAddDialog() {
-    this.buttonHandler.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
+    this.buttonController.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
     this.inputFieldController.setFormTitleText('Add Item');
-    this.dialogHandler.openDialog('AddUpdate');
+    this.dialogController.openDialog('AddUpdate');
   }
 
   /**
@@ -233,9 +257,9 @@ export default class EventHandler {
   prepareUpdateDialog(target) {
     this.idOfSelectedItem = this.loopThroughParentsToGetID(target);
     this.inputFieldController.prepareUpdateInputs(this.idOfSelectedItem);
-    this.buttonHandler.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
+    this.buttonController.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
     this.inputFieldController.setFormTitleText('Update Item');
-    this.dialogHandler.openDialog('AddUpdate');
+    this.dialogController.openDialog('AddUpdate');
   }
 
   /**
@@ -246,7 +270,7 @@ export default class EventHandler {
     const _id = this.loopThroughParentsToGetID(target);
     const { name }: ListItem = this.store.getItemByID(_id);
     this.idOfSelectedItem = _id;
-    this.dialogHandler.openDialog('Delete', name);
+    this.dialogController.openDialog('Delete', name);
   }
 
   /**
@@ -268,7 +292,7 @@ export default class EventHandler {
    * this function closes the open dialog
    */
   cancelDialog() {
-    this.dialogHandler.closeDialog();
+    this.dialogController.closeDialog();
     this.inputFieldController.resetFormInputFields();
     this.idOfSelectedItem = '';
   }

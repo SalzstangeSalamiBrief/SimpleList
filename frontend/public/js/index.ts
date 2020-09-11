@@ -1,25 +1,17 @@
 import ListItem from './interfaces/list-item';
 
 import Store from './model/list-store';
-import ButtonController from './controller/button-controller';
-import InputFieldController from './controller/input-field-controller';
-import DialogController from './controller/dialog-controller';
-import ClickEventController from './controller/click-event-controller';
 import TableRenderer from './table-renderer';
 import FetchController from './controller/fetch-controller';
 import ErrorController from './controller/error-controller';
-
+import EventController from './controller/event-controller/event-controller';
 window.addEventListener('DOMContentLoaded', async () => {
   const fetchController = new FetchController();
   const store = new Store();
-  const inputFieldController = new InputFieldController();
-  const buttonController = new ButtonController();
-  const dialogController = new DialogController();
+
   const errorController = new ErrorController();
-  const clickEventController = new ClickEventController(
-    buttonController,
-    dialogController,
-    inputFieldController,
+
+  const eventController = new EventController(
     TableRenderer,
     store,
     errorController,

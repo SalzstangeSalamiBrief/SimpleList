@@ -28,7 +28,5 @@ No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
 - export list
 - import list
 - refactor list-store? sorting maybe inefficient?
-- search by tags
-  -- highlight searched tags
 - add favicon
 - add vdom/refactor table-renderer
