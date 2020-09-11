@@ -23,8 +23,6 @@ $ npm run dev
 ```
 
 ## TODO
-
-## TODO
 - Add export and import from an actual list as functionality
 -- export list
 -- import list
