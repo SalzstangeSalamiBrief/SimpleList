@@ -28,16 +28,17 @@ $ npm run dev
 
 ## TODO
 - Add export and import from an actual list as functionality
--- add routes to server
---- export list
---- import list
+  - add routes to server
+    - export list
+    - import list
 - add favicon
 - maybe cache on server?
 - refactor ui
--- add interactive elements for importing and exporting lists
--- add a help button (show a explanation of the app (e.g. intro in this readme))
+  - add interactive elements for importing and exporting lists
+  - add a help button (show a explanation of the app (e.g. intro in this readme))
+  - add build command
 
 ## Possible Improvements
 1. Add responsiveness for mobile devices (+refactor table)
-1.1. This application is currently builded for widescreens (1920x1080, 16:9).
+i. This application is currently builded for widescreens (1920x1080, 16:9).
 2. add wai aria 2.0
