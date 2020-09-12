@@ -2,7 +2,10 @@ import ListItem from './interfaces/list-item';
 
 const tbody: HTMLElement = document.querySelector('tbody');
 // TODO: VDOM or osmething like that
-function createFavoriteSVG(_id: string, isFavorite: boolean) {
+function createFavoriteSVG(
+  _id: string = '',
+  isFavorite: boolean = undefined,
+): string {
   return `
   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <svg
@@ -34,35 +37,45 @@ function createFavoriteSVG(_id: string, isFavorite: boolean) {
 }
 
 // TODO Style tags (e.g. label of some sort)
-function renderTagList(tags: Array<string>, name: string) {
-  let list: string =
-    `<ul class="list-none flex w-full justify-start item-center overscroll-y-auto" aria-label="list of tags for the item ${name}">`;
-  for (let i = 0; i < tags.length; i += 1) {
-    list += `
-    <li class="mx-1 px-4 py-2 tag bg-gray-300" aria-label="tag for item ${name}: ${tags[i]}" tabindex=0">
-      ${tags[i]} 
-    </li>   
-  `;
+function renderTagList(tags: Array<string> = [], name: string = ''): string {
+  let list: string = `
+    <ul
+      class="list-none flex w-full justify-start item-center overscroll-y-auto"
+      aria-label="list of tags for the item ${name}">`;
+  if (Array.isArray(tags)) {
+    for (let i = 0; i < tags.length; i += 1) {
+      list += `
+          <li
+            class="mx-1 px-4 py-2 tag bg-gray-300"
+            aria-label="tag for item ${name}: ${tags[i]}" 
+            tabindex=0">
+            ${tags[i]} 
+          </li>   
+        `;
+    }
   }
   list += '</ul>';
   return list;
 }
 
 // function to render the actual table
-export default function (itemList: Array<ListItem>): void {
+export default function (itemList: Array<ListItem> = []): void {
   // clear child nodes
   tbody.textContent = '';
   // TODO: Add Listeners
   for (let i = 0; i < itemList.length; i += 1) {
     const { name, _id, isFavorite, tags }: ListItem = itemList[i];
     const entry: HTMLTableRowElement = document.createElement('tr');
-    entry.classList = 'hover:bg-gray-200 border-t border-b border-solid border-gray-300';
+    entry.classList =
+      'hover:bg-gray-200 border-t border-b border-solid border-gray-300';
     entry.dataset['_id'] = _id;
     entry.dataset.name = name;
     const entryBody = `
       <td class="py-2">
         <button class="flex justify-center item-center w-12 btn-fav-img"
-             aria-label="${name} is ${isFavorite ? '' : "not"} a favorite of yours. If you want to change that click this icon">
+             aria-label="${name} is ${
+      isFavorite ? '' : 'not'
+    } a favorite of yours. If you want to change that click this icon">
           ${createFavoriteSVG(_id, isFavorite)}
         </button>        
       </td>

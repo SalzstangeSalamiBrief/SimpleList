@@ -20,15 +20,15 @@ window.addEventListener('DOMContentLoaded', async () => {
   const initListEntries = <Array<ListItem>>(
     await fetchController.getAllEntriesFromServer()
   );
-  if (initListEntries !== null) {
-    for (let i = 0; i < initListEntries.length; i += 1) {
-      store.addItem(initListEntries[i]);
-    }
-    // console.log(store.getSelectedListItems());
-    TableRenderer(store.getSelectedListItems());
-  } else {
-    errorController.setErrorMessage(
+  if (initListEntries === null) {
+    return errorController.setErrorMessage(
       'An error happened on loading the site. Please refresh the site.',
     );
   }
+  // case: initListEntries is not null
+  for (let i = 0; i < initListEntries.length; i += 1) {
+    store.addItem(initListEntries[i]);
+  }
+  // console.log(store.getSelectedListItems());
+  return TableRenderer(store.getSelectedListItems());
 });

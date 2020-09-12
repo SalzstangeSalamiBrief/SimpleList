@@ -20,8 +20,8 @@ export default class FetchHandler {
   }
   async updateEntryOnServer(itemToUpdate: ListItem): Promise<ListItem> {
     if (
-      itemToUpdate.name === undefined ||
-      itemToUpdate.tags.length < 1 ||
+      itemToUpdate.name === '' ||
+      !Array.isArray(itemToUpdate.tags) ||
       itemToUpdate._id === undefined ||
       itemToUpdate.isFavorite === undefined
     ) {
