@@ -37,10 +37,10 @@ export default class ButtonHandler {
     switch (selectedType) {
       case BTNSelection.delete:
         console.log(this.btnSubmitDelete)
-        this.btnSubmitDelete.setAttribute('aria-label', `Confirm to delete the entry ${name}`)
+        this.btnSubmitDelete.setAttribute('aria-label', `Confirm to delete the entry ${name}`);
         break;
       case BTNSelection.update:
-        this.btnSubmitUpdate.setAttribute('aria-label', `Confirm the update of the entry ${name}`)
+        this.btnSubmitUpdate.setAttribute('aria-label', `Confirm the update of the entry ${name}`);
     }
   }
 }
