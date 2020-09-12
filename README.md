@@ -40,5 +40,5 @@ $ npm run dev
 
 ## Possible Improvements
 1. Add responsiveness for mobile devices (+refactor table)
-i. This application is currently builded for widescreens (1920x1080, 16:9).
+  i. This application is currently builded for widescreens (1920x1080, 16:9).
 2. add wai aria 2.0
