@@ -12,11 +12,11 @@ body {
 }
 
 .btn--options{
-  /* font-size: 14px; */
   color: #0954AB;
 }
 
 /* .btn--options, */
+button#open-add-dialog,
 .btn-form {
   min-width: 100px;
 }
@@ -50,12 +50,12 @@ main.w-full > div:not(.dialog-container) {
 #dialog-container dialog{
   position: relative;
   top: 0;
-  /* todo */
 }
 
 .form__title {
   font-weight: 600;
 }
+
 div#dialog-container.is-hidden,
 dialog.is-hidden,
 div.is-hidden,
@@ -63,10 +63,6 @@ div.is-hidden,
   display: none;
 }
 
-/* todo better border */
-.icon-border {
-  text-shadow: 0 0 3px #000;
-}
 
 .fav__inner {
   fill: none;
@@ -96,13 +92,14 @@ div.is-hidden,
 main.main-grid-container{
   display: grid;
   grid-template-columns: 50vw;
-  row-gap: 2.5rem;
+  row-gap: 0.5rem;
   /* calc(75vh - 2times row-Gap) */
-  grid-template-rows: 10vh 15vh calc(75vh - 5rem);
+  grid-template-rows: 10vh 7.5vh calc(76vh - 1rem) 5vh;
   grid-template-areas: 
   "intro-area"
-  "add-filter-area"
-  "table-area";
+  "filter-area"
+  "table-area"
+  "add-btn-area";
   justify-items: center;
   align-items: center;
 }
@@ -111,45 +108,27 @@ div.into-container{
   grid-area: intro-area;
 }
 
+div.filter-container{
+   grid-area: filter-area;
+}
+
 div.table-container{
   grid-area: table-area;
 }
 
-div.add-filter-container{
-  grid-area: add-filter-area;
-  display: grid;
-  grid-template-columns: 10% repeat(4, 20%) 10%;
-  grid-template-rows: repeat(2, 50%);
-  row-gap: 0.5rem;
-  grid-template-areas: 
-  ". add-text-area add-text-area add-text-area add-btn-area ."
-  ". filter-input-area filter-input-area filter-input-area filter-btn-area .";
-  justify-items: center;
-  align-items: center;
-}
-
-p.add-text-p{
-  grid-area: add-text-area;
-}
-
-button#open-add-dialog{
+div.add-container{
   grid-area: add-btn-area;
 }
 
-input[name="tag-search-input"]{
-  grid-area: filter-input-area;
-}
 
-button#filter-btn{
-  grid-area: filter-btn-area;
-}
-
-
-thead {
+thead{
   position: sticky;
   top: 0;
   z-index: 1;
   background: white;
+}
+
+.bottom-shadow{
   -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.05);
   -moz-box-shadow:  0 8px 6px -6px rgba(0, 0, 0, 0.05);
   box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.05);

@@ -304,6 +304,5 @@ export default class EventController {
     );
     this.store.filterByTags(tagsToFilter);
     this.tableRenderer(this.store.getSelectedListItems());
-    // console.log(tagsToFilter);
   }
 }

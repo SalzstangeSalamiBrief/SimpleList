@@ -23,14 +23,9 @@
         who has the tag comedy and does not have the tag sports
       </p>
     </div>
-    <div class="w-full add-filter-container px-4 py-2">
-      <p class="add-text-p">For adding an entry, click on the following button:</p>
-      <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options"
-        id="open-add-dialog">
-        Add
-      </button>
+    <div class="w-full filter-container px-4 py-2 flex justify-center content-center">
       <input type="text" name="tag-search-input"
-        class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-3/6 placeholder-gray-500 placeholder-opacity-100 w-full"
+        class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-3/6 placeholder-gray-500 placeholder-opacity-100 mr-2 w-3/6"
         placeholder="Search for Tags" />
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options" id="filter-btn">
         Search
@@ -39,7 +34,7 @@
     <!-- table -->
     <div class="table-container w-full h-full overflow-y-scroll overflow-x-hidden">
       <table class="table-fixed">
-        <thead>
+        <thead class="bottom-shadow">
           <tr>
             <th class="w-12 py-4"></th>
             <th class="w-1/6 py-4">Name</th>
@@ -47,12 +42,18 @@
             <th class="w-2/6 py-4">Options</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody class="bottom-shadow"></tbody>
       </table>
     </div>
-    <!-- dialog -->
-
+    <!-- add area -->
+    <div class="w-full add-container flex justify-end content-center">
+      <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options"
+        id="open-add-dialog">
+        Add item
+      </button>
+    </div>
   </main>
+  <!-- dialog -->
   <div id="dialog-container" class="dialog-container w-full  flex flex-col h-full items-center is-hidden">
     <dialog class="w-1/2 flex flex-col justify-center items-center shadow-lg bg-white px-4 py-4 add-update-dialog">
       <h2 class="text-center form__title mb-5" id="form__title">

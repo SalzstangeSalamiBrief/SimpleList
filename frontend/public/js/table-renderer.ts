@@ -59,30 +59,6 @@ export default function (itemList: Array<ListItem>): void {
     entry.classList = 'hover:bg-gray-200 border-t border-b border-solid border-gray-300';
     entry.dataset['_id'] = selectedItem._id;
     entry.dataset.name = selectedItem.name;
-    // const entryBody = `
-    //   <td class="py-2">
-    //     <button class="flex justify-center item-center w-12 btn-fav-img">
-    //       ${createFavoriteSVG(selectedItem)}
-    //     </button>        
-    //   </td>
-    //   <td class="px-4 py-2 text-center">
-    //     <button class="row-item-name w-full h-full overflow-hidden">
-    //       ${selectedItem.name}
-    //     </button>      
-    //   </td>
-    //   <td class="px-4 py-2 text-center">${renderTagList(selectedItem.tags)}</td>
-    //   <td class="flex justify-around px-4 py-2">
-    //     <button
-    //       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options edit-btn"
-    //     >
-    //       Edit
-    //     </button>
-    //     <button
-    //         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded btn--options open-delete-dialog"
-    //     >
-    //       Delete
-    //     </button>
-    //   </td>`;
     const entryBody = `
       <td class="py-2">
         <button class="flex justify-center item-center w-12 btn-fav-img">
