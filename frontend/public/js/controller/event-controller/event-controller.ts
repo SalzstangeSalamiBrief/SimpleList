@@ -258,6 +258,8 @@ export default class EventController {
     this.idOfSelectedItem = this.loopThroughParentsToGetID(target);
     this.inputFieldController.prepareUpdateInputs(this.idOfSelectedItem);
     this.buttonController.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
+    this.buttonController.setUpdateDeleteBtnLabel('update', this.store.getItemByID(this.idOfSelectedItem).name
+    );
     this.inputFieldController.setFormTitleText('Update Item');
     this.dialogController.openDialog('AddUpdate');
   }
@@ -270,7 +272,10 @@ export default class EventController {
     const _id = this.loopThroughParentsToGetID(target);
     const { name }: ListItem = this.store.getItemByID(_id);
     this.idOfSelectedItem = _id;
+    this.buttonController.setUpdateDeleteBtnLabel('delete', this.store.getItemByID(_id).name
+    );
     this.dialogController.openDialog('Delete', name);
+
   }
 
   /**

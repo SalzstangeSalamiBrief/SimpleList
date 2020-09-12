@@ -85,7 +85,7 @@ div.is-hidden,
 
 .error-container {
   position: absolute;
-  z-index: 2;
+  z-index: 6;
   top: 2.5rem;
 }
 
