@@ -22,7 +22,7 @@ export default class Store {
    * the criterion for sorting the array is the name
    * @param arr Array<ListItem>
    */
-  sortByName(arr: Array<ListItem>): Array<ListItem> {
+  public sortByName(arr: Array<ListItem>): Array<ListItem> {
     const temp: Array<ListItem> = [...arr];
     return temp.sort((a: ListItem, b: ListItem): number => {
       const lowerCaseA = a.name.toLowerCase();
@@ -38,7 +38,7 @@ export default class Store {
    * return a merged result of both lists
    * @param arr Array<ListItem>
    */
-  sortListsByFav(arr: Array<ListItem>): Array<ListItem> {
+  public sortListsByFav(arr: Array<ListItem>): Array<ListItem> {
     // 1. split list into favorites and not favorites
     const isFavList = [];
     const notFavList = [];
@@ -61,7 +61,7 @@ export default class Store {
    *
    * @param ListItem ListItem
    */
-  updateItem({
+  public updateItem({
     tags: tagsToUpdate = undefined,
     isFavorite: updateIsFavorite = undefined,
     name: nameToUpdate = undefined,
@@ -84,7 +84,7 @@ export default class Store {
    *
    * @param tagsToSearch string
    */
-  filterByTags(tagsToSearch: Array<string>): void {
+  public filterByTags(tagsToSearch: Array<string>): void {
     // case if the tagsToSearch array is empty: display all items
     if (tagsToSearch.length === 0) {
       this.selectedListItems = this.sortListsByFav(this.allListItems);
@@ -124,7 +124,7 @@ export default class Store {
     }
     this.selectedListItems = this.sortListsByFav(resultArray);
   }
-  addItem(newItem: ListItem) {
+  public addItem(newItem: ListItem) {
     if (newItem.name && newItem.tags.length > 0 && newItem._id !== undefined) {
       if (newItem.isFavorite === undefined) {
         newItem.isFavorite = false;
@@ -140,7 +140,7 @@ export default class Store {
    * delete an entry from the allListItems-Array and re-sort the selectedListItems Array
    * @param _id string
    */
-  deleteItemByID(_id: string) {
+  public deleteItemByID(_id: string) {
     const temp = [];
     for (let i = 0; i < this.allListItems.length; i += 1) {
       // push every item, which does not have the wanted _id into temp
@@ -156,7 +156,7 @@ export default class Store {
    * get an Element from the allListItems-Array by their _id
    * @param _id string
    */
-  getItemByID(_id: string): ListItem {
+  public getItemByID(_id: string): ListItem {
     if (typeof _id === 'string') {
       return this.allListItems.find(
         (item: ListItem): Boolean => item['_id'] === _id,
@@ -166,7 +166,7 @@ export default class Store {
   /**
    * Get the selectedListItems-array
    */
-  getSelectedListItems(): Array<ListItem> {
+  public getSelectedListItems(): Array<ListItem> {
     return this.selectedListItems;
   }
 }

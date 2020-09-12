@@ -11,7 +11,7 @@ export default class ErrorNotification {
    * If no Error is actively displayed set the new errorMsg and start the reset timer
    * @param msg string
    */
-  setErrorMessage(msg: string) {
+  public setErrorMessage(msg: string) {
     if (this.isErrorActive === false) {
       this.isErrorActive = true;
       this.errorTxt.textContent = msg;
@@ -24,7 +24,7 @@ export default class ErrorNotification {
   /**
    * Start a Timer who resets the error-container after 1sec
    */
-  startErrorTimer() {
+  private startErrorTimer() {
     setTimeout(() => {
       this.setErrorMessage('');
       this.toggleErrorVisibility();
@@ -34,7 +34,7 @@ export default class ErrorNotification {
   /**
    * toggle the 'is-hidden' class on this.errorContainer
    */
-  toggleErrorVisibility() {
+  private toggleErrorVisibility() {
     this.errorContainer.classList.toggle('is-hidden');
   }
 }

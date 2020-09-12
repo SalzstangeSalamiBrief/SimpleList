@@ -22,7 +22,8 @@ export default class DialogHandler {
   constructor() {
     this.isDialogOpen = false;
   }
-  openDialog(type: PossibleDialogues, name = '') {
+
+  public openDialog(type: PossibleDialogues, name = '') {
     dialogContainer.classList.remove('is-hidden');
     if (type === PossibleDialogues.openEditDialog) {
       dialogAddUpdate.classList.remove('is-hidden');
@@ -34,14 +35,20 @@ export default class DialogHandler {
     }
     this.isDialogOpen = true;
   }
-  closeDialog() {
+
+  /**
+   * close the active dialog with adding the is-hidden class
+   */
+  public closeDialog() {
     dialogContainer.classList.add('is-hidden');
     this.isDialogOpen = false;
   }
-  getIsDialogOpen(): boolean {
+
+  public getIsDialogOpen(): boolean {
     return this.isDialogOpen;
   }
-  setIsDialogOpen(b: boolean) {
+
+  public setIsDialogOpen(b: boolean) {
     this.isDialogOpen = b;
   }
 }

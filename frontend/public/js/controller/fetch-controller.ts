@@ -5,7 +5,7 @@ export default class FetchHandler {
   constructor() {
     this.backendURL = 'http://127.0.0.1:8081/api/list-item/';
   }
-  async deleteEntryOnServer(_id: string) {
+  public async deleteEntryOnServer(_id: string) {
     try {
       await fetch(this.backendURL, {
         method: 'DELETE',
@@ -18,7 +18,7 @@ export default class FetchHandler {
       console.error(err);
     }
   }
-  async updateEntryOnServer(itemToUpdate: ListItem): Promise<ListItem> {
+  public async updateEntryOnServer(itemToUpdate: ListItem): Promise<ListItem> {
     if (
       itemToUpdate.name === '' ||
       !Array.isArray(itemToUpdate.tags) ||
@@ -46,7 +46,7 @@ export default class FetchHandler {
       return null;
     }
   }
-  async postNewEntryToServer(
+  public async postNewEntryToServer(
     name: string,
     tags: Array<string>,
   ): Promise<ListItem> | null {
@@ -69,7 +69,7 @@ export default class FetchHandler {
       return null;
     }
   }
-  async getAllEntriesFromServer(): Promise<Array<ListItem>> {
+  public async getAllEntriesFromServer(): Promise<Array<ListItem>> {
     try {
       const response = await fetch(this.backendURL, {
         method: 'GET',

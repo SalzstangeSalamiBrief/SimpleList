@@ -1,6 +1,6 @@
 enum BTNSelection {
-  delete = "DELETE",
-  update = "UPDATE"
+  delete = 'DELETE',
+  update = 'UPDATE',
 }
 export default class ButtonHandler {
   private btnSubmitAdd: HTMLButtonElement;
@@ -31,16 +31,20 @@ export default class ButtonHandler {
    * @param type enum<BTNSelection>
    * @param name string
    */
-  setUpdateDeleteBtnLabel(type: BTNSelection, name: string) {
-    console.log(type, name)
+  public setUpdateDeleteBtnLabel(type: BTNSelection, name: string = '') {
     const selectedType = type.toUpperCase();
     switch (selectedType) {
       case BTNSelection.delete:
-        console.log(this.btnSubmitDelete)
-        this.btnSubmitDelete.setAttribute('aria-label', `Confirm to delete the entry ${name}`);
+        this.btnSubmitDelete.setAttribute(
+          'aria-label',
+          `Confirm to delete the entry ${name}`,
+        );
         break;
       case BTNSelection.update:
-        this.btnSubmitUpdate.setAttribute('aria-label', `Confirm the update of the entry ${name}`);
+        this.btnSubmitUpdate.setAttribute(
+          'aria-label',
+          `Confirm the update of the entry ${name}`,
+        );
     }
   }
 }

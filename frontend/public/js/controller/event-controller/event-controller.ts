@@ -32,19 +32,19 @@ export default class EventController {
     this.addClickEventListenerToBody();
     this.addKeyUpEventHandlerToBody();
   }
-  addClickEventListenerToBody() {
-    document.querySelector('body').addEventListener('click', (e) => {
+  private addClickEventListenerToBody() {
+    document.querySelector('body').addEventListener('click', (e: Event) => {
       this.clickEventHandler.call(this, e);
     });
   }
 
-  addKeyUpEventHandlerToBody() {
-    document.querySelector('body').addEventListener('keyup', (e) => {
+  private addKeyUpEventHandlerToBody() {
+    document.querySelector('body').addEventListener('keyup', (e: Event) => {
       this.keyUpHandler.call(this, e);
     });
   }
 
-  async clickEventHandler({ target }) {
+  private async clickEventHandler({ target }) {
     const targetClassList: DOMTokenList = target.classList;
     const targetID: string = target.id;
     // handler for classLists
@@ -104,8 +104,8 @@ export default class EventController {
     }
   }
 
-  async keyUpHandler({ target: { tagName, name }, keyCode }) {
-    // 13 respresents space
+  private async keyUpHandler({ target: { tagName, name }, keyCode }) {
+    // 13 === space
     if (keyCode === 13) {
       // check if the tagname of the target is an input-field
       if (tagName === 'INPUT') {
@@ -129,7 +129,7 @@ export default class EventController {
    * Loop through the parents of the target to get the _id of the selected row/item
    * @param target
    */
-  loopThroughParentsToGetID(target): string {
+  private loopThroughParentsToGetID(target): string {
     let itemToSelect = target;
     // loop through the parents to get the parent with dataset _id and name (name only for safety-reasons)
     while (!itemToSelect.dataset['_id'] || !itemToSelect.dataset['name']) {
@@ -141,7 +141,7 @@ export default class EventController {
   /**
    * function to submit the update form
    */
-  async submitUpdateForm() {
+  private async submitUpdateForm() {
     const newItem = {
       name: this.inputFieldController.getNameInputValue(),
       tags: this.inputFieldController.createTagsArray(
@@ -150,12 +150,11 @@ export default class EventController {
       _id: this.idOfSelectedItem,
       isFavorite: this.store.getItemByID(this.idOfSelectedItem).isFavorite,
     };
-    console.log(newItem);
     // check if the name is valid
     if (Validator.validateName(newItem.name)) {
       // check if the tags-array is valid
       if (Validator.validateTagsArray(newItem.tags)) {
-        // todo errorhandling for response
+        // todo error-handling for response
         const updatedItem = await this.fetchController.updateEntryOnServer(
           newItem,
         );
@@ -188,7 +187,7 @@ export default class EventController {
    * function for submitting the add form
    * if the name and the tags in the input-field are valid, a POST-REquest to the backend is send and in the local list-store an item will be added
    */
-  async submitAddForm() {
+  private async submitAddForm() {
     const name: string = this.inputFieldController.getNameInputValue();
     const tags: Array<string> = this.inputFieldController.createTagsArray(
       this.inputFieldController.getTagsInputValue(),
@@ -229,10 +228,10 @@ export default class EventController {
   }
 
   /**
-   * function for submiting the dele delete dialog
+   * function for submitting the dele delete dialog
    * delete the selected entry in the list-store and on the backend-server
    */
-  async submitDeleteDialog() {
+  private async submitDeleteDialog() {
     await this.fetchController.deleteEntryOnServer(this.idOfSelectedItem);
     this.store.deleteItemByID(this.idOfSelectedItem);
     this.dialogController.closeDialog();
@@ -243,7 +242,7 @@ export default class EventController {
   /**
    * function for opening the add dialog
    */
-  openAddDialog() {
+  private openAddDialog() {
     this.buttonController.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
     this.inputFieldController.setFormTitleText('Add Item');
     this.dialogController.openDialog('AddUpdate');
@@ -254,11 +253,13 @@ export default class EventController {
    * set idOfSelectedItem to the id of the target and load the corresponding data in the input-fields
    * @param target Button
    */
-  prepareUpdateDialog(target) {
+  private prepareUpdateDialog(target) {
     this.idOfSelectedItem = this.loopThroughParentsToGetID(target);
     this.inputFieldController.prepareUpdateInputs(this.idOfSelectedItem);
     this.buttonController.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
-    this.buttonController.setUpdateDeleteBtnLabel('update', this.store.getItemByID(this.idOfSelectedItem).name
+    this.buttonController.setUpdateDeleteBtnLabel(
+      'update',
+      this.store.getItemByID(this.idOfSelectedItem).name,
     );
     this.inputFieldController.setFormTitleText('Update Item');
     this.dialogController.openDialog('AddUpdate');
@@ -268,21 +269,22 @@ export default class EventController {
    * prepare the delete dialog by setting idOfSelectedItem with the id of the selected item and open the delete Dialog
    * @param target Button
    */
-  openDeleteDialog(target) {
+  private openDeleteDialog(target) {
     const _id = this.loopThroughParentsToGetID(target);
     const { name }: ListItem = this.store.getItemByID(_id);
     this.idOfSelectedItem = _id;
-    this.buttonController.setUpdateDeleteBtnLabel('delete', this.store.getItemByID(_id).name
+    this.buttonController.setUpdateDeleteBtnLabel(
+      'delete',
+      this.store.getItemByID(_id).name,
     );
     this.dialogController.openDialog('Delete', name);
-
   }
 
   /**
-   * function to toggle the isFavorit value of the selected item
+   * function to toggle the isFavorite value of the selected item
    * @param target EventTarget
    */
-  async toggleIsFavorite(target) {
+  private async toggleIsFavorite(target) {
     let _id: string = this.loopThroughParentsToGetID(target);
     document
       .querySelector(`svg[data-_id="${_id}"].fav-img`)
@@ -297,13 +299,16 @@ export default class EventController {
   /**
    * this function closes the open dialog
    */
-  cancelDialog() {
+  private cancelDialog() {
     this.dialogController.closeDialog();
     this.inputFieldController.resetFormInputFields();
     this.idOfSelectedItem = '';
   }
 
-  filterTags() {
+  /**
+   * take the tags in the filter-input, create a tag-array and filter the store by the resulting entries in the array
+   */
+  private filterTags() {
     const tagsToFilter: Array<string> = this.inputFieldController.createTagsArray(
       this.inputFieldController.getFilterInputValue(),
     );
