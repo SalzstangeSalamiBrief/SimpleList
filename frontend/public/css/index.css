@@ -11,11 +11,12 @@ body {
   position: relative;
 }
 
-/* .btn--options{
-  min-width: 80px;
-} */
+.btn--options{
+  /* font-size: 14px; */
+  color: #0954AB;
+}
 
-.btn--options,
+/* .btn--options, */
 .btn-form {
   min-width: 100px;
 }
@@ -41,7 +42,7 @@ main.w-full > div:not(.dialog-container) {
 #dialog-container {
   position: absolute;
   background: rgba(51, 51, 51, 0.4);
-  z-index: 1;
+  z-index: 5;
   min-height: 100vh;
   height: 100%;
 }
@@ -95,8 +96,9 @@ div.is-hidden,
 main.main-grid-container{
   display: grid;
   grid-template-columns: 50vw;
-  row-gap: 1rem;
-  grid-template-rows: 10vh 15vh calc(75vh - 3rem);
+  row-gap: 2.5rem;
+  /* calc(75vh - 2times row-Gap) */
+  grid-template-rows: 10vh 15vh calc(75vh - 5rem);
   grid-template-areas: 
   "intro-area"
   "add-filter-area"
@@ -140,4 +142,20 @@ input[name="tag-search-input"]{
 
 button#filter-btn{
   grid-area: filter-btn-area;
+}
+
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: white;
+  -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow:  0 8px 6px -6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.05);
+}
+
+td{
+  height: 57px;
+  overflow: hidden;
 }
