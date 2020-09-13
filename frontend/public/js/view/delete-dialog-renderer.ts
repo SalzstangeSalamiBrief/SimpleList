@@ -152,6 +152,5 @@ export default function (nameOfItem: string) {
   const deleteDialogContainer = createDeleteDialogContainer();
   deleteDialogContainer.appendChild(createDeleteInfoContainer(nameOfItem));
   deleteDialogContainer.appendChild(createButtonContainer(nameOfItem));
-  console.log(deleteDialogContainer);
   divToAppendDialog.appendChild(deleteDialogContainer);
 }
