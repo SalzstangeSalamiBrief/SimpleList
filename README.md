@@ -36,9 +36,10 @@ $ npm run dev
 - refactor ui
   - add interactive elements for importing and exporting lists
   - add a help button (show a explanation of the app (e.g. intro in this readme))
-  - add build command
+- add build command
 
 ## Possible Improvements
 1. Add responsiveness for mobile devices (+refactor table)
   i. This application is currently builded for widescreens (1920x1080, 16:9).
 2. add wai aria 2.0
+3. Refactor renderer in the frontend or replace them by a framework/vdom
