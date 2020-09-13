@@ -51,21 +51,16 @@ export default class FormHandler {
     return tags;
   }
 
-  public resetFormInputFields() {
-    this.nameInput.value = '';
-    this.tagsInput.value = '';
-    this.filterInput.value = '';
-  }
-  public setFormTitleText(txt: string = '') {
-    this.formTitle.textContent = txt;
-  }
-
   public getNameInputValue(): string {
-    return this.nameInput.value.trim();
+    return (<HTMLInputElement>(
+      document.querySelector('[name="dialog__name"')
+    )).value.trim();
   }
 
   public getTagsInputValue(): string {
-    return this.tagsInput.value.trim();
+    return (<HTMLInputElement>(
+      document.querySelector('[name="dialog__tags"')
+    )).value.trim();
   }
 
   public getFilterInputValue(): string {

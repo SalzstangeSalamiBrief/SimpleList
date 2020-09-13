@@ -5,16 +5,12 @@ enum BTNSelection {
 export default class ButtonHandler {
   private btnSubmitAdd: HTMLButtonElement;
   private btnSubmitUpdate: HTMLButtonElement;
-  private btnSubmitDelete: HTMLButtonElement;
   constructor() {
     this.btnSubmitAdd = <HTMLButtonElement>(
       document.querySelector('button#submit-add-form')
     );
     this.btnSubmitUpdate = <HTMLButtonElement>(
       document.querySelector('button#submit-update-form')
-    );
-    this.btnSubmitDelete = <HTMLButtonElement>(
-      document.querySelector('button#submit-delete-dialog')
     );
   }
   /**
@@ -35,10 +31,6 @@ export default class ButtonHandler {
     const selectedType = type.toUpperCase();
     switch (selectedType) {
       case BTNSelection.delete:
-        this.btnSubmitDelete.setAttribute(
-          'aria-label',
-          `Confirm to delete the entry ${name}`,
-        );
         break;
       case BTNSelection.update:
         this.btnSubmitUpdate.setAttribute(

@@ -1,7 +1,6 @@
-import ListItem from './interfaces/list-item';
+import ListItem from '../interfaces/list-item';
 
 const tbody: HTMLElement = document.querySelector('tbody');
-// TODO: VDOM or osmething like that
 function createFavoriteSVG(
   _id: string = '',
   isFavorite: boolean = undefined,
@@ -36,7 +35,6 @@ function createFavoriteSVG(
   `;
 }
 
-// TODO Style tags (e.g. label of some sort)
 function renderTagList(tags: Array<string> = [], name: string = ''): string {
   let list: string = `
     <ul
@@ -62,12 +60,17 @@ function renderTagList(tags: Array<string> = [], name: string = ''): string {
 export default function (itemList: Array<ListItem> = []): void {
   // clear child nodes
   tbody.textContent = '';
-  // TODO: Add Listeners
+
   for (let i = 0; i < itemList.length; i += 1) {
     const { name, _id, isFavorite, tags }: ListItem = itemList[i];
     const entry: HTMLTableRowElement = document.createElement('tr');
-    entry.classList =
-      'hover:bg-gray-200 border-t border-b border-solid border-gray-300';
+    entry.classList.add(
+      'hover:bg-gray-200',
+      'border-t',
+      'border-b',
+      'border-solid',
+      'border-gray-300',
+    );
     entry.dataset['_id'] = _id;
     entry.dataset.name = name;
     const entryBody = `

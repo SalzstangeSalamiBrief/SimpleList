@@ -11,8 +11,8 @@ body {
   position: relative;
 }
 
-.btn--options{
-  color: #0954AB;
+.btn--options {
+  color: #0954ab;
 }
 
 /* .btn--options, */
@@ -47,7 +47,7 @@ main.w-full > div:not(.dialog-container) {
   height: 100%;
 }
 
-#dialog-container dialog{
+#dialog-container dialog {
   position: relative;
   top: 0;
 }
@@ -62,7 +62,6 @@ div.is-hidden,
 .is-hidden {
   display: none;
 }
-
 
 .fav__inner {
   fill: none;
@@ -89,52 +88,58 @@ div.is-hidden,
   top: 2.5rem;
 }
 
-main.main-grid-container{
+main.main-grid-container {
   display: grid;
   grid-template-columns: 50vw;
   row-gap: 0.5rem;
   /* calc(75vh - 2times row-Gap) */
   grid-template-rows: 10vh 7.5vh calc(76vh - 1rem) 5vh;
-  grid-template-areas: 
-  "intro-area"
-  "filter-area"
-  "table-area"
-  "add-btn-area";
+  grid-template-areas:
+    'intro-area'
+    'filter-area'
+    'table-area'
+    'add-btn-area';
   justify-items: center;
   align-items: center;
 }
 
-div.into-container{
+div.into-container {
   grid-area: intro-area;
 }
 
-div.filter-container{
-   grid-area: filter-area;
+div.filter-container {
+  grid-area: filter-area;
 }
 
-div.table-container{
+div.table-container {
   grid-area: table-area;
 }
 
-div.add-container{
+div.add-container {
   grid-area: add-btn-area;
 }
 
-
-thead{
+thead {
   position: sticky;
   top: 0;
   z-index: 1;
   background: white;
 }
 
-.bottom-shadow{
+.bottom-shadow {
   -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow:  0 8px 6px -6px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.05);
   box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.05);
 }
 
-td{
+td {
   height: 57px;
   overflow: hidden;
+}
+
+input#import-file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }

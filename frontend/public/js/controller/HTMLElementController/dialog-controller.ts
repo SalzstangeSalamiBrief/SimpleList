@@ -1,6 +1,10 @@
-const enum PossibleDialogues {
-  openEditDialog = 'AddUpdate',
-  deleteDialog = 'Delete',
+import { clearInnerHTML } from '../../view/util/util-function';
+import createDeleteDialog from '../../view/delete-dialog-renderer';
+import createAddUpdateDialog from '../../view/add-update-dialog-renderer';
+enum PossibleDialogues {
+  updateDialog = 'update',
+  addDialog = 'add',
+  deleteDialog = 'delete',
 }
 
 const dialogContainer = <HTMLDivElement>(
@@ -9,13 +13,6 @@ const dialogContainer = <HTMLDivElement>(
 const dialogAddUpdate = <HTMLDialogElement>(
   document.querySelector('dialog.add-update-dialog')
 );
-const dialogDelete = <HTMLDialogElement>(
-  document.querySelector('dialog.delete-dialog')
-);
-
-const deleteTextSpan = <HTMLSpanElement>(
-  document.querySelector('p.delete-text__id')
-);
 
 export default class DialogHandler {
   private isDialogOpen: boolean;
@@ -23,17 +20,34 @@ export default class DialogHandler {
     this.isDialogOpen = false;
   }
 
-  public openDialog(type: PossibleDialogues, name = '') {
-    dialogContainer.classList.remove('is-hidden');
-    if (type === PossibleDialogues.openEditDialog) {
-      dialogAddUpdate.classList.remove('is-hidden');
-      dialogDelete.classList.add('is-hidden');
-    } else {
-      dialogDelete.classList.remove('is-hidden');
-      dialogAddUpdate.classList.add('is-hidden');
-      deleteTextSpan.textContent = name;
+  public openDialog(type: PossibleDialogues, nameOfItem = '') {
+    const selectedType = type.toLowerCase();
+    console.log(selectedType);
+    if (this.isDialogOpen === false) {
+      clearInnerHTML(dialogContainer);
+      switch (selectedType) {
+        case PossibleDialogues.addDialog:
+          createAddUpdateDialog(selectedType, '');
+          break;
+        case PossibleDialogues.updateDialog:
+          createAddUpdateDialog(selectedType, nameOfItem);
+          break;
+        case PossibleDialogues.deleteDialog:
+          createDeleteDialog(nameOfItem);
+          break;
+      }
+      dialogContainer.classList.remove('is-hidden');
+      this.isDialogOpen = true;
     }
-    this.isDialogOpen = true;
+
+    // dialogContainer.classList.remove('is-hidden');
+    // if (type === PossibleDialogues.openEditDialog) {
+    //   dialogAddUpdate.classList.remove('is-hidden');
+    // } else {
+    //   dialogAddUpdate.classList.add('is-hidden');
+    // document.querySelector('p.delete-text__id').textContent = name;
+    // deleteTextSpan.textContent = name;
+    // }
   }
 
   /**

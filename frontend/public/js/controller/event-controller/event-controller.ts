@@ -1,6 +1,6 @@
 import ListItem from '../../interfaces/list-item';
 
-import Validator from '../../util/validator';
+import Validator from '../util/validator';
 
 import ButtonController from '../HTMLElementController/button-controller';
 import DialogController from '../HTMLElementController/dialog-controller';
@@ -98,7 +98,6 @@ export default class EventController {
       case 'dialog-container':
         if (this.dialogController.getIsDialogOpen()) {
           this.dialogController.closeDialog();
-          this.inputFieldController.resetFormInputFields();
           return;
         }
     }
@@ -154,7 +153,6 @@ export default class EventController {
     if (Validator.validateName(newItem.name)) {
       // check if the tags-array is valid
       if (Validator.validateTagsArray(newItem.tags)) {
-        // todo error-handling for response
         const updatedItem = await this.fetchController.updateEntryOnServer(
           newItem,
         );
@@ -165,7 +163,6 @@ export default class EventController {
           return;
         }
         this.store.updateItem(newItem);
-        this.inputFieldController.resetFormInputFields();
         this.dialogController.closeDialog();
         this.tableRenderer(this.store.getSelectedListItems());
         this.idOfSelectedItem = '';
@@ -211,7 +208,6 @@ export default class EventController {
           this.store.addItem(newItem);
           this.tableRenderer(this.store.getSelectedListItems());
           this.dialogController.closeDialog();
-          this.inputFieldController.resetFormInputFields();
         } catch (err) {
           console.log(err);
         }
@@ -243,9 +239,9 @@ export default class EventController {
    * function for opening the add dialog
    */
   private openAddDialog() {
-    this.buttonController.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
-    this.inputFieldController.setFormTitleText('Add Item');
-    this.dialogController.openDialog('AddUpdate');
+    this.dialogController.openDialog('add');
+    // this.buttonController.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
+    // this.inputFieldController.setFormTitleText('Add Item');
   }
 
   /**
@@ -255,14 +251,17 @@ export default class EventController {
    */
   private prepareUpdateDialog(target) {
     this.idOfSelectedItem = this.loopThroughParentsToGetID(target);
-    this.inputFieldController.prepareUpdateInputs(this.idOfSelectedItem);
-    this.buttonController.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
-    this.buttonController.setUpdateDeleteBtnLabel(
+    // this.inputFieldController.prepareUpdateInputs(this.idOfSelectedItem);
+    // this.buttonController.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
+    // this.buttonController.setUpdateDeleteBtnLabel(
+    //   'update',
+    //   this.store.getItemByID(this.idOfSelectedItem).name,
+    // );
+    // this.inputFieldController.setFormTitleText('Update Item');
+    this.dialogController.openDialog(
       'update',
       this.store.getItemByID(this.idOfSelectedItem).name,
     );
-    this.inputFieldController.setFormTitleText('Update Item');
-    this.dialogController.openDialog('AddUpdate');
   }
 
   /**
@@ -273,10 +272,6 @@ export default class EventController {
     const _id = this.loopThroughParentsToGetID(target);
     const { name }: ListItem = this.store.getItemByID(_id);
     this.idOfSelectedItem = _id;
-    this.buttonController.setUpdateDeleteBtnLabel(
-      'delete',
-      this.store.getItemByID(_id).name,
-    );
     this.dialogController.openDialog('Delete', name);
   }
 
@@ -301,7 +296,6 @@ export default class EventController {
    */
   private cancelDialog() {
     this.dialogController.closeDialog();
-    this.inputFieldController.resetFormInputFields();
     this.idOfSelectedItem = '';
   }
 
