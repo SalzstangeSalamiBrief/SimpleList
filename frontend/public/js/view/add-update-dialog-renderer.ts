@@ -1,5 +1,7 @@
 import { createHTMLElement } from './util/util-function';
 
+import ListItem from '../interfaces/list-item';
+
 enum FormAction {
   add = 'add',
   update = 'update',
@@ -135,7 +137,10 @@ function createButtonContainer(
  * the content will be decided by typeOfInput
  * @param typeOfInput InputSelection
  */
-function createInputContainer(typeOfInput: InputSelection): HTMLDivElement {
+function createInputContainer(
+  typeOfInput: InputSelection,
+  valueOfInput: string = '',
+): HTMLDivElement {
   const selectedTypeOfInput: string = typeOfInput.toLowerCase();
   if (
     selectedTypeOfInput === InputSelection.name ||
@@ -186,6 +191,9 @@ function createInputContainer(typeOfInput: InputSelection): HTMLDivElement {
       required: true,
       pattern: `^[A-Za-z0-9]${selectedTypeOfInput === 'name' ? '{5,}' : '+'}$`,
     };
+    if (valueOfInput !== '') {
+      attributeListInput['value'] = valueOfInput;
+    }
     const inputField = <HTMLInputElement>createHTMLElement({
       type: 'input',
       classList: classListInput,
@@ -203,7 +211,10 @@ function createInputContainer(typeOfInput: InputSelection): HTMLDivElement {
  * Function which creates a form for adding or updating items (based on typeOfAction-param)
  * @param typeOfAction FormAction
  */
-function createForm(typeOfAction: FormAction): HTMLFormElement {
+function createForm(
+  typeOfAction: FormAction,
+  { name = '', tags = [] }: ListItem,
+): HTMLFormElement {
   const selectedTypeOfAction = typeOfAction.toLowerCase();
   if (
     selectedTypeOfAction === FormAction.add ||
@@ -228,9 +239,11 @@ function createForm(typeOfAction: FormAction): HTMLFormElement {
     // create the container for the name and tags input-fields
     const nameInputContainer: HTMLDivElement = createInputContainer(
       InputSelection.name,
+      name,
     );
     const tagsInputContainer: HTMLDivElement = createInputContainer(
       InputSelection.tags,
+      tags.join(' '),
     );
 
     // append container as children
@@ -249,21 +262,32 @@ function createHeading(
   typeOfAction: FormAction,
   nameOfItem: string,
 ): HTMLHeadingElement {
-  const classList: Array<string> = ['text-center', 'form__title', 'mb-5'];
+  const classList: Array<string> = ['text-center', 'mb-5'];
   const attributeList = { id: 'form__title' };
   const textContent: string =
     typeOfAction.toLowerCase() === FormAction.add
       ? 'Add a new Item'
-      : `Update the selected item ${nameOfItem}`;
-  return <HTMLHeadingElement>createHTMLElement({
+      : 'Update the selected item: ';
+  const headingElement = <HTMLHeadingElement>createHTMLElement({
     type: 'h2',
     classList,
     attributeList,
     textContent,
   });
+  if (nameOfItem) {
+    headingElement.appendChild(
+      <HTMLSpanElement>createHTMLElement({
+        type: 'span',
+        classList: ['form__title'],
+        attributeList: {},
+        textContent: nameOfItem,
+      }),
+    );
+  }
+  return headingElement;
 }
 
-export default function (typeOfAction: string, nameOfItem: string) {
+export default function (typeOfAction: string, item: ListItem) {
   if (
     typeOfAction.toLowerCase() === FormAction.add ||
     typeOfAction.toLowerCase() === FormAction.update
@@ -290,14 +314,14 @@ export default function (typeOfAction: string, nameOfItem: string) {
     // create heading
     const heading: HTMLHeadingElement = createHeading(
       FormAction[typeOfAction],
-      nameOfItem,
+      item.name,
     );
     // create form
-    const form: HTMLFormElement = createForm(FormAction[typeOfAction]);
+    const form: HTMLFormElement = createForm(FormAction[typeOfAction], item);
     // create button-container
     const buttonContainer: HTMLDivElement = createButtonContainer(
       FormAction[typeOfAction],
-      nameOfItem,
+      item.name,
     );
     // append children
     dialog.appendChild(heading);

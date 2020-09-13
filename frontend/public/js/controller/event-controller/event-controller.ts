@@ -2,12 +2,10 @@ import ListItem from '../../interfaces/list-item';
 
 import Validator from '../util/validator';
 
-import ButtonController from '../HTMLElementController/button-controller';
 import DialogController from '../HTMLElementController/dialog-controller';
 import InputFieldController from '../HTMLElementController/input-field-controller';
 
 export default class EventController {
-  private buttonController;
   private dialogController;
   private inputFieldController;
   private tableRenderer;
@@ -17,7 +15,6 @@ export default class EventController {
   private idOfSelectedItem: string;
   private favClassListRegex: RegExp;
   constructor(tableRenderer, store, errorController, fetchController) {
-    this.buttonController = new ButtonController();
     this.dialogController = new DialogController();
     this.inputFieldController = new InputFieldController();
     this.tableRenderer = tableRenderer;
@@ -239,7 +236,7 @@ export default class EventController {
    * function for opening the add dialog
    */
   private openAddDialog() {
-    this.dialogController.openDialog('add');
+    this.dialogController.openDialog('add', {});
     // this.buttonController.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
     // this.inputFieldController.setFormTitleText('Add Item');
   }
@@ -251,16 +248,9 @@ export default class EventController {
    */
   private prepareUpdateDialog(target) {
     this.idOfSelectedItem = this.loopThroughParentsToGetID(target);
-    // this.inputFieldController.prepareUpdateInputs(this.idOfSelectedItem);
-    // this.buttonController.toggleFormButtons('btnSubmitAdd', 'btnSubmitUpdate');
-    // this.buttonController.setUpdateDeleteBtnLabel(
-    //   'update',
-    //   this.store.getItemByID(this.idOfSelectedItem).name,
-    // );
-    // this.inputFieldController.setFormTitleText('Update Item');
     this.dialogController.openDialog(
       'update',
-      this.store.getItemByID(this.idOfSelectedItem).name,
+      this.store.getItemByID(this.idOfSelectedItem),
     );
   }
 

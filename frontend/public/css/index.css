@@ -56,6 +56,10 @@ main.w-full > div:not(.dialog-container) {
   font-weight: 600;
 }
 
+span.form__title {
+  color: #777;
+}
+
 div#dialog-container.is-hidden,
 dialog.is-hidden,
 div.is-hidden,

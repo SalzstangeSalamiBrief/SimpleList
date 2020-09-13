@@ -1,6 +1,9 @@
 import { clearInnerHTML } from '../../view/util/util-function';
 import createDeleteDialog from '../../view/delete-dialog-renderer';
 import createAddUpdateDialog from '../../view/add-update-dialog-renderer';
+
+import ListItem from '../../interfaces/list-item';
+
 enum PossibleDialogues {
   updateDialog = 'update',
   addDialog = 'add',
@@ -20,34 +23,29 @@ export default class DialogHandler {
     this.isDialogOpen = false;
   }
 
-  public openDialog(type: PossibleDialogues, nameOfItem = '') {
-    const selectedType = type.toLowerCase();
-    console.log(selectedType);
+  /**
+   * Function which opens a dialog based on the passed type of dialog
+   * @param type PossibleDialogues
+   * @param item ListItem
+   */
+  public openDialog(typeofDialog: PossibleDialogues, item: ListItem) {
+    const selectedType = typeofDialog.toLowerCase();
     if (this.isDialogOpen === false) {
       clearInnerHTML(dialogContainer);
       switch (selectedType) {
         case PossibleDialogues.addDialog:
-          createAddUpdateDialog(selectedType, '');
+          createAddUpdateDialog(selectedType, item);
           break;
         case PossibleDialogues.updateDialog:
-          createAddUpdateDialog(selectedType, nameOfItem);
+          createAddUpdateDialog(selectedType, item);
           break;
         case PossibleDialogues.deleteDialog:
-          createDeleteDialog(nameOfItem);
+          createDeleteDialog(item.name);
           break;
       }
       dialogContainer.classList.remove('is-hidden');
       this.isDialogOpen = true;
     }
-
-    // dialogContainer.classList.remove('is-hidden');
-    // if (type === PossibleDialogues.openEditDialog) {
-    //   dialogAddUpdate.classList.remove('is-hidden');
-    // } else {
-    //   dialogAddUpdate.classList.add('is-hidden');
-    // document.querySelector('p.delete-text__id').textContent = name;
-    // deleteTextSpan.textContent = name;
-    // }
   }
 
   /**
@@ -60,9 +58,5 @@ export default class DialogHandler {
 
   public getIsDialogOpen(): boolean {
     return this.isDialogOpen;
-  }
-
-  public setIsDialogOpen(b: boolean) {
-    this.isDialogOpen = b;
   }
 }

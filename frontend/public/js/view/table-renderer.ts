@@ -1,3 +1,5 @@
+import { createHTMLElement } from './util/util-function';
+
 import ListItem from '../interfaces/list-item';
 
 const tbody: HTMLElement = document.querySelector('tbody');
@@ -63,16 +65,22 @@ export default function (itemList: Array<ListItem> = []): void {
 
   for (let i = 0; i < itemList.length; i += 1) {
     const { name, _id, isFavorite, tags }: ListItem = itemList[i];
-    const entry: HTMLTableRowElement = document.createElement('tr');
-    entry.classList.add(
+    const classListRow = [
       'hover:bg-gray-200',
       'border-t',
       'border-b',
       'border-solid',
       'border-gray-300',
-    );
+    ];
+    const entry = <HTMLTableRowElement>createHTMLElement({
+      type: 'tr',
+      classList: classListRow,
+      attributeList: {},
+      textContent: '',
+    });
     entry.dataset['_id'] = _id;
     entry.dataset.name = name;
+
     const entryBody = `
       <td class="py-2">
         <button class="flex justify-center item-center w-12 btn-fav-img"

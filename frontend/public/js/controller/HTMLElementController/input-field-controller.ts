@@ -21,19 +21,6 @@ export default class FormHandler {
   }
 
   /**
-   * Open the update-form and pre-insert the name- and tagsInput
-   * @param _id string || number
-   */
-  public prepareUpdateInputs(_id: string = '') {
-    const { name, tags }: ListItem = this.store.getItemByID(_id);
-    // check if name and tags exist
-    if (name && tags) {
-      // set value in the input fields
-      this.nameInput.value = name;
-      this.tagsInput.value = tags.join(' ').trim();
-    }
-  }
-  /**
    * this function grabs the value of the tagsInput-Input and converts this value
    * intro an array of strings which represents the tags-array
    */
