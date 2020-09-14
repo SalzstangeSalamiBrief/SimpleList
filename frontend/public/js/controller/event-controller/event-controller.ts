@@ -83,6 +83,9 @@ export default class EventController {
       case 'open-add-dialog':
         this.openAddDialog();
         return;
+      case 'open-export-dialog':
+        this.openExportDialog();
+        return;
       case 'submit-add-form':
         await this.submitAddForm();
         return;
@@ -91,6 +94,9 @@ export default class EventController {
         return;
       case 'submit-delete-dialog':
         await this.submitDeleteDialog();
+        return;
+      case 'export-list':
+        await this.exportList();
         return;
       case 'dialog-container':
         if (this.dialogController.getIsDialogOpen()) {
@@ -298,5 +304,20 @@ export default class EventController {
     );
     this.store.filterByTags(tagsToFilter);
     this.tableRenderer(this.store.getSelectedListItems());
+  }
+
+  /**
+   * function which init the dl of the csv file for exporting
+   */
+  private async exportList() {
+    await this.fetchController.initDownloadOfCSV();
+    this.cancelDialog();
+  }
+
+  /**
+   * function to open the export-dialog
+   */
+  private openExportDialog() {
+    this.dialogController.openDialog('export');
   }
 }

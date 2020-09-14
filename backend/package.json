@@ -10,7 +10,8 @@
     "start": "node ./dist/app.js",
     "removeDist": "rm -rf ./dist/",
     "database:setup": "node ./src/database/seeder.js",
-    "copyDB": "Xcopy /E /I .\\src\\database .\\dist\\database /Y"
+    "copyDB": "Xcopy /E /I .\\src\\database .\\dist\\database /Y",
+    "copyPublic": "Xcopy /E /I .\\src\\public .\\dist\\public /Y"
   },
   "author": "SalzstangeSalamiBrief",
   "license": "MIT",

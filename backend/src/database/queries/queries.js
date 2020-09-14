@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 // register schemas
-require("../schemas/list-item");
+require('../schemas/list-item');
 
-const ListItem = mongoose.model("listItems");
+const ListItem = mongoose.model('listItems');
 
 function createListItem(item) {
   const newListItem = new ListItem(item);
@@ -10,11 +10,11 @@ function createListItem(item) {
 }
 
 function findAllListItems() {
-  return ListItem.find({}).select("-__v");
+  return ListItem.find({}).select('-__v');
 }
 
 function findListItemByID(_id) {
-  return ListItem.findOne({ _id }).select("-__v");
+  return ListItem.findOne({ _id }).select('-__v');
 }
 
 function updateListItem({ _id, name, tags = [], isFavorite = false }) {

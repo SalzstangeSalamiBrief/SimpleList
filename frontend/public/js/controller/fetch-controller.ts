@@ -3,11 +3,11 @@ import ListItem from '../interfaces/list-item';
 export default class FetchHandler {
   private backendURL;
   constructor() {
-    this.backendURL = 'http://127.0.0.1:8081/api/list-item/';
+    this.backendURL = 'http://127.0.0.1:8081';
   }
   public async deleteEntryOnServer(_id: string) {
     try {
-      await fetch(this.backendURL, {
+      await fetch(`${this.backendURL}/api/list-item/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ export default class FetchHandler {
       return null;
     }
     try {
-      const response = await fetch(this.backendURL, {
+      const response = await fetch(`${this.backendURL}/api/list-item/`, {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -51,7 +51,7 @@ export default class FetchHandler {
     tags: Array<string>,
   ): Promise<ListItem> | null {
     try {
-      const response = await fetch(this.backendURL, {
+      const response = await fetch(`${this.backendURL}/api/list-item/`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -71,7 +71,7 @@ export default class FetchHandler {
   }
   public async getAllEntriesFromServer(): Promise<Array<ListItem>> {
     try {
-      const response = await fetch(this.backendURL, {
+      const response = await fetch(`${this.backendURL}/api/list-item/`, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -87,5 +87,38 @@ export default class FetchHandler {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  public async initDownloadOfCSV() {
+    try {
+      const response = await fetch(`${this.backendURL}/api/list`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status === 200) {
+        const { route: routeForCSVFile } = await response.json();
+        console.log(routeForCSVFile);
+        this.downloadCSVFile(routeForCSVFile);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  /**
+   * create an anchor-tag, add the dl-route as href, click the a-tag and remove it
+   * @param routeForCSVFile string
+   */
+  private downloadCSVFile(routeForCSVFile: string) {
+    const a: HTMLAnchorElement = document.createElement('a');
+    a.style.display = 'none';
+    console.log(`${this.backendURL}${routeForCSVFile}`);
+    a.href = `${this.backendURL}${routeForCSVFile}`;
+    a.setAttribute('download', 'simpleListExportedCSV');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 }

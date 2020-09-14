@@ -1,6 +1,6 @@
 {
   "watch": ["./src"],
-  "ignore": [ ".git", "node_modules/**/node_modules"],
+  "ignore": [".git", "node_modules/**/node_modules"],
   "ext": "ts,js",
-  "exec": "npm run copyDB && npm run build && npm run start"
+  "exec": "npm run copyDB && npm run copyPublic &&npm run build && npm run start"
 }
