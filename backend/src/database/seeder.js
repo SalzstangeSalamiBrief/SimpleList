@@ -1,8 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const ListItemSchema = require("./schemas/list-item");
-
-require("dotenv").config();
+require('dotenv').config();
 
 function connectToDB() {
   return mongoose
@@ -11,14 +9,7 @@ function connectToDB() {
       useCreateIndex: true,
       useUnifiedTopology: true,
     })
-    .then(() => {
-      const testItem = new ListItemSchema({
-        name: 687459,
-        tags: ["a", "b"],
-      });
-      return testItem.save();
-    })
-    .then(() => console.log("connected to mongoDB"))
+    .then(() => console.log('connected to mongoDB'))
     .catch((err) => console.error(err));
 }
 

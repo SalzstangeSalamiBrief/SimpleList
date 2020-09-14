@@ -68,8 +68,9 @@
               accept=".csv"
             />
           </form>
-          <button>Export</button>
+          <button class="btn--options" id="open-export-dialog">Export</button>
         </div>
+
         <div class="flex justify-end content-center">
           <button
             class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options"
@@ -81,6 +82,7 @@
       </div>
     </main>
     <!-- dialog -->
+    <!-- todo: add is-hidden class -->
     <div
       id="dialog-container"
       class="dialog-container w-full flex flex-col h-full items-center is-hidden"

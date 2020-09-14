@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -21,4 +21,4 @@ const ListItemSchema = new Schema({
 
 ListItemSchema.index({ _id: 1, name: 1 });
 
-module.exports = mongoose.model("listItems", ListItemSchema);
+module.exports = mongoose.model('listItems', ListItemSchema);
