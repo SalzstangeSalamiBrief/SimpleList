@@ -25,10 +25,15 @@ function deleteListItem(_id) {
   return ListItem.deleteOne({ _id });
 }
 
+function clearDB(){
+  return ListItem.deleteMany({});
+}
+
 module.exports = {
   createListItem,
   findAllListItems,
   findListItemByID,
   updateListItem,
   deleteListItem,
+  clearDB
 };

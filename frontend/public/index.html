@@ -52,22 +52,8 @@
       </div>
       <!-- add area -->
       <div class="w-full add-container flex justify-between content-center">
-        <div class="flex justify-center content-center">
-          <form
-            id="import-form"
-            class="overflow-hidden relative flex justify-center content-center mr-4"
-          >
-            <label for="import-file-input" class="is-hidden"
-              >Select a file to import</label
-            >
-            <button id="import-button">Import</button>
-            <input
-              type="file"
-              name="import-file-input"
-              id="import-file-input"
-              accept=".csv"
-            />
-          </form>
+        <div class="flex justify-center content-center">     
+          <button class="btn--options" id="open-import-dialog">Import</button>
           <button class="btn--options" id="open-export-dialog">Export</button>
         </div>
 
@@ -85,8 +71,17 @@
     <!-- todo: add is-hidden class -->
     <div
       id="dialog-container"
-      class="dialog-container w-full flex flex-col h-full items-center is-hidden"
-    ></div>
+      class="dialog-container w-full flex flex-col h-full items-center"
+    >
+    <dialog class="w-1/5 flex flex-col justify-center items-center shadow-lg
+    border-solid border-gray-600 bg-white p-4 export-dialog">
+      <form action="#" id="import-form">
+        <input type="file" accept=".csv" name="file-import-input" id="file-import-input">
+        <button id="submit-file-import-form">Submit</button>
+      </form>
+    </dialog>>
+
+  </div>
     <!-- error notification -->
     <div
       class="w-1/2 flex flex-col justify-center items-center border-solid border-2 border-red-600 shadow-lg bg-white px-4 py-4 error-container is-hidden"

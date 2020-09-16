@@ -1,7 +1,21 @@
 import { findAllListItems, createListItem } from '../database/queries/queries';
-import { parseCSVFromListItemArray, openCSVFile } from '../util/csv-handler';
+import { parseCSVFromListItemArray, parseListItemArrayFromCSV, } from '../util/csv-handler';
+export async function importList({ request, response }, next) {
+  let status = 400;
+  const file = request.files.file;
 
-export function importList() {}
+  if (file.type === 'application/vnd.ms-excel') {
+    try {
+      await parseListItemArrayFromCSV(file.path);
+      status = 200;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  response.status = status;
+  next();
+}
 
 export async function exportList({ request, response }, next) {
   let responseObject = {};

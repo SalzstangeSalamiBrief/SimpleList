@@ -1,13 +1,17 @@
 import ListItem from '../interfaces/list-item';
 
 export default class FetchHandler {
-  private backendURL;
+  private backendURL: string;
+  private csvRoutes: string;
+  private listItemRoute: string;
   constructor() {
     this.backendURL = 'http://127.0.0.1:8081';
+    this.csvRoutes = '/list'
+    this.listItemRoute = '/list-item/'
   }
   public async deleteEntryOnServer(_id: string) {
     try {
-      await fetch(`${this.backendURL}/api/list-item/`, {
+      await fetch(`${this.backendURL}/api${this.listItemRoute}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +32,7 @@ export default class FetchHandler {
       return null;
     }
     try {
-      const response = await fetch(`${this.backendURL}/api/list-item/`, {
+      const response = await fetch(`${this.backendURL}/api${this.listItemRoute}`, {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -51,7 +55,7 @@ export default class FetchHandler {
     tags: Array<string>,
   ): Promise<ListItem> | null {
     try {
-      const response = await fetch(`${this.backendURL}/api/list-item/`, {
+      const response = await fetch(`${this.backendURL}/api${this.listItemRoute}`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -71,7 +75,7 @@ export default class FetchHandler {
   }
   public async getAllEntriesFromServer(): Promise<Array<ListItem>> {
     try {
-      const response = await fetch(`${this.backendURL}/api/list-item/`, {
+      const response = await fetch(`${this.backendURL}/api${this.listItemRoute}`, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -91,7 +95,7 @@ export default class FetchHandler {
 
   public async initDownloadOfCSV() {
     try {
-      const response = await fetch(`${this.backendURL}/api/list`, {
+      const response = await fetch(`${this.backendURL}/api${this.csvRoutes}`, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -120,5 +124,23 @@ export default class FetchHandler {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  }
+
+  public async postImportFile(fileToUpload){
+    console.log(fileToUpload.type);
+    try {
+      const fileData = new FormData();
+      fileData.append('file', fileToUpload)
+      console.log(fileData)
+      const response = await fetch(`${this.backendURL}/api${this.csvRoutes}`, {
+        method: 'POST',
+        mode: 'cors',
+        body: fileData,
+      });
+      return undefined;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
   }
 }

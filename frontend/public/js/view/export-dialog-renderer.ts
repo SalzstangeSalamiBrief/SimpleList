@@ -15,8 +15,7 @@ function createExportDialog(): HTMLDialogElement {
     'border-solid',
     'border-gray-600',
     'bg-white',
-    'px-4',
-    'py-4',
+    'p-4',
     'export-dialog',
   ];
   return <HTMLDialogElement>createHTMLElement({

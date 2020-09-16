@@ -1,7 +1,8 @@
 import * as Koa from 'koa';
 
 import * as KoaRouter from '@koa/router';
-import * as bodyParser from 'koa-bodyparser';
+// import * as bodyParser from 'koa-bodyparser';
+import * as koaBody from 'koa-body';
 import * as mongoose from 'mongoose';
 import * as serve from 'koa-static';
 import * as path from 'path';
@@ -21,7 +22,8 @@ function startServer() {
   const api = new KoaRouter();
   // Add middlewares
   app.use(cors());
-  app.use(bodyParser());
+  // app.use(bodyParser());
+  app.use(koaBody({ multipart: true }));
   app.use(Logger);
   app.use(Blocklist);
   // serve index file via koa-static

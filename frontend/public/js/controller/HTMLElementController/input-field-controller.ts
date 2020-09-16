@@ -6,6 +6,7 @@ export default class FormHandler {
   private tagsInput: HTMLInputElement;
   private formTitle: HTMLHeadingElement;
   private filterInput: HTMLInputElement;
+  private importFileInput: HTMLInputElement
   constructor() {
     this.store = undefined;
     this.nameInput = <HTMLInputElement>(
@@ -18,6 +19,7 @@ export default class FormHandler {
     this.filterInput = <HTMLInputElement>(
       document.querySelector('input[name="tag-search-input"]')
     );
+    this.importFileInput = <HTMLInputElement>document.querySelector('input#file-import-input')
   }
 
   /**
@@ -58,5 +60,9 @@ export default class FormHandler {
     if (store !== undefined) {
       this.store = store;
     }
+  }
+
+  publicGetFileForImport(){
+    return this.importFileInput.files[0];
   }
 }

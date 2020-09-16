@@ -28,6 +28,7 @@ export default class EventController {
     );
     this.addClickEventListenerToBody();
     this.addKeyUpEventHandlerToBody();
+    this.addInputSubmitHandler();
   }
   private addClickEventListenerToBody() {
     document.querySelector('body').addEventListener('click', (e: Event) => {
@@ -38,6 +39,13 @@ export default class EventController {
   private addKeyUpEventHandlerToBody() {
     document.querySelector('body').addEventListener('keyup', (e: Event) => {
       this.keyUpHandler.call(this, e);
+    });
+  }
+
+  private addInputSubmitHandler(){
+    document.querySelector('#import-form').addEventListener('submit', (e: Event) =>{
+      e.preventDefault();
+      this.addImportSubmitHandler.call(this, e);
     });
   }
 
@@ -104,6 +112,13 @@ export default class EventController {
           return;
         }
     }
+  }
+
+  private async addImportSubmitHandler(e){
+    // allow querySelector here, because this function should not be 
+        // e.preventDefault();
+        await this.fetchController.postImportFile(this.inputFieldController.publicGetFileForImport());
+    console.log('send input');
   }
 
   private async keyUpHandler({ target: { tagName, name }, keyCode }) {
