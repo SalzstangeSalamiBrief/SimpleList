@@ -1,9 +1,9 @@
 import { findAllListItems } from '../database/queries/queries';
 import { parseCSVFromListItemArray, parseListItemArrayFromCSV } from '../util/csv-handler';
 
-export async function importList({ request, response }, next) {
+export async function importList(req, res): Promise<void> {
 	let status = 400;
-	const { file } = request.files;
+	const { file } = req.files;
 
 	if (file.type === 'application/vnd.ms-excel') {
 		try {
@@ -14,12 +14,11 @@ export async function importList({ request, response }, next) {
 		}
 	}
 
-	response.status = status;
-	next();
+	res.status(status).end();
 }
 
-export async function exportList({ request, response }, next) {
-	const responseObject = {};
+export async function exportList(req, res): Promise<void> {
+	const responseObject = { err: '', route: '' };
 	let status;
 	try {
 		const allListItems = await findAllListItems();
@@ -31,7 +30,5 @@ export async function exportList({ request, response }, next) {
 		status = 400;
 		responseObject.err = err;
 	}
-	response.status = status;
-	response.body = responseObject;
-	next();
+	res.status(status).json(responseObject);
 }

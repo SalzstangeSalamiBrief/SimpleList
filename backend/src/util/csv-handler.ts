@@ -5,10 +5,11 @@ import { createListItem, clearDB } from '../database/queries/queries';
 // todo error with import
 
 /**
- * function which takes an Array of ListItems and parse it into an exportedData.csv file in ./csv-output/ folder
+ * function which takes an Array of ListItems
+ * and parse it into an exportedData.csv file in ./csv-output/ folder
  * @param arr Array<ListItem>
  */
-export function parseCSVFromListItemArray(arr: Array<ListItem>) {
+export function parseCSVFromListItemArray(arr: Array<ListItem>): Promise<void> {
 	return new Promise((resolve, reject) => {
 		const writeStream: fs.WriteStream = fs.createWriteStream(
 			path.resolve(__dirname, '../public/exportedData.csv'),
@@ -38,9 +39,10 @@ export function parseCSVFromListItemArray(arr: Array<ListItem>) {
 }
 
 /**
- * Function which takes a uploaded filepath, reads the file at the filepath and fills the database with corresponding values
+ * Function which takes a uploaded filepath,
+ * reads the file at the filepath and fills the database with corresponding values
  */
-export async function parseListItemArrayFromCSV(filepath: string) {
+export async function parseListItemArrayFromCSV(filepath: string): Promise<void> {
 	const readStream = fs.createReadStream(filepath, { encoding: 'utf8' });
 	let fileData = '';
 	readStream.on('data', (chunk) => {

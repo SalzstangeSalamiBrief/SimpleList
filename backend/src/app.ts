@@ -1,14 +1,10 @@
-import * as Koa from 'koa';
+import * as Express from 'express';
 
-import * as KoaRouter from '@koa/router';
-// import * as bodyParser from 'koa-bodyparser';
-import * as koaBody from 'koa-body';
+import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
-import * as serve from 'koa-static';
-import * as path from 'path';
-import * as cors from '@koa/cors';
-
-import Logger from './middleware/logger';
+import * as cors from 'cors';
+import * as Logger from 'morgan';
+import CorsOptions from './config/CorsConfig';
 import Blocklist from './middleware/blocklist';
 
 import 'dotenv/config';
@@ -18,20 +14,16 @@ import ListRouter from './routes/list-router';
 const port = process.env.PORT;
 
 function startServer() {
-	const app = new Koa();
-	const api = new KoaRouter();
+	const app = Express();
 	// Add middlewares
-	app.use(cors());
-	// app.use(bodyParser());
-	app.use(koaBody({ multipart: true }));
-	app.use(Logger);
-	app.use(Blocklist);
+	app.use(cors(CorsOptions));
+	app.use(Logger('combined'));
+	app.use(Express.static('./src/public'));
+	app.use(bodyParser.urlencoded({ extended: false }));
+	app.use(bodyParser.json());
 	// serve index file via koa-static
-	// TODO: http://127.0.0.1:8081/exportedData.csv
-	app.use(serve(path.resolve(__dirname, './public')));
-	api.use('/api/list-item', ListItemRouter.routes());
-	api.use('/api/list', ListRouter.routes());
-	app.use(api.routes());
+	app.use('/api/list-item', Blocklist, ListItemRouter);
+	app.use('/api/list', Blocklist, ListRouter);
 
 	// start server
 	app.listen(process.env.PORT);

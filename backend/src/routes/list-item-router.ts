@@ -1,13 +1,14 @@
-import * as Router from '@koa/router';
+import { Router } from 'express';
 import * as Controller from './list-item-controller';
 
-const router = new Router();
+const router = Router();
 
-router
-	.get('/', Controller.getAll)
-	.get('/:_id', Controller.getListItem)
-	.post('/', Controller.createNewListItem)
-	.put('/', Controller.updateSelectedListItem)
-	.del('/', Controller.deleteSelectedListItem);
+router.route('/')
+	.get(Controller.getAll)
+	.post(Controller.createNewListItem)
+	.put(Controller.updateSelectedListItem)
+	.delete(Controller.deleteSelectedListItem);
+
+router.route('/:_id').get(Controller.getListItem);
 
 export default router;

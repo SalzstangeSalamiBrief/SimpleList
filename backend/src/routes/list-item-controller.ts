@@ -9,11 +9,11 @@ import {
 import ListItem from '../interfaces/list-item';
 
 interface ResponseBody {
-  err: any;
-  succ: any;
+  err: unknown;
+  succ: unknown;
 }
 
-export async function getAll(ctx, next) {
+export async function getAll(req, res): Promise<void> {
 	const responseObject: ResponseBody = { err: '', succ: '' };
 	let status = 404;
 	try {
@@ -24,13 +24,11 @@ export async function getAll(ctx, next) {
 		console.log(err);
 		responseObject.err = err;
 	}
-	ctx.response.status = status;
-	ctx.response.body = responseObject;
-	next();
+	res.status(status).json(responseObject);
 }
 
-export async function getListItem(ctx, next) {
-	const _idForSearch = String(ctx.request.params._id);
+export async function getListItem(req, res): Promise<void> {
+	const _idForSearch = String(req.params._id);
 	const responseObject: ResponseBody = { err: '', succ: '' };
 	let status = 404;
 	if (_idForSearch && typeof _idForSearch === 'string') {
@@ -44,14 +42,12 @@ export async function getListItem(ctx, next) {
 	} else {
 		responseObject.err = 'Invalid name passed';
 	}
-	ctx.response.status = status;
-	ctx.response.body = responseObject;
-	next();
+	res.status(status).json(responseObject);
 }
 
 // todo checks for body
-export async function createNewListItem(ctx, next) {
-	const newListItem: ListItem = ctx.request.body;
+export async function createNewListItem(req, res): Promise<void> {
+	const newListItem: ListItem = req.body;
 	newListItem.name = String(newListItem.name);
 	let status = 400;
 	const responseObject: ResponseBody = { err: '', succ: '' };
@@ -74,13 +70,11 @@ export async function createNewListItem(ctx, next) {
 	} else {
 		responseObject.err = 'item already exists';
 	}
-	ctx.response.status = status;
-	ctx.response.body = responseObject;
-	next();
+	res.status(status).json(responseObject);
 }
 
-export async function deleteSelectedListItem(ctx, next) {
-	const itemToDelete = String(ctx.request.body._id);
+export async function deleteSelectedListItem(req, res): Promise<void> {
+	const itemToDelete = String(req.body._id);
 	let status = 400;
 	const responseObject: ResponseBody = { err: '', succ: '' };
 	if (typeof itemToDelete === 'string') {
@@ -93,19 +87,17 @@ export async function deleteSelectedListItem(ctx, next) {
 			responseObject.err = err;
 		}
 	}
-	ctx.response.status = status;
-	ctx.response.body = responseObject;
-	next();
+	res.status(status).json(responseObject);
 }
 
-export async function updateSelectedListItem(ctx, next) {
-	const { body } = ctx.request;
+export async function updateSelectedListItem(req, res): Promise<void> {
+	const { body } = req;
 	let status = 400;
 	const responseObject: ResponseBody = { err: '', succ: '' };
 	if (
 		body.name
     && body.tags
-    && typeof body.isFavorite !== undefined
+    && typeof body.isFavorite !== 'undefined'
     && body._id
 	) {
 		try {
@@ -122,7 +114,5 @@ export async function updateSelectedListItem(ctx, next) {
 		responseObject.err = 'corrupted params passed';
 	}
 
-	ctx.response.status = status;
-	ctx.response.body = responseObject;
-	next();
+	res.status(status).json(responseObject);
 }
