@@ -1,8 +1,8 @@
-import * as Router from '@koa/router';
+import { Router } from 'express';
 import * as Controller from './list-controller';
 
-const router = new Router();
+const router = Router();
 
-router.get('/', Controller.exportList).post('/', Controller.importList);
+router.route('/').get(Controller.exportList).post(Controller.importList);
 
 export default router;

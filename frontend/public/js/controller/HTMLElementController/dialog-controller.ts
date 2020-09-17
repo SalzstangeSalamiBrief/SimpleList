@@ -15,14 +15,12 @@ enum PossibleDialogues {
 const dialogContainer = <HTMLDivElement>(
   document.querySelector('div#dialog-container')
 );
-const dialogAddUpdate = <HTMLDialogElement>(
-  document.querySelector('dialog.add-update-dialog')
-);
 
 export default class DialogHandler {
   private isDialogOpen: boolean;
+
   constructor() {
-    this.isDialogOpen = false;
+  	this.isDialogOpen = false;
   }
 
   /**
@@ -30,38 +28,40 @@ export default class DialogHandler {
    * @param type PossibleDialogues
    * @param item ListItem
    */
-  public openDialog(typeofDialog: PossibleDialogues, item: ListItem) {
-    const selectedType = typeofDialog.toLowerCase();
-    if (this.isDialogOpen === false) {
-      clearInnerHTML(dialogContainer);
-      switch (selectedType) {
-        case PossibleDialogues.addDialog:
-          createAddUpdateDialog(selectedType, item);
-          break;
-        case PossibleDialogues.updateDialog:
-          createAddUpdateDialog(selectedType, item);
-          break;
-        case PossibleDialogues.deleteDialog:
-          createDeleteDialog(item.name);
-          break;
-        case PossibleDialogues.exportDialog:
-          createExportDialog();
-          break;
-      }
-      dialogContainer.classList.remove('is-hidden');
-      this.isDialogOpen = true;
-    }
+  public openDialog(typeofDialog: PossibleDialogues, item: ListItem): void {
+  	const selectedType = typeofDialog.toLowerCase();
+  	if (this.isDialogOpen === false) {
+  		clearInnerHTML(dialogContainer);
+  		switch (selectedType) {
+  		case PossibleDialogues.addDialog:
+  			createAddUpdateDialog(selectedType, item);
+  			break;
+  		case PossibleDialogues.updateDialog:
+  			createAddUpdateDialog(selectedType, item);
+  			break;
+  		case PossibleDialogues.deleteDialog:
+  			createDeleteDialog(item.name);
+  			break;
+  		case PossibleDialogues.exportDialog:
+  			createExportDialog();
+  			break;
+  		default:
+  			break;
+  		}
+  		dialogContainer.classList.remove('is-hidden');
+  		this.isDialogOpen = true;
+  	}
   }
 
   /**
    * close the active dialog with adding the is-hidden class
    */
-  public closeDialog() {
-    dialogContainer.classList.add('is-hidden');
-    this.isDialogOpen = false;
+  public closeDialog(): void {
+  	dialogContainer.classList.add('is-hidden');
+  	this.isDialogOpen = false;
   }
 
   public getIsDialogOpen(): boolean {
-    return this.isDialogOpen;
+  	return this.isDialogOpen;
   }
 }

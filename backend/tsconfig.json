@@ -10,7 +10,7 @@
     },
     "baseUrl": "types",
     "typeRoots": ["types"],
-    "types": ["node", "koa", "koa-bodyparser", "koa__router", "mongoose"]
+    "types": ["node", "mongoose"]
   },
   "include": [
     "src/**/*", "src/public"
