@@ -142,6 +142,31 @@ export default class Store {
   }
 
   /**
+	 * Function which inits the data of the store and renders the store
+	 * @param fetchController FetchController
+	 * @param errorController ErrorController
+	 * @param tableRenderer TableController
+	 */
+  public async initOnSideLoad(fetchController, errorController, tableRenderer): Promise<void> {
+  	// fetch all ListItems from the server
+  	const initListEntries = <Array<ListItem>>(
+			await fetchController.getAllEntriesFromServer()
+		);
+  	// if the response is null, then display an error
+  	if (initListEntries === null) {
+  		return errorController.setErrorMessage(
+  			'An error happened on loading the content. Please refresh the site.',
+  		);
+  	}
+  	// add each item in initListEntries to the store
+  	for (let i = 0; i < initListEntries.length; i += 1) {
+  		this.addItem(initListEntries[i]);
+  	}
+  	// render stable
+  	return tableRenderer(this.getSelectedListItems());
+  }
+
+  /**
    * delete an entry from the allListItems-Array and re-sort the selectedListItems Array
    * @param _id string
    */

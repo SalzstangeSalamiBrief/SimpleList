@@ -1,4 +1,5 @@
 import { createHTMLElement } from './util/util-function';
+import createDialogElement from './util/dialog-container-creator';
 
 import ListItem from '../interfaces/list-item';
 
@@ -290,25 +291,8 @@ export default function (typeOfAction: string, item: ListItem) {
 		typeOfAction.toLowerCase() === FormAction.add
     || typeOfAction.toLowerCase() === FormAction.update
 	) {
-		// create dialog
-		const dialogClassList: Array<string> = [
-			'w-1/2',
-			'flex',
-			'flex-col',
-			'justify-center',
-			'items-center',
-			'shadow-lg',
-			'bg-white',
-			'px-4',
-			'py-4',
-			'add-update-dialog',
-		];
-		const dialog = <HTMLDialogElement>createHTMLElement({
-			type: 'dialog',
-			classList: dialogClassList,
-			attributeList: {},
-			textContent: '',
-		});
+		const dialog = <HTMLDialogElement>createDialogElement(['Add-update-dialog'], 'large');
+
 		// create heading
 		const heading: HTMLHeadingElement = createHeading(
 			FormAction[typeOfAction],
