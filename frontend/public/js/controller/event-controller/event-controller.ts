@@ -144,6 +144,8 @@ export default class EventController {
   				return;
   			case 'dialog__tags':
   				await this.submitUpdateForm();
+
+  			default:
   			}
   		}
   	}
@@ -253,6 +255,8 @@ export default class EventController {
    * delete the selected entry in the list-store and on the backend-server
    */
   private async submitDeleteDialog() {
+  	console.log(this.idOfSelectedItem);
+  	console.log('-------');
   	await this.fetchController.deleteEntryOnServer(this.idOfSelectedItem);
   	this.store.deleteItemByID(this.idOfSelectedItem);
   	this.dialogController.closeDialog();
@@ -265,13 +269,12 @@ export default class EventController {
    */
   private openAddDialog() {
   	this.dialogController.openDialog('add', {});
-  	// this.buttonController.toggleFormButtons('btnSubmitUpdate', 'btnSubmitAdd');
-  	// this.inputFieldController.setFormTitleText('Add Item');
   }
 
   /**
    * function for preparing the update-dialog
-   * set idOfSelectedItem to the id of the target and load the corresponding data in the input-fields
+   * set idOfSelectedItem to the id of the target
+	 *  and load the corresponding data in the input-fields
    * @param target Button
    */
   private prepareUpdateDialog(target) {
@@ -283,7 +286,8 @@ export default class EventController {
   }
 
   /**
-   * prepare the delete dialog by setting idOfSelectedItem with the id of the selected item and open the delete Dialog
+   * prepare the delete dialog by setting idOfSelectedItem with the id of the selected item
+	 *  and open the delete Dialog
    * @param target Button
    */
   private openDeleteDialog(target) {
@@ -318,7 +322,8 @@ export default class EventController {
   }
 
   /**
-   * take the tags in the filter-input, create a tag-array and filter the store by the resulting entries in the array
+   * take the tags in the filter-input,
+	 * create a tag-array and filter the store by the resulting entries in the array
    */
   private filterTags() {
   	const tagsToFilter: Array<string> = this.inputFieldController.createTagsArray(

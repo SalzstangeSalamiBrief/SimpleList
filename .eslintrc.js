@@ -1,3 +1,5 @@
+const { off } = require('process');
+
 module.exports = {
 	env: {
 		browser: true,
@@ -24,6 +26,8 @@ module.exports = {
 		'linebreak-style': [0, 'error', 'windows'],
 		'no-tabs': 0,
 		'no-extra-semi': 'off',
+		'class-methods-use-this': 0,
+		'no-underscore-dangle': 0,
 		// add multiple rules to fix eslint tslint conflicterrors
 		'@typescript-eslint/no-extra-semi': ['error'],
 		'explicit-function-return-type': [0, 'warning'],

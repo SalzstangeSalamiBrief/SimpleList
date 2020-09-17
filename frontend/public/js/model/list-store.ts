@@ -69,7 +69,7 @@ export default class Store {
   	isFavorite: updateIsFavorite = undefined,
   	name: nameToUpdate = undefined,
   	_id,
-  }: ListItem) {
+  }: ListItem): ListItem {
   	const objectToUpdate = this.getItemByID(_id);
   	// Update only fields who are passed
   	if (tagsToUpdate) objectToUpdate.tags = tagsToUpdate;
@@ -80,7 +80,8 @@ export default class Store {
   }
 
   /**
-   * Filter the Entries in allListItems-Array by their tags and safe the result in the selectedListItems-Array
+   * Filter the Entries in allListItems-Array by their tags
+	 *  and safe the result in the selectedListItems-Array
    * There are two cases considered:
    *  1. filter for absence of a tag (e.g. !comedy)
    *  2. filter for existence of a tag
@@ -119,14 +120,15 @@ export default class Store {
   	}
   	//
   	const resultArray: Array<ListItem> = [];
-  	// add each item from tempArray to resultArray with the corresponding index saved in indexArrayToAdd
+  	// add each item from tempArray to resultArray
+  	// with the corresponding index saved in indexArrayToAdd
   	for (let k = 0; k < indexArrayToAdd.length; k += 1) {
   		resultArray.push(tempArray[indexArrayToAdd[k]]);
   	}
   	this.selectedListItems = this.sortListsByFav(resultArray);
   }
 
-  public addItem(newItem: ListItem) {
+  public addItem(newItem: ListItem): ListItem {
   	if (newItem.name && newItem.tags.length > 0 && newItem._id !== undefined) {
   		if (newItem.isFavorite === undefined) {
   			newItem.isFavorite = false;
@@ -143,13 +145,14 @@ export default class Store {
    * delete an entry from the allListItems-Array and re-sort the selectedListItems Array
    * @param _id string
    */
-  public deleteItemByID(_id: string) {
+  public deleteItemByID(_id: string): void {
   	const temp = [];
   	for (let i = 0; i < this.allListItems.length; i += 1) {
   		// push every item, which does not have the wanted _id into temp
   		//  skip the entry with the wanted _id;
-  		if (this.allListItems[i]._id === _id) continue;
-  		temp.push(this.allListItems[i]);
+  		if (this.allListItems[i]._id !== _id) {
+  			temp.push(this.allListItems[i]);
+  		}
   	}
   	// set allListItems with the temp (result of the for-of loop)
   	this.allListItems = temp;
@@ -161,11 +164,9 @@ export default class Store {
    * @param _id string
    */
   public getItemByID(_id: string): ListItem {
-  	if (typeof _id === 'string') {
   		return this.allListItems.find(
   			(item: ListItem): boolean => item._id === _id,
   		);
-  	}
   }
 
   /**

@@ -28,7 +28,7 @@ export default class DialogHandler {
    * @param type PossibleDialogues
    * @param item ListItem
    */
-  public openDialog(typeofDialog: PossibleDialogues, item: ListItem) {
+  public openDialog(typeofDialog: PossibleDialogues, item: ListItem): void {
   	const selectedType = typeofDialog.toLowerCase();
   	if (this.isDialogOpen === false) {
   		clearInnerHTML(dialogContainer);
@@ -45,6 +45,8 @@ export default class DialogHandler {
   		case PossibleDialogues.exportDialog:
   			createExportDialog();
   			break;
+  		default:
+  			break;
   		}
   		dialogContainer.classList.remove('is-hidden');
   		this.isDialogOpen = true;
@@ -54,7 +56,7 @@ export default class DialogHandler {
   /**
    * close the active dialog with adding the is-hidden class
    */
-  public closeDialog() {
+  public closeDialog(): void {
   	dialogContainer.classList.add('is-hidden');
   	this.isDialogOpen = false;
   }
