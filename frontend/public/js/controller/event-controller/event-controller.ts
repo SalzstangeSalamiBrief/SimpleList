@@ -69,6 +69,7 @@ export default class EventController {
   		if (actualClassEntry === 'row-item-name') {
   			try {
   				// copy name of the button/entry/row into the clipboard
+  				// eslint-disable-next-line no-await-in-loop
   				await navigator.clipboard.writeText(target.textContent.trim());
   			} catch (err) {
   				console.log(err);
@@ -96,29 +97,31 @@ export default class EventController {
   	switch (targetID) {
   	case 'filter-btn':
   		this.filterTags();
-  		return;
+  		break;
   	case 'open-add-dialog':
   		this.openAddDialog();
-  		return;
+  		break;
   	case 'open-export-dialog':
   		this.openExportDialog();
-  		return;
+  		break;
   	case 'submit-add-form':
   		await this.submitAddForm();
-  		return;
+  		break;
   	case 'submit-update-form':
   		this.submitUpdateForm();
-  		return;
+  		break;
   	case 'submit-delete-dialog':
   		await this.submitDeleteDialog();
-  		return;
+  		break;
   	case 'export-list':
   		await this.exportList();
-  		return;
+  		break;
   	case 'dialog-container':
   		if (this.dialogController.getIsDialogOpen()) {
   			this.dialogController.closeDialog();
   		}
+  		break;
+  	default: break;
   	}
   }
 
@@ -138,14 +141,15 @@ export default class EventController {
   			switch (name) {
   			case 'tag-search-input':
   				this.filterTags();
-  				return;
+  				break;
   			case 'dialog__name':
   				await this.submitAddForm();
-  				return;
+  				break;
   			case 'dialog__tags':
   				await this.submitUpdateForm();
-
+  				break;
   			default:
+  				break;
   			}
   		}
   	}
@@ -157,7 +161,8 @@ export default class EventController {
    */
   private loopThroughParentsToGetID(target): string {
   	let itemToSelect = target;
-  	// loop through the parents to get the parent with dataset _id and name (name only for safety-reasons)
+  	// loop through the parents to get the parent
+  	// with dataset _id and name (name only for safety-reasons)
   	while (!itemToSelect.dataset._id || !itemToSelect.dataset.name) {
   		itemToSelect = itemToSelect.parentNode;
   	}
@@ -209,7 +214,8 @@ export default class EventController {
 
   /**
    * function for submitting the add form
-   * if the name and the tags in the input-field are valid, a POST-REquest to the backend is send and in the local list-store an item will be added
+   * if the name and the tags in the input-field are valid, a POST-REquest to the backend
+	 * is send and in the local list-store an item will be added
    */
   private async submitAddForm() {
   	const name: string = this.inputFieldController.getNameInputValue();
@@ -292,9 +298,9 @@ export default class EventController {
    */
   private openDeleteDialog(target) {
   	const _id = this.loopThroughParentsToGetID(target);
-  	const { name }: ListItem = this.store.getItemByID(_id);
+  	const listItem: ListItem = this.store.getItemByID(_id);
   	this.idOfSelectedItem = _id;
-  	this.dialogController.openDialog('Delete', name);
+  	this.dialogController.openDialog('Delete', listItem);
   }
 
   /**

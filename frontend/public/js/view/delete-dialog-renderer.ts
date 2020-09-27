@@ -1,81 +1,10 @@
 import { createHTMLElement } from './util/util-function';
-import createDialogElement from './util/dialog-container-creator';
+import createDialogElement from './util/dialog-element-creator';
+import createButtonContainer from './util/button-container-creator';
 
 const divToAppendDialog = <HTMLDivElement>(
   document.querySelector('div#dialog-container')
 );
-
-/**
- * function for creating a delete-button for the delete-dialog
- */
-function createDeleteButton(nameOfItem: string): HTMLButtonElement {
-	const classList: Array<string> = [
-		'bg-red-500',
-		'hover:bg-red-700',
-		'text-white',
-		'font-bold',
-		'py-2',
-		'px-4',
-		'rounded',
-		'btn-form',
-		'cursor-pointer',
-	];
-	const attributeList = {
-		'aria-label': `Confirm to delete the entry ${nameOfItem}`,
-		type: 'submit',
-		value: 'delete item',
-		id: 'submit-delete-dialog',
-	};
-	const textContent = 'Delete';
-	return <HTMLButtonElement>(
-    createHTMLElement({
-    	type: 'button', classList, attributeList, textContent,
-    })
-  );
-}
-
-/**
- * function for creating a cancel-button for the delete-dialog
- */
-function createCancelButton(): HTMLButtonElement {
-	const classList: Array<string> = [
-		'bg-blue-500',
-		'hover:bg-blue-700',
-		'text-white',
-		'font-bold',
-		'py-2',
-		'px-4',
-		'rounded',
-		'btn-form',
-		'btn--cancel-dialog',
-	];
-	const attributeList = {
-		'aria-label': 'Cancel delete action',
-		id: 'cancel-delete-dialog',
-	};
-	const textContent = 'Cancel';
-	return <HTMLButtonElement>(
-    createHTMLElement({
-    	type: 'button', classList, attributeList, textContent,
-    })
-  );
-}
-
-/**
- * function for creating the button-container and his content
- */
-function createButtonContainer(nameOfItem: string): HTMLDivElement {
-	const classList: Array<string> = ['flex', 'w-2/5', 'justify-around'];
-	const buttonContainer = <HTMLDivElement>createHTMLElement({
-		type: 'div',
-		classList,
-		attributeList: {},
-		textContent: '',
-	});
-	buttonContainer.appendChild(createDeleteButton(nameOfItem));
-	buttonContainer.appendChild(createCancelButton());
-	return buttonContainer;
-}
 
 /**
  * function for creating the info-container of the delete-dialog
@@ -126,9 +55,9 @@ function createDeleteInfoContainer(nameOfItem: string): HTMLDivElement {
  * function which creates and composes the dialog-container.
  * the created element will be appended to the dom
  */
-export default function (nameOfItem: string) {
-	const deleteDialogContainer = <HTMLDialogElement>createDialogElement(['delete-dialog'], 'medium');
+export default function createDeleteDialog(nameOfItem: string): void {
+	const deleteDialogContainer = <HTMLDialogElement>createDialogElement('delete');
 	deleteDialogContainer.appendChild(createDeleteInfoContainer(nameOfItem));
-	deleteDialogContainer.appendChild(createButtonContainer(nameOfItem));
+	deleteDialogContainer.appendChild(createButtonContainer('delete', nameOfItem));
 	divToAppendDialog.appendChild(deleteDialogContainer);
 }

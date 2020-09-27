@@ -1,5 +1,5 @@
 import { createHTMLElement } from './util/util-function';
-import createDialogElement from './util/dialog-container-creator';
+import createDialogElement from './util/dialog-element-creator';
 
 const divToAppendDialog = <HTMLDivElement>(
   document.querySelector('div#dialog-container')
@@ -63,12 +63,8 @@ function createImportForm(): HTMLFormElement {
 	return form;
 }
 
-function createDialogContainer(): HTMLDialogElement {
-	return <HTMLDialogElement>createDialogElement(['export-dialog']);
-}
-
-export default function composeAndAddImportDIalog(): void {
-	const container: HTMLDialogElement = createDialogContainer();
+export default function createImportDialog(): void {
+	const container: HTMLDialogElement = <HTMLDialogElement>createDialogElement('import');
 	const form: HTMLFormElement = createImportForm();
 	container.appendChild(form);
 	divToAppendDialog.appendChild(container);
