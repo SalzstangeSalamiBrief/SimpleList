@@ -27,15 +27,11 @@ $ npm run dev
 ```
 
 ## TODO
-- Add export and import from an actual list as functionality
-  - add routes to server
-    - export list
-    - import list
 - add favicon
-- maybe cache on server?
 - refactor ui
   - add interactive elements for importing and exporting lists
   - add a help button (show a explanation of the app (e.g. intro in this readme))
+- fix return errors in /frontend/view
 - add build command
 
 ## Possible Improvements

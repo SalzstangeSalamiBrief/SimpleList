@@ -1,4 +1,6 @@
 import { createHTMLElement } from './util/util-function';
+import createDialogElement from './util/dialog-element-creator';
+import createButtonContainer from './util/button-container-creator';
 
 import ListItem from '../interfaces/list-item';
 
@@ -15,121 +17,6 @@ enum InputSelection {
 const divToAppendDialog = <HTMLDivElement>(
   document.querySelector('div#dialog-container')
 );
-
-/**
- * This function creates a submit-button for the add-/update-form
- * based on the passed typeOfAction different classes and attributes will be created
- * @param typeOfAction FormAction
- * @param nameOfItem string
- */
-function createSubmitButton(
-	typeOfAction: FormAction,
-	nameOfItem: string,
-): HTMLButtonElement {
-	const selectedTypeOfAction: string = typeOfAction.toLowerCase();
-	if (
-		selectedTypeOfAction === FormAction.add
-    || selectedTypeOfAction === FormAction.update
-	) {
-		const classList: Array<string> = [
-			'text-white',
-			'font-bold',
-			'py-2',
-			'px-4',
-			'rounded',
-			'btn-form',
-			'cursor-pointer',
-		];
-		// add conditional colors
-		classList.push(
-			`bg-${selectedTypeOfAction === FormAction.add ? 'green' : 'blue'}-500`,
-		);
-		classList.push(
-			`hover:bg-${
-				selectedTypeOfAction === FormAction.add ? 'green' : 'blue'
-			}-700`,
-		);
-		// attributeList
-		const attributeList = {
-			type: 'submit',
-			id: `submit-${selectedTypeOfAction}-form`,
-			value: `${selectedTypeOfAction} item`,
-		};
-		// select ariaLabel
-		if (selectedTypeOfAction === 'add') {
-			attributeList['aria-label'] = 'Confirm to add an item';
-		} else {
-			// case: selectedTypeOfAction === 'update'
-			attributeList[
-				'aria-label'
-			] = `Confirm to update the selected item ${nameOfItem}`;
-		}
-		const textContent: string = selectedTypeOfAction === 'add' ? 'Add Item' : 'Update';
-		return <HTMLButtonElement>createHTMLElement({
-			type: 'button',
-			classList,
-			attributeList,
-			textContent,
-		});
-	}
-}
-
-/**
- * function which creates a cancel-button for the add-/update-dialog
- * @param typeOfAction FormAction
- */
-function createCancelButton(typeOfAction: FormAction): HTMLButtonElement {
-	const selectedTypeOfAction = typeOfAction.toLowerCase();
-	if (
-		selectedTypeOfAction === FormAction.add
-    || selectedTypeOfAction === FormAction.update
-	) {
-		const classList: Array<string> = [
-			'bg-red-500',
-			'hover:bg-red-700',
-			'text-white',
-			'font-bold',
-			'py-2',
-			'px-4',
-			'rounded',
-			'btn-form',
-			'btn--cancel-dialog',
-		];
-		const attributeList = {
-			id: 'cancel-add-update-form',
-			'aria-label': `Cancel the action to ${selectedTypeOfAction} an item`,
-		};
-		return <HTMLButtonElement>createHTMLElement({
-			type: 'button',
-			classList,
-			attributeList,
-			textContent: 'Cancel',
-		});
-	}
-}
-
-/**
- * create a container for the buttons of the form and add these buttons as children
- * @param typeOfAction FormAction
- * @param nameOfItem string
- */
-function createButtonContainer(
-	typeOfAction: FormAction,
-	nameOfItem: string,
-): HTMLDivElement {
-	const classList: Array<string> = ['flex', 'w-2/5', 'justify-around'];
-	const buttonContainer = <HTMLDivElement>createHTMLElement({
-		type: 'div',
-		classList,
-		attributeList: {},
-		textContent: '',
-	});
-	// create and add buttons as children to the container
-	buttonContainer.appendChild(createSubmitButton(typeOfAction, nameOfItem));
-	buttonContainer.appendChild(createCancelButton(typeOfAction));
-
-	return buttonContainer;
-}
 
 /**
  * Create an inputContainer with its content.
@@ -204,6 +91,7 @@ function createInputContainer(
 		tagsContainer.appendChild(inputField);
 		return tagsContainer;
 	}
+	return undefined;
 }
 
 /**
@@ -250,6 +138,7 @@ function createForm(
 		form.appendChild(tagsInputContainer);
 		return form;
 	}
+	return undefined;
 }
 
 /**
@@ -285,30 +174,18 @@ function createHeading(
 	return headingElement;
 }
 
-export default function (typeOfAction: string, item: ListItem) {
+/**
+ * Function which creates the add-/update-dialog
+ * @param typeOfAction string
+ * @param item ListITem
+ */
+export default function ComposeAddUpdateDialog(typeOfAction: string, item: ListItem): void {
 	if (
 		typeOfAction.toLowerCase() === FormAction.add
     || typeOfAction.toLowerCase() === FormAction.update
 	) {
-		// create dialog
-		const dialogClassList: Array<string> = [
-			'w-1/2',
-			'flex',
-			'flex-col',
-			'justify-center',
-			'items-center',
-			'shadow-lg',
-			'bg-white',
-			'px-4',
-			'py-4',
-			'add-update-dialog',
-		];
-		const dialog = <HTMLDialogElement>createHTMLElement({
-			type: 'dialog',
-			classList: dialogClassList,
-			attributeList: {},
-			textContent: '',
-		});
+		const dialog = <HTMLDialogElement>createDialogElement('add-update');
+
 		// create heading
 		const heading: HTMLHeadingElement = createHeading(
 			FormAction[typeOfAction],

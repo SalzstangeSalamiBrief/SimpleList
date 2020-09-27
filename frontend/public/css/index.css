@@ -147,3 +147,8 @@ input#import-file-input {
   top: 0;
   opacity: 0;
 }
+
+.btn--options#open-import-dialog
+.btn--options#open-export-dialog{
+  font-size: 0.8rem;
+}

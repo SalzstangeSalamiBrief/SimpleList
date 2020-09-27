@@ -1,94 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="SalzstangeSalamiBrief" />
-    <meta name="description" content="This is a simple List for everyone" />
-    <link rel="stylesheet" href="../css/fonts.css" type="text/css" />
-    <link rel="stylesheet" href="../css/index.css" type="text/css" />
-    <link rel="stylesheet" href="../css/tailwindcss.css" type="text/css" />
-    <title>SimpleList</title>
-  </head>
 
-  <body class="flex justify-center">
-    <main class="main-grid-container">
-      <div class="intro-container px-4 py-2">
-        <h1 class="text-center site-title">SimpleList</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="SalzstangeSalamiBrief" />
+  <meta name="description" content="This is a simple List for everyone" />
+  <link rel="stylesheet" href="../css/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="../css/index.css" type="text/css" />
+  <link rel="stylesheet" href="../css/tailwindcss.css" type="text/css" />
+  <title>SimpleList</title>
+</head>
+
+<body class="flex justify-center">
+  <main class="main-grid-container">
+    <div class="intro-container px-4 py-2">
+      <h1 class="text-center site-title">SimpleList</h1>
+    </div>
+    <div class="w-full filter-container px-4 py-2 flex justify-center content-center">
+      <input type="text" name="tag-search-input"
+        class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-3/6 placeholder-gray-500 placeholder-opacity-100 mr-2 w-3/6"
+        placeholder="Search for Tags" aria-label="Enter tags you want to search through all items" />
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options" id="filter-btn"
+        aria-label="Click to search all items by their tags">
+        Search
+      </button>
+    </div>
+    <!-- table -->
+    <div class="table-container w-full h-full overflow-y-scroll overflow-x-hidden">
+      <table class="table-fixed">
+        <thead class="bottom-shadow">
+          <tr>
+            <th class="w-12 py-4"></th>
+            <th class="w-1/6 py-4">Name</th>
+            <th class="w-3/6 py-4">Tags</th>
+            <th class="w-2/6 py-4">Options</th>
+          </tr>
+        </thead>
+        <tbody class="bottom-shadow"></tbody>
+      </table>
+    </div>
+    <!-- add area -->
+    <div class="w-full add-container flex justify-between content-center">
+      <div class="flex justify-center content-center">
+        <button class="btn--options mr-4" id="open-import-dialog">Import</button>
+        <button class="btn--options" id="open-export-dialog">Export</button>
       </div>
-      <div
-        class="w-full filter-container px-4 py-2 flex justify-center content-center"
-      >
-        <input
-          type="text"
-          name="tag-search-input"
-          class="bg-white focus:outline-none focus:shadow-outline border border-gray-400 rounded-lg py-2 px-4 block appearance-none leading-normal w-3/6 placeholder-gray-500 placeholder-opacity-100 mr-2 w-3/6"
-          placeholder="Search for Tags"
-          aria-label="Enter tags you want to search through all items"
-        />
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options"
-          id="filter-btn"
-          aria-label="Click to search all items by their tags"
-        >
-          Search
+
+      <div class="flex justify-end content-center">
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options"
+          id="open-add-dialog">
+          Add item
         </button>
       </div>
-      <!-- table -->
-      <div
-        class="table-container w-full h-full overflow-y-scroll overflow-x-hidden"
-      >
-        <table class="table-fixed">
-          <thead class="bottom-shadow">
-            <tr>
-              <th class="w-12 py-4"></th>
-              <th class="w-1/6 py-4">Name</th>
-              <th class="w-3/6 py-4">Tags</th>
-              <th class="w-2/6 py-4">Options</th>
-            </tr>
-          </thead>
-          <tbody class="bottom-shadow"></tbody>
-        </table>
-      </div>
-      <!-- add area -->
-      <div class="w-full add-container flex justify-between content-center">
-        <div class="flex justify-center content-center">     
-          <button class="btn--options mr-4" id="open-import-dialog">Import</button>
-          <button class="btn--options" id="open-export-dialog">Export</button>
-        </div>
-
-        <div class="flex justify-end content-center">
-          <button
-            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options"
-            id="open-add-dialog"
-          >
-            Add item
-          </button>
-        </div>
-      </div>
-    </main>
-    <!-- dialog -->
-    <!-- todo: add is-hidden class -->
-    <div
-      id="dialog-container"
-      class="dialog-container w-full flex flex-col h-full items-center is-hidden"
-    >
-    <dialog class="w-1/5 flex flex-col justify-center items-center shadow-lg
+    </div>
+  </main>
+  <!-- dialog -->
+  <!-- todo: add is-hidden class -->
+  <div id="dialog-container" class="dialog-container w-full flex flex-col h-full items-center is-hidden">
+    <dialog class="w-1/4 flex flex-col justify-center items-center shadow-lg
     border-solid border-gray-600 bg-white p-4 export-dialog">
-      <form action="#" id="import-form">
-        <input type="file" accept=".csv" name="file-import-input" id="file-import-input">
-        <button id="submit-file-import-form">Submit</button>
+      <form action="#" id="import-form" class="flex flex-col w-full justify-center items-center">
+        <div class="flex w-full mb-4">
+          <label for="file-import-input"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options cursor-pointer mr-2">
+            Select a File
+          </label>
+          <input type="file" accept=".csv" name="file-import-input" id="file-import-input"
+            style="clip: rect(0,0,0,0); height:1px; width: 1px; position: absolute !important">
+          <p class="flex justify-start items-center w-2/3 overflow-x-hidden" id="file-picker__file-name">No File
+            Selected</p>
+        </div>
+        <button id="submit-file-import-form"
+          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options cursor-pointer">Submit</button>
       </form>
-    </dialog>>
+    </dialog>
 
   </div>
-    <!-- error notification -->
-    <div
-      class="w-1/2 flex flex-col justify-center items-center border-solid border-2 border-red-600 shadow-lg bg-white px-4 py-4 error-container is-hidden"
-    >
-      <h2 class="font-bold">Error:</h2>
-      <p id="error-text"></p>
-    </div>
-    <script src="../js/index.js" type="module"></script>
-  </body>
+  <!-- error notification -->
+  <div
+    class="w-1/2 flex flex-col justify-center items-center border-solid border-2 border-red-600 shadow-lg bg-white px-4 py-4 error-container is-hidden">
+    <h2 class="font-bold">Error:</h2>
+    <p id="error-text"></p>
+  </div>
+  <script src="../js/index.js" type="module"></script>
+</body>
+
 </html>

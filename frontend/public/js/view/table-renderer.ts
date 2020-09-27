@@ -4,10 +4,10 @@ import ListItem from '../interfaces/list-item';
 
 const tbody: HTMLElement = document.querySelector('tbody');
 function createFavoriteSVG(
-  _id: string = '',
-  isFavorite: boolean = undefined,
+	_id = '',
+	isFavorite: boolean = undefined,
 ): string {
-  return `
+	return `
   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <svg
       xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -37,14 +37,14 @@ function createFavoriteSVG(
   `;
 }
 
-function renderTagList(tags: Array<string> = [], name: string = ''): string {
-  let list: string = `
+function renderTagList(tags: Array<string> = [], name = ''): string {
+	let list = `
     <ul
       class="list-none flex w-full justify-start item-center overscroll-y-auto"
       aria-label="list of tags for the item ${name}">`;
-  if (Array.isArray(tags)) {
-    for (let i = 0; i < tags.length; i += 1) {
-      list += `
+	if (Array.isArray(tags)) {
+		for (let i = 0; i < tags.length; i += 1) {
+			list += `
           <li
             class="mx-1 px-4 py-2 tag bg-gray-300"
             aria-label="tag for item ${name}: ${tags[i]}" 
@@ -52,41 +52,43 @@ function renderTagList(tags: Array<string> = [], name: string = ''): string {
             ${tags[i]} 
           </li>   
         `;
-    }
-  }
-  list += '</ul>';
-  return list;
+		}
+	}
+	list += '</ul>';
+	return list;
 }
 
 // function to render the actual table
 export default function (itemList: Array<ListItem> = []): void {
-  // clear child nodes
-  tbody.textContent = '';
+	// clear child nodes
+	tbody.textContent = '';
 
-  for (let i = 0; i < itemList.length; i += 1) {
-    const { name, _id, isFavorite, tags }: ListItem = itemList[i];
-    const classListRow = [
-      'hover:bg-gray-200',
-      'border-t',
-      'border-b',
-      'border-solid',
-      'border-gray-300',
-    ];
-    const entry = <HTMLTableRowElement>createHTMLElement({
-      type: 'tr',
-      classList: classListRow,
-      attributeList: {},
-      textContent: '',
-    });
-    entry.dataset['_id'] = _id;
-    entry.dataset.name = name;
+	for (let i = 0; i < itemList.length; i += 1) {
+		const {
+			name, _id, isFavorite, tags,
+		}: ListItem = itemList[i];
+		const classListRow = [
+			'hover:bg-gray-200',
+			'border-t',
+			'border-b',
+			'border-solid',
+			'border-gray-300',
+		];
+		const entry = <HTMLTableRowElement>createHTMLElement({
+			type: 'tr',
+			classList: classListRow,
+			attributeList: {},
+			textContent: '',
+		});
+		entry.dataset._id = _id;
+		entry.dataset.name = name;
 
-    const entryBody = `
+		const ariaLabel = `${name} is ${isFavorite ? '' : 'not'
+		} a favorite of yours. If you want to change that click this icon`;
+		const entryBody = `
       <td class="py-2">
         <button class="flex justify-center item-center w-12 btn-fav-img"
-             aria-label="${name} is ${
-      isFavorite ? '' : 'not'
-    } a favorite of yours. If you want to change that click this icon">
+             aria-label="${ariaLabel}">
           ${createFavoriteSVG(_id, isFavorite)}
         </button>        
       </td>
@@ -104,7 +106,7 @@ export default function (itemList: Array<ListItem> = []): void {
           Delete
         </button>
       </td>`;
-    entry.innerHTML = entryBody;
-    tbody.insertAdjacentElement('beforeend', entry);
-  }
+		entry.innerHTML = entryBody;
+		tbody.insertAdjacentElement('beforeend', entry);
+	}
 }

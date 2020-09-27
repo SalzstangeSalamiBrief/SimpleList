@@ -1,5 +1,3 @@
-import ListItem from '../../interfaces/list-item';
-
 export default class FormHandler {
   private store;
 
