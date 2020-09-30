@@ -1,10 +1,92 @@
 import { createHTMLElement } from './util/util-function';
 import createDialogElement from './util/dialog-element-creator';
+import createButtonContainer from './util/button-container-creator';
 
 const divToAppendDialog = <HTMLDivElement>(
   document.querySelector('div#dialog-container')
 );
 
+/**
+ * create the input
+ */
+function createImportInput(): HTMLDivElement {
+	// create container
+	const containerDiv = <HTMLDivElement>createHTMLElement({
+		type: 'div',
+		classList: ['flex', 'w-full', 'mb-4'],
+		attributeList: {},
+		textContent: '',
+	});
+
+	// create label
+	const labelClassList = [
+		'bg-blue-500',
+		'hover:bg-blue-700',
+		'text-white',
+		'font-bold',
+		'py-2',
+		'px-4',
+		'rounded',
+		'btn--options',
+		'cursor-pointer',
+		'ml-2',
+	];
+	const labelAttributeList = {
+		'aria-label': 'Select a File',
+		for: 'file-import-input',
+	};
+	const label = <HTMLLabelElement>createHTMLElement({
+		type: 'label',
+		classList: labelClassList,
+		attributeList: labelAttributeList,
+		textContent: 'Select a File',
+	});
+
+	// create input
+	const inputAttributeList = {
+		id: 'file-import-input',
+		type: 'file',
+		accept: '.csv',
+		name: 'file-import-input',
+	};
+	const input = <HTMLInputElement>createHTMLElement({
+		type: 'input',
+		classList: [],
+		attributeList: inputAttributeList,
+		textContent: '',
+	});
+
+	// create paragraph
+	const paragraphClassList = [
+		'flex',
+		'justify-start',
+		'items-center',
+		'w-2/3',
+		'overflow-x-hidden',
+		'px-2',
+		'rounded',
+		'border',
+		'border-solid',
+		'border-gray-400',
+	];
+	const p = <HTMLParagraphElement>createHTMLElement({
+		type: 'p',
+		classList: paragraphClassList,
+		attributeList: { id: 'file-picker__file-name' },
+		textContent: 'No File Selected',
+	});
+
+	// append children
+	containerDiv.appendChild(p);
+	containerDiv.appendChild(label);
+	containerDiv.appendChild(input);
+
+	return containerDiv;
+}
+
+/**
+ * create the import form
+ */
 function createImportForm(): HTMLFormElement {
 	// create form element
 	const attributeListForm = {
@@ -13,59 +95,27 @@ function createImportForm(): HTMLFormElement {
 	};
 	const form = <HTMLFormElement>createHTMLElement({
 		type: 'form',
-		classList: [],
+		classList: ['w-full'],
 		attributeList: attributeListForm,
 		textContent: '',
 	});
 
-	// create input
-	const attributeListInput = {
-		type: 'file',
-		accept: '.csv',
-		name: 'file-import-input',
-		id: 'file-import-input',
-	};
-	const input = <HTMLInputElement>createHTMLElement({
-		type: 'input',
-		classList: [],
-		attributeList: attributeListInput,
-		textContent: '',
-	});
-	// create label for input
-	const label = <HTMLLabelElement>createHTMLElement({
-		type: 'label',
-		classList: [],
-		attributeList: {
-			for: 'file-import-input',
-		},
-		textContent: 'Select a file to import:',
-	});
-	// create button
-	const btn = <HTMLButtonElement>createHTMLElement({
-		type: 'button',
-		classList: ['bg-blue-500',
-			'hover:bg-blue-700',
-			'text-white',
-			'font-bold',
-			'py-2',
-			'px-4',
-			'rounded',
-			'btn--options',
-		],
-		attributeList: {},
-		textContent: 'Import',
-	});
+	const inputContainer = <HTMLDivElement>createImportInput();
+	const buttonContainer: HTMLDivElement = createButtonContainer('import');
 
-	form.appendChild(label);
-	form.appendChild(input);
-	form.appendChild(btn);
+	form.appendChild(inputContainer);
+	form.appendChild(buttonContainer);
 
 	return form;
 }
 
+/**
+ * create the whole import dialog
+ */
 export default function createImportDialog(): void {
 	const container: HTMLDialogElement = <HTMLDialogElement>createDialogElement('import');
 	const form: HTMLFormElement = createImportForm();
+
 	container.appendChild(form);
 	divToAppendDialog.appendChild(container);
 }

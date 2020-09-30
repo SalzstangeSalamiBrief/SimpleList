@@ -87,7 +87,6 @@ function createAttributeListAndTextContentAndType(typeOfAction: TypeOfAction, na
 	return result;
 }
 
-// todo: type anchor for import export
 function createActionButton(typeOfAction: TypeOfAction, nameOfItem = '') {
 	if (typeOfAction) {
 		// create classList
@@ -111,7 +110,6 @@ function createActionButton(typeOfAction: TypeOfAction, nameOfItem = '') {
 		const {
 			attributeList, textContent, type,
 		} = createAttributeListAndTextContentAndType(typeOfAction, nameOfItem);
-		console.log(textContent);
 		return <HTMLElement>createHTMLElement({
 			type,
 			classList,

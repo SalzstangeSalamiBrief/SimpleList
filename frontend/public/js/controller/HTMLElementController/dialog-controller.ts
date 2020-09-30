@@ -2,6 +2,7 @@ import { clearInnerHTML } from '../../view/util/util-function';
 import createDeleteDialog from '../../view/delete-dialog-renderer';
 import createAddUpdateDialog from '../../view/add-update-dialog-renderer';
 import createExportDialog from '../../view/export-dialog-renderer';
+import createImportDialog from '../../view/import-dialog-renderer';
 
 import ListItem from '../../interfaces/list-item';
 
@@ -9,7 +10,8 @@ enum PossibleDialogues {
   updateDialog = 'update',
   addDialog = 'add',
   deleteDialog = 'delete',
-  exportDialog = 'export',
+	exportDialog = 'export',
+	importDialog = 'import'
 }
 
 const dialogContainer = <HTMLDivElement>(
@@ -44,6 +46,9 @@ export default class DialogHandler {
   			break;
   		case PossibleDialogues.exportDialog:
   			createExportDialog();
+  			break;
+  		case PossibleDialogues.importDialog:
+  			createImportDialog();
   			break;
   		default:
   			break;

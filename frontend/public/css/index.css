@@ -141,14 +141,23 @@ td {
   overflow: hidden;
 }
 
-input#import-file-input {
-  position: absolute;
+input#file-import-input {
+  position: absolute !important;
   left: 0;
   top: 0;
   opacity: 0;
+  clip: rect(0,0,0,0);
+  height: 1px;
+  width: 1px;
 }
 
 .btn--options#open-import-dialog
 .btn--options#open-export-dialog{
   font-size: 0.8rem;
 }
+
+/* #file-picker__file-name{
+  border: 1px solid rgb(203, 213, 224);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+} */

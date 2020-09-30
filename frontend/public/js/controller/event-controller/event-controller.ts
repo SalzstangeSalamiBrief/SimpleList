@@ -51,6 +51,7 @@ export default class EventController {
   	});
   }
 
+  // TODO: import-fom will be dynamicaly generated => cant set eventhandler
   private addInputSubmitHandler() {
   	document.querySelector('#import-form').addEventListener('submit', (e: Event) => {
   		e.preventDefault();
@@ -103,6 +104,9 @@ export default class EventController {
   		break;
   	case 'open-export-dialog':
   		this.openExportDialog();
+  		break;
+  	case 'open-import-dialog':
+  		this.openImportDialog();
   		break;
   	case 'submit-add-form':
   		await this.submitAddForm();
@@ -261,8 +265,6 @@ export default class EventController {
    * delete the selected entry in the list-store and on the backend-server
    */
   private async submitDeleteDialog() {
-  	console.log(this.idOfSelectedItem);
-  	console.log('-------');
   	await this.fetchController.deleteEntryOnServer(this.idOfSelectedItem);
   	this.store.deleteItemByID(this.idOfSelectedItem);
   	this.dialogController.closeDialog();
@@ -352,5 +354,12 @@ export default class EventController {
    */
   private openExportDialog() {
   	this.dialogController.openDialog('export');
+  }
+
+  /**
+	 * open the import dialog
+	 */
+  private openImportDialog() {
+  	this.dialogController.openDialog('import');
   }
 }
