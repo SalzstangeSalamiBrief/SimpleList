@@ -27,7 +27,8 @@
       </button>
     </div>
     <!-- table -->
-    <div class="table-container w-full h-full overflow-y-scroll overflow-x-hidden">
+    <!-- TODO: Chrome header fixed -->
+    <div class="table-container w-full h-full overflow-y-scroll overflow-x-hidden bg-white shadow-md" >
       <table class="table-fixed">
         <thead class="bottom-shadow">
           <tr>
@@ -56,27 +57,7 @@
     </div>
   </main>
   <!-- dialog -->
-  <!-- todo: add is-hidden class -->
   <div id="dialog-container" class="dialog-container w-full flex flex-col h-full items-center is-hidden">
-    <!-- TODO: Remove after fix in event-controller -->
-    <!-- <dialog class="w-1/4 flex flex-col justify-center items-center shadow-lg
-    border-solid border-gray-600 bg-white p-4 export-dialog">
-      <form action="#" id="import-form" class="flex flex-col w-full justify-center items-center">
-        <div class="flex w-full mb-4">
-          <label for="file-import-input"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn--options cursor-pointer mr-2">
-            Select a File
-          </label>
-          <input type="file" accept=".csv" name="file-import-input" id="file-import-input"
-            style="clip: rect(0,0,0,0); height:1px; width: 1px; position: absolute !important">
-          <p class="flex justify-start items-center w-2/3 overflow-x-hidden" id="file-picker__file-name">No File
-            Selected</p>
-        </div>
-        <button id="submit-file-import-form"
-          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn--options cursor-pointer">Submit</button>
-      </form>
-    </dialog> -->
-
   </div>
   <!-- error notification -->
   <div

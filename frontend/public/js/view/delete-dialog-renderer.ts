@@ -23,14 +23,7 @@ function createDeleteInfoContainer(nameOfItem: string): HTMLDivElement {
 		attributeList: {},
 		textContent: '',
 	});
-	// create heading
-	const classListHeading = ['text-center', 'form__title'];
-	const infoContainerHeading = <HTMLHeadingElement>createHTMLElement({
-		type: 'h2',
-		classList: classListHeading,
-		attributeList: {},
-		textContent: 'Delete Item',
-	});
+
 	// descriptionParagraph
 	const descriptionParagraph = <HTMLParagraphElement>createHTMLElement({
 		type: 'p',
@@ -41,11 +34,10 @@ function createDeleteInfoContainer(nameOfItem: string): HTMLDivElement {
 	// nameParagraph
 	const nameParagraph = <HTMLParagraphElement>createHTMLElement({
 		type: 'p',
-		classList: ['delete-text__id', 'mb-5'],
+		classList: ['delete-text__id', 'mb-5', 'form__title'],
 		attributeList: {},
 		textContent: nameOfItem,
 	});
-	infoContainer.appendChild(infoContainerHeading);
 	infoContainer.appendChild(descriptionParagraph);
 	infoContainer.appendChild(nameParagraph);
 	return infoContainer;
