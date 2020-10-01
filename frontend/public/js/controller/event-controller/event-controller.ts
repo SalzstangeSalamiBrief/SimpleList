@@ -115,7 +115,7 @@ export default class EventController {
   		this.submitUpdateForm();
   		break;
   	case 'submit-import-form':
-  		await this.fetchController.postImportFile(this.inputFieldController.getFileForImport());
+  		await this.submitFileUpload();
   		break;
   	case 'submit-delete-dialog':
   		await this.submitDeleteDialog();
@@ -130,13 +130,6 @@ export default class EventController {
   		break;
   	default: break;
   	}
-  }
-
-  private async addImportSubmitHandler(e) {
-  	// allow querySelector here, because this function should not be
-  	// e.preventDefault();
-  	await this.fetchController.postImportFile(this.inputFieldController.getFileForImport());
-  	console.log('send input');
   }
 
   private async keyUpHandler({ target: { tagName, name }, keyCode }) {
@@ -365,5 +358,30 @@ export default class EventController {
   private openImportDialog() {
   	this.dialogController.openDialog('import');
   	this.addInputSubmitHandler();
+  }
+
+  /**
+	 * submit the import.form to upload a selected file
+	 */
+  private async submitFileUpload() {
+  	let errorHappened = false;
+  	const fileForImport = this.inputFieldController.getFileForImport();
+  	if (fileForImport) {
+  		try {
+  			const isFileUploaded = await this.fetchController.postImportFile(fileForImport);
+  			console.log(isFileUploaded);
+  			if (isFileUploaded) {
+  				this.dialogController.closeDialog();
+  				errorHappened = true;
+  			}
+  		} catch (err) {
+  			console.log(err);
+  		}
+  	}
+
+  	// if a error happened, display an error-msg
+  	if (!errorHappened) {
+  		this.errorController.setErrorMessage('Could not import the selected File. Please try again');
+  	}
   }
 }

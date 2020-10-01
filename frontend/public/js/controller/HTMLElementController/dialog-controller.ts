@@ -63,6 +63,7 @@ export default class DialogHandler {
    */
   public closeDialog(): void {
   	dialogContainer.classList.add('is-hidden');
+  	clearInnerHTML(dialogContainer);
   	this.isDialogOpen = false;
   }
 
