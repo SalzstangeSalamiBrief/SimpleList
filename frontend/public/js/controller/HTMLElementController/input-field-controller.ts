@@ -46,13 +46,13 @@ export default class FormHandler {
 
   public getNameInputValue(): string {
   	return (<HTMLInputElement>(
-      document.querySelector('[name="dialog__name"')
+      document.querySelector('[name="dialog__name"]')
     )).value.trim();
   }
 
   public getTagsInputValue(): string {
   	return (<HTMLInputElement>(
-      document.querySelector('[name="dialog__tags"')
+      document.querySelector('[name="dialog__tags"]')
     )).value.trim();
   }
 
@@ -66,7 +66,7 @@ export default class FormHandler {
   	}
   }
 
-  publicGetFileForImport() {
-  	return this.importFileInput.files[0];
+  public getFileForImport() {
+  	return <HTMLInputElement>document.querySelector('input#file-import-input').files[0];
   }
 }

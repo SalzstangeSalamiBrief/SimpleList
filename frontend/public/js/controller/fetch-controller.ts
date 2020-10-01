@@ -136,6 +136,10 @@ export default class FetchHandler {
   	document.body.removeChild(a);
   }
 
+  /**
+	 * Upload a file .csv File to the Server
+	 * @param fileToUpload File
+	 */
   public async postImportFile(fileToUpload: File): Promise<boolean> {
   	console.log(fileToUpload.type);
   	try {

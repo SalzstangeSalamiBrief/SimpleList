@@ -36,7 +36,7 @@ export default class EventController {
   	);
   	this.addClickEventListenerToBody();
   	this.addKeyUpEventHandlerToBody();
-  	this.addInputSubmitHandler();
+  	// this.addInputSubmitHandler();
   }
 
   private addClickEventListenerToBody() {
@@ -51,6 +51,7 @@ export default class EventController {
   	});
   }
 
+  // TODO: import-fom will be dynamicaly generated => cant set eventhandler
   private addInputSubmitHandler() {
   	document.querySelector('#import-form').addEventListener('submit', (e: Event) => {
   		e.preventDefault();
@@ -104,11 +105,17 @@ export default class EventController {
   	case 'open-export-dialog':
   		this.openExportDialog();
   		break;
+  	case 'open-import-dialog':
+  		this.openImportDialog();
+  		break;
   	case 'submit-add-form':
   		await this.submitAddForm();
   		break;
   	case 'submit-update-form':
   		this.submitUpdateForm();
+  		break;
+  	case 'submit-import-form':
+  		await this.submitFileUpload();
   		break;
   	case 'submit-delete-dialog':
   		await this.submitDeleteDialog();
@@ -123,13 +130,6 @@ export default class EventController {
   		break;
   	default: break;
   	}
-  }
-
-  private async addImportSubmitHandler(e) {
-  	// allow querySelector here, because this function should not be
-  	// e.preventDefault();
-  	await this.fetchController.postImportFile(this.inputFieldController.publicGetFileForImport());
-  	console.log('send input');
   }
 
   private async keyUpHandler({ target: { tagName, name }, keyCode }) {
@@ -261,8 +261,6 @@ export default class EventController {
    * delete the selected entry in the list-store and on the backend-server
    */
   private async submitDeleteDialog() {
-  	console.log(this.idOfSelectedItem);
-  	console.log('-------');
   	await this.fetchController.deleteEntryOnServer(this.idOfSelectedItem);
   	this.store.deleteItemByID(this.idOfSelectedItem);
   	this.dialogController.closeDialog();
@@ -352,5 +350,38 @@ export default class EventController {
    */
   private openExportDialog() {
   	this.dialogController.openDialog('export');
+  }
+
+  /**
+	 * open the import dialog
+	 */
+  private openImportDialog() {
+  	this.dialogController.openDialog('import');
+  	this.addInputSubmitHandler();
+  }
+
+  /**
+	 * submit the import.form to upload a selected file
+	 */
+  private async submitFileUpload() {
+  	let errorHappened = false;
+  	const fileForImport = this.inputFieldController.getFileForImport();
+  	if (fileForImport) {
+  		try {
+  			const isFileUploaded = await this.fetchController.postImportFile(fileForImport);
+  			console.log(isFileUploaded);
+  			if (isFileUploaded) {
+  				this.dialogController.closeDialog();
+  				errorHappened = true;
+  			}
+  		} catch (err) {
+  			console.log(err);
+  		}
+  	}
+
+  	// if a error happened, display an error-msg
+  	if (!errorHappened) {
+  		this.errorController.setErrorMessage('Could not import the selected File. Please try again');
+  	}
   }
 }
