@@ -10,7 +10,7 @@
     },
     "baseUrl": "types",
     "typeRoots": ["types"],
-    "types": ["node", "mongoose"]
+    "types": ["node", "mongoose", "express"]
   },
   "include": [
     "src/**/*", "src/public"

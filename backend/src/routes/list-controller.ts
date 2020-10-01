@@ -1,13 +1,13 @@
 import { findAllListItems } from '../database/queries/queries';
 import { parseCSVFromListItemArray, parseListItemArrayFromCSV } from '../util/csv-handler';
 
+// TODO: fix req,res
 export async function importList(req, res): Promise<void> {
 	let status = 400;
 	const { file } = req.files;
-
-	if (file.type === 'application/vnd.ms-excel') {
+	if (file.mimetype === 'application/vnd.ms-excel') {
 		try {
-			await parseListItemArrayFromCSV(file.path);
+			await parseListItemArrayFromCSV(file.data);
 			status = 200;
 		} catch (err) {
 			console.log(err);

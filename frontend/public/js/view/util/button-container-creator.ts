@@ -67,7 +67,7 @@ function createAttributeListAndTextContentAndType(typeOfAction: TypeOfAction, na
 			result.textContent = 'Delete';
 			break;
 		case TypeOfAction.import:
-			result.attributeList.id = 'submit-add-form';
+			result.attributeList.id = 'submit-import-form';
 			result.attributeList.value = 'submit';
 			result.attributeList['aria-label'] = '';
 			result.type = 'a';

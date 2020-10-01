@@ -11,6 +11,7 @@
   "author": "SalzstangeSalamiBrief",
   "license": "MIT",
   "devDependencies": {
+    "@types/express": "^4.17.8",
     "@types/mongoose": "^5.7.36",
     "@types/node": "^14.10.2",
     "@typescript-eslint/eslint-plugin": "^4.1.1",

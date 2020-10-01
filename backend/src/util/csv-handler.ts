@@ -42,32 +42,26 @@ export function parseCSVFromListItemArray(arr: Array<ListItem>): Promise<void> {
  * Function which takes a uploaded filepath,
  * reads the file at the filepath and fills the database with corresponding values
  */
-export async function parseListItemArrayFromCSV(filepath: string): Promise<void> {
-	const readStream = fs.createReadStream(filepath, { encoding: 'utf8' });
-	let fileData = '';
-	readStream.on('data', (chunk) => {
-		fileData += chunk;
-	});
-	readStream.on('close', async () => {
-		await clearDB();
-		const arrOfRows: Array<string> = fileData.split('\r\n');
-		// remove heading
-		arrOfRows.shift();
-		// loop through the array of rows and create entries in the database
-		const promiseArray = [];
-		let i = 0;
-		while (i < arrOfRows.length) {
-			// remove the whitespace in each row and split each col
-			const [name, isFavorite, tags] = arrOfRows[i].replace(/ /, '').split(',');
-			const itemToCreate = {
-				name,
-				isFavorite: isFavorite === 'true',
-				tags: tags.split(' ').filter((item) => item),
-			};
-			promiseArray.push(createListItem(itemToCreate));
-			i += 1;
-		}
-		await Promise.all(promiseArray);
-		console.log('upload completed');
-	});
+export async function parseListItemArrayFromCSV(fileDataBuffer: Buffer): Promise<void> {
+	const fileData = fileDataBuffer.toString('utf8');
+	await clearDB();
+	const arrOfRows: Array<string> = fileData.split('\r\n');
+	// remove heading
+	arrOfRows.shift();
+	// loop through the array of rows and create entries in the database
+	const promiseArray = [];
+	let i = 0;
+	while (i < arrOfRows.length) {
+		// remove the whitespace in each row and split each col
+		const [name, isFavorite, tags] = arrOfRows[i].replace(/ /, '').split(',');
+		const itemToCreate = {
+			name,
+			isFavorite: isFavorite === 'true',
+			tags: tags.split(' ').filter((item) => item),
+		};
+		promiseArray.push(createListItem(itemToCreate));
+		i += 1;
+	}
+	await Promise.all(promiseArray);
+	console.log('upload completed');
 }

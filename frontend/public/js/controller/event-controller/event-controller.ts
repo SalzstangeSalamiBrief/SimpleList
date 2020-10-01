@@ -36,7 +36,7 @@ export default class EventController {
   	);
   	this.addClickEventListenerToBody();
   	this.addKeyUpEventHandlerToBody();
-  	this.addInputSubmitHandler();
+  	// this.addInputSubmitHandler();
   }
 
   private addClickEventListenerToBody() {
@@ -114,6 +114,9 @@ export default class EventController {
   	case 'submit-update-form':
   		this.submitUpdateForm();
   		break;
+  	case 'submit-import-form':
+  		await this.fetchController.postImportFile(this.inputFieldController.getFileForImport());
+  		break;
   	case 'submit-delete-dialog':
   		await this.submitDeleteDialog();
   		break;
@@ -132,7 +135,7 @@ export default class EventController {
   private async addImportSubmitHandler(e) {
   	// allow querySelector here, because this function should not be
   	// e.preventDefault();
-  	await this.fetchController.postImportFile(this.inputFieldController.publicGetFileForImport());
+  	await this.fetchController.postImportFile(this.inputFieldController.getFileForImport());
   	console.log('send input');
   }
 
@@ -361,5 +364,6 @@ export default class EventController {
 	 */
   private openImportDialog() {
   	this.dialogController.openDialog('import');
+  	this.addInputSubmitHandler();
   }
 }
