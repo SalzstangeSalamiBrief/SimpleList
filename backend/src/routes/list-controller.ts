@@ -2,8 +2,9 @@ import { Request, Response } from 'express';
 import { findAllListItems } from '../database/queries/queries';
 import { parseCSVFromListItemArray, parseListItemArrayFromCSV } from '../util/csv-handler';
 
-// TODO: fix req,res
-export async function importList(req: Request, res: Response): Promise<void> {
+// set req as any, because of the error that Request does not have the property files
+// TODO: maybe fix
+export async function importList(req: any, res: Response): Promise<void> {
 	let status = 400;
 	const { file } = req.files;
 	if (file.mimetype === 'application/vnd.ms-excel') {
