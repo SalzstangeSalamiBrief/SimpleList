@@ -19,6 +19,9 @@ function selectConfirmButtonColors(typeOfAction: TypeOfAction): Array<string> {
 		case TypeOfAction.add:
 			classesForButtonColors = ['bg-green-500', 'hover:bg-green-700'];
 			break;
+		case TypeOfAction.import:
+			classesForButtonColors = ['bg-green-500', 'hover:bg-green-700'];
+			break;
 		case TypeOfAction.delete:
 			classesForButtonColors = ['bg-red-500', 'hover:bg-red-700'];
 			break;

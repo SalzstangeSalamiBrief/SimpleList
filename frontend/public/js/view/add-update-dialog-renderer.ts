@@ -150,7 +150,7 @@ function createHeading(
 	typeOfAction: FormAction,
 	nameOfItem: string,
 ): HTMLHeadingElement {
-	const classList: Array<string> = ['text-center', 'mb-5'];
+	const classList: Array<string> = ['text-center', 'mb-5', 'flex', 'flex-col'];
 	const attributeList = { id: 'form__title' };
 	const textContent: string = typeOfAction.toLowerCase() === FormAction.add
     	? 'Add a new Item'

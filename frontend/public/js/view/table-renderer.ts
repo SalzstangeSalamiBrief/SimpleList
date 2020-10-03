@@ -59,7 +59,7 @@ function renderTagList(tags: Array<string> = [], name = ''): string {
 }
 
 // function to render the actual table
-export default function (itemList: Array<ListItem> = []): void {
+export default function createTable(itemList: Array<ListItem> = []): void {
 	// clear child nodes
 	tbody.textContent = '';
 
@@ -69,10 +69,6 @@ export default function (itemList: Array<ListItem> = []): void {
 		}: ListItem = itemList[i];
 		const classListRow = [
 			'hover:bg-gray-200',
-			'border-t',
-			'border-b',
-			'border-solid',
-			'border-gray-300',
 		];
 		const entry = <HTMLTableRowElement>createHTMLElement({
 			type: 'tr',
@@ -86,23 +82,23 @@ export default function (itemList: Array<ListItem> = []): void {
 		const ariaLabel = `${name} is ${isFavorite ? '' : 'not'
 		} a favorite of yours. If you want to change that click this icon`;
 		const entryBody = `
-      <td class="py-2">
+      <td class="py-4">
         <button class="flex justify-center item-center w-12 btn-fav-img"
              aria-label="${ariaLabel}">
           ${createFavoriteSVG(_id, isFavorite)}
         </button>        
       </td>
-      <td class="px-4 py-2 text-center">
+      <td class="p-4 text-center">
         <button class="row-item-name w-full h-full overflow-hidden">
           ${name}
         </button>      
       </td>
-      <td class="px-4 py-2 text-center">${renderTagList(tags, name)}</td>
-      <td class="flex justify-center items-center px-4 py-2 options-row">
-        <button class="btn--options edit-btn mr-4" aria-label="click to update item ${name}">
+      <td class="p-4 text-center">${renderTagList(tags, name)}</td>
+      <td class="flex justify-center items-center p-4 options-row">
+        <button class="btn--options edit-btn mr-4 h-full" aria-label="click to update item ${name}">
           Edit
         </button>
-        <button class="btn--options open-delete-dialog" aria-label="Click to delete item ${name}">
+        <button class="btn--options open-delete-dialog h-full" aria-label="Click to delete item ${name}">
           Delete
         </button>
       </td>`;

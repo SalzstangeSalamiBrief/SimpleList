@@ -1,8 +1,11 @@
-export default async function (req, res, next) {
+import { Request, Response, NextFunction } from 'express';
+
+export default async function blockList(
+	req: Request, res: Response, next: NextFunction,
+): Promise<void> {
 	if (!/127.0.0.1$/.test(req.ip)) {
 		// not local
-		res.status = 401;
-		return;
+		return res.status(401).end();
 	}
-	await next();
+	return next();
 }
