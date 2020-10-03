@@ -1,3 +1,4 @@
+import { Request } from 'express';
 // Array for whitelisted URLs
 const whitelist = ['http://localhost:8081', 'http://localhost:8080'];
 
@@ -6,7 +7,7 @@ const whitelist = ['http://localhost:8081', 'http://localhost:8080'];
  * @param {request} req
  * @param {function} callback
  */
-export default function (req, callback) {
+export default function (req: Request, callback): void {
 	const corsOptions = { origin: false };
 	if (whitelist.includes(req.header('Origin'))) {
 		corsOptions.origin = true;

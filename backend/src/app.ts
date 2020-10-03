@@ -13,11 +13,32 @@ import Blocklist from './middleware/blocklist';
 import 'dotenv/config';
 import ListItemRouter from './routes/list-item-router';
 import ListRouter from './routes/list-router';
+import { exception } from 'console';
 
 const port = process.env.PORT;
 
 function startServer() {
 	const app = Express();
+	// add event handler for errors
+	// TODO: DRY
+	process.on('uncaughtException', (err: Error, origin: string) =>{
+		console.log(
+			`uncaught exception: ${err.toString()}`,
+			`exception origin: ${origin}\n`,
+			err
+		);
+		process.exit(1);
+	})
+
+	process.on('unhandledRejection', (err: Error, origin: string) =>{
+		console.log(
+			`unhandled rejection: ${err.toString()}`,
+			`exception origin: ${origin}\n`,
+			err
+		);
+		process.exit(1);
+	})
+
 	// Add middlewares
 	app.use(cors(CorsOptions));
 	app.use(Logger('combined'));
@@ -34,8 +55,8 @@ function startServer() {
 	console.log(`App is Listening on ${port}`);
 }
 
-// connect to db
-mongoose
+// connect to db and start server after that
+(mongoose
 	.connect(process.env.MONGO_URL, {
 		useNewUrlParser: true,
 		useCreateIndex: true,
@@ -47,3 +68,4 @@ mongoose
 		startServer();
 	})
 	.catch((err) => console.log(err));
+)()

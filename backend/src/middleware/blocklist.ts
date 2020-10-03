@@ -1,4 +1,6 @@
-export default async function (req, res, next) {
+import { Request, Response } from 'express';
+
+export default async function (req: Request, res: Response, next): Promise<void> {
 	if (!/127.0.0.1$/.test(req.ip)) {
 		// not local
 		res.status = 401;
