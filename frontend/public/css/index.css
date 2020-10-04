@@ -16,9 +16,9 @@ body {
   background: var(--main-bg-color);
 }
 
-.btn--options {
+/* .btn--options {
   color: #0954ab;
-}
+} */
 
 /* .btn--options, */
 button#open-add-dialog,
@@ -170,11 +170,3 @@ input#file-import-input {
 tr:nth-child(even){
   background-color: #fbfeff;
 }
-
-
-
-/* #file-picker__file-name{
-  border: 1px solid rgb(203, 213, 224);
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-} */

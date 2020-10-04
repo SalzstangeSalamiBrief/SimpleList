@@ -17,16 +17,16 @@ function selectConfirmButtonColors(typeOfAction: TypeOfAction): Array<string> {
 	if (typeOfAction) {
 		switch (typeOfAction.toLowerCase()) {
 		case TypeOfAction.add:
-			classesForButtonColors = ['bg-green-500', 'hover:bg-green-700'];
+			classesForButtonColors = ['bg-green-300', 'hover:bg-green-400'];
 			break;
 		case TypeOfAction.import:
-			classesForButtonColors = ['bg-green-500', 'hover:bg-green-700'];
+			classesForButtonColors = ['bg-green-300', 'hover:bg-green-400'];
 			break;
 		case TypeOfAction.delete:
-			classesForButtonColors = ['bg-red-500', 'hover:bg-red-700'];
+			classesForButtonColors = ['bg-red-300', 'hover:bg-red-400'];
 			break;
 		default:
-			classesForButtonColors = ['bg-blue-500', 'hover:bg-blue-700'];
+			classesForButtonColors = ['bg-blue-300', 'hover:bg-blue-400'];
 			break;
 		}
 	}
@@ -95,7 +95,7 @@ function createActionButton(typeOfAction: TypeOfAction, nameOfItem = '') {
 		// create classList
 		const buttonColors = selectConfirmButtonColors(typeOfAction);
 		const classList: Array<string> = [
-			'text-white',
+			'text-black',
 			'font-bold',
 			'py-2',
 			'px-4',
@@ -126,22 +126,16 @@ function createActionButton(typeOfAction: TypeOfAction, nameOfItem = '') {
 function createCancelButton(typeOfAction: TypeOfAction): HTMLButtonElement {
 	if (typeOfAction) {
   	const classList: Array<string> = [
-			'text-white',
+			'hover:bg-blue-400',
+			'text-black',
 			'font-bold',
 			'py-2',
 			'px-4',
 			'rounded',
 			'btn-form',
 			'btn--cancel-dialog',
+			'bg-blue-300',
 		];
-		// select color for cancelButton
-		if (typeOfAction.toLowerCase() === TypeOfAction.delete) {
-			classList.push('bg-blue-500');
-			classList.push('hover:bg-blue-700');
-		} else {
-			classList.push('bg-blue-500');
-			classList.push('hover:bg-blue-700');
-		}
 
 		const attributeList = {
 			id: 'cancel-add-update-form',
