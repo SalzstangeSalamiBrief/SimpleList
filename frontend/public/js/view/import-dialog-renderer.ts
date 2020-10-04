@@ -20,9 +20,9 @@ function createImportInput(): HTMLDivElement {
 
 	// create label
 	const labelClassList = [
-		'bg-blue-300',
-		'hover:bg-blue-500',
-		'text-black',
+		'bg-blue-500',
+		'hover:bg-blue-700',
+		'text-white',
 		'font-bold',
 		'py-2',
 		'px-4',
