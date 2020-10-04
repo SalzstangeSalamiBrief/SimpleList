@@ -77,8 +77,6 @@ function renderTagList(tags: Array<string> = [], name = ''): string {
 export default function createTable(itemList: Array<ListItem> = []): void {
 	// clear child nodes
 	clearInnerHTML(tbody);
-	// tbody.textContent = '';
-
 	for (let i = 0; i < itemList.length; i += 1) {
 		const {
 			name, _id, isFavorite, tags,
