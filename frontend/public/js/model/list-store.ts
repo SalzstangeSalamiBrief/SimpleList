@@ -139,6 +139,7 @@ export default class Store {
   		this.selectedListItems = this.sortListsByFav(this.allListItems);
   		return newItem;
   	}
+  	return null;
   }
 
   /**
@@ -158,6 +159,9 @@ export default class Store {
   			'An error happened on loading the content. Please refresh the site.',
   		);
   	}
+  	// clear this items
+  	this.allListItems = [];
+  	this.selectedListItems = [];
   	// add each item in initListEntries to the store
   	for (let i = 0; i < initListEntries.length; i += 1) {
   		this.addItem(initListEntries[i]);
