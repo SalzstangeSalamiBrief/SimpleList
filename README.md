@@ -28,7 +28,6 @@ $ npm run dev
 
 ## TODO
 - add build command
-- Restyle buttons for contrast
 
 ## Possible Improvements
 1. Add responsiveness for mobile devices (+refactor table)
