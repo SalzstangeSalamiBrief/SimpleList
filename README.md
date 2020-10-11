@@ -27,7 +27,6 @@ $ npm run dev
 ```
 
 ## TODO
-- add favicon
 - add build command
 - Restyle buttons for contrast
 
