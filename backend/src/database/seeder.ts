@@ -1,7 +1,8 @@
-/* eslint-disable */ 
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 function connectToDB() {
 	return mongoose
@@ -14,20 +15,20 @@ function connectToDB() {
 		.catch((err) => console.error(err));
 }
 
+function disconnectFromDB() {
+	return mongoose.disconnect();
+}
+
 async function seedData() {
 	await connectToDB();
 	await disconnectFromDB();
 }
 
-function disconnectFromDB() {
-	return mongoose.disconnect();
-}
-
-function dropDB() {
-	return new Promise((resolve) => {
-		mongoose.connection.db.dropDatabase();
-		resolve(true);
-	});
-}
+// function dropDB() {
+// 	return new Promise((resolve) => {
+// 		mongoose.connection.db.dropDatabase();
+// 		resolve(true);
+// 	});
+// }
 
 seedData();

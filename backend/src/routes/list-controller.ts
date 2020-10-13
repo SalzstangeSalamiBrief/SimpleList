@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { findAllListItems } from '../database/queries/queries';
 import { parseCSVFromListItemArray, parseListItemArrayFromCSV } from '../util/csv-handler';
 
+import ListItem from '../interfaces/list-item';
+
 // set req as any, because of the error that Request does not have the property files
 // TODO: maybe fix
 export async function importList(req: any, res: Response): Promise<void> {
@@ -23,7 +25,7 @@ export async function exportList(req: Request, res: Response): Promise<void> {
 	const responseObject = { err: '', route: '' };
 	let status;
 	try {
-		const allListItems = await findAllListItems();
+		const allListItems = Array<ListItem>(await findAllListItems());
 		await parseCSVFromListItemArray(allListItems);
 		status = 200;
 		responseObject.route = '/exportedData.csv';
