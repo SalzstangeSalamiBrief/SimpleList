@@ -46,7 +46,6 @@ export async function getListItem(req: Request, res: Response): Promise<void> {
 	res.status(status).json(responseObject);
 }
 
-// todo checks for body
 export async function createNewListItem(req: Request, res: Response): Promise<void> {
 	const newListItem: ListItem = req.body;
 	newListItem.name = String(newListItem.name);

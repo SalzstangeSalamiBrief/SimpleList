@@ -126,6 +126,7 @@ function createActionButton(typeOfAction: TypeOfAction, nameOfItem = '') {
 function createCancelButton(typeOfAction: TypeOfAction): HTMLButtonElement {
 	if (typeOfAction) {
   	const classList: Array<string> = [
+			'hover:bg-blue-700',
 			'text-white',
 			'font-bold',
 			'py-2',
@@ -133,15 +134,8 @@ function createCancelButton(typeOfAction: TypeOfAction): HTMLButtonElement {
 			'rounded',
 			'btn-form',
 			'btn--cancel-dialog',
+			'bg-blue-500',
 		];
-		// select color for cancelButton
-		if (typeOfAction.toLowerCase() === TypeOfAction.delete) {
-			classList.push('bg-blue-500');
-			classList.push('hover:bg-blue-700');
-		} else {
-			classList.push('bg-blue-500');
-			classList.push('hover:bg-blue-700');
-		}
 
 		const attributeList = {
 			id: 'cancel-add-update-form',

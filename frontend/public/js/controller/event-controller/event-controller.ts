@@ -22,7 +22,9 @@ export default class EventController {
 
   private favClassListRegex: RegExp;
 
-  constructor(tableRenderer, store, errorController, fetchController) {
+  constructor(
+  	tableRenderer, store, errorController, fetchController,
+  ) {
   	this.dialogController = new DialogController();
   	this.inputFieldController = new InputFieldController();
   	this.tableRenderer = tableRenderer;
@@ -36,29 +38,41 @@ export default class EventController {
   	);
   	this.addClickEventListenerToBody();
   	this.addKeyUpEventHandlerToBody();
-  	// this.addInputSubmitHandler();
   }
 
+  /**
+	 * add a click-eventListener to the body
+	 */
   private addClickEventListenerToBody() {
   	document.querySelector('body').addEventListener('click', (e: Event) => {
   		this.clickEventHandler.call(this, e);
   	});
   }
 
+  /**
+	 * add a keyUp-eventListener to the body
+	 */
   private addKeyUpEventHandlerToBody() {
   	document.querySelector('body').addEventListener('keyup', (e: Event) => {
   		this.keyUpHandler.call(this, e);
   	});
   }
 
-  // TODO: import-fom will be dynamicaly generated => cant set eventhandler
-  private addInputSubmitHandler() {
-  	document.querySelector('#import-form').addEventListener('submit', (e: Event) => {
+  /**
+	 * Add a eventListener to input#file-import-input on the change of value
+	 */
+  private addFileInputChangeHandler() {
+  	document.querySelector('input#file-import-input').addEventListener('input', (e: Event) => {
   		e.preventDefault();
-  		this.addImportSubmitHandler.call(this, e);
+  		this.fileInputChangeHandler.call(this, e);
   	});
   }
 
+  /**
+	 * Add clickHandler for events
+	 * Make decisions based on the class/id of the clicked element (event delegation)
+	 * @param e Event
+	 */
   private async clickEventHandler({ target }) {
   	const targetClassList: DOMTokenList = target.classList;
   	const targetID: string = target.id;
@@ -123,6 +137,9 @@ export default class EventController {
   	case 'export-list':
   		await this.exportList();
   		break;
+  	case 'file-picker__file-name':
+  		this.openFilePicker();
+  		break;
   	case 'dialog-container':
   		if (this.dialogController.getIsDialogOpen()) {
   			this.dialogController.closeDialog();
@@ -132,8 +149,14 @@ export default class EventController {
   	}
   }
 
+  /**
+	 * keyup-eventHandler
+	 * If an input-Element is selected
+	 * 	and the enter-key is pressed, then submit the corresponding form
+	 * @param e Event
+	 */
   private async keyUpHandler({ target: { tagName, name }, keyCode }) {
-  	// 13 === space
+  	// 13 === enter
   	if (keyCode === 13) {
   		// check if the tagname of the target is an input-field
   		if (tagName === 'INPUT') {
@@ -295,7 +318,7 @@ export default class EventController {
    * @param target Button
    */
   private openDeleteDialog(target) {
-  	const _id = this.loopThroughParentsToGetID(target);
+  	const _id: string = this.loopThroughParentsToGetID(target);
   	const listItem: ListItem = this.store.getItemByID(_id);
   	this.idOfSelectedItem = _id;
   	this.dialogController.openDialog('Delete', listItem);
@@ -357,7 +380,7 @@ export default class EventController {
 	 */
   private openImportDialog() {
   	this.dialogController.openDialog('import');
-  	this.addInputSubmitHandler();
+  	this.addFileInputChangeHandler();
   }
 
   /**
@@ -365,13 +388,13 @@ export default class EventController {
 	 */
   private async submitFileUpload() {
   	let errorHappened = false;
-  	const fileForImport = this.inputFieldController.getFileForImport();
+  	const fileForImport: File = this.inputFieldController.getFileForImport();
   	if (fileForImport) {
   		try {
   			const isFileUploaded = await this.fetchController.postImportFile(fileForImport);
-  			console.log(isFileUploaded);
   			if (isFileUploaded) {
   				this.dialogController.closeDialog();
+  				this.store.initOnSideLoad(this.fetchController, this.errorController, this.tableRenderer);
   				errorHappened = true;
   			}
   		} catch (err) {
@@ -383,5 +406,23 @@ export default class EventController {
   	if (!errorHappened) {
   		this.errorController.setErrorMessage('Could not import the selected File. Please try again');
   	}
+  }
+
+  /**
+	 * open the filePicker with clicking on the file-input
+	 */
+  private openFilePicker() {
+  	const fileInput = <HTMLInputElement>document.querySelector('#file-import-input');
+  	fileInput.click();
+  }
+
+  /**
+	 * if the fileInput changes, then set the textContent of #file-picker__file-name
+	 * this function will display the name of the selected file in the said element
+	 */
+  private fileInputChangeHandler(): void {
+  	const { name: fileName } = this.inputFieldController.getFileForImport();
+  	const inputFileParagraph = <HTMLParagraphElement>document.querySelector('#file-picker__file-name');
+  	inputFileParagraph.textContent = fileName;
   }
 }

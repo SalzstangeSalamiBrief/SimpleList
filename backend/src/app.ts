@@ -19,7 +19,6 @@ const port = process.env.PORT;
 function startServer() {
 	const app = Express();
 	// add event handler for errors
-	// TODO: DRY
 	process.on('uncaughtException', (err: Error, origin: string) => {
 		console.log(
 			`uncaught exception: ${err.toString()}`,

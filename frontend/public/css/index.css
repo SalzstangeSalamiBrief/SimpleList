@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root{
-  --main-bg-color: #f5fdff;
+  --main-bg-color: #fffcf5;
 }
 
 body {
@@ -16,9 +16,9 @@ body {
   background: var(--main-bg-color);
 }
 
-.btn--options {
+/* .btn--options {
   color: #0954ab;
-}
+} */
 
 /* .btn--options, */
 button#open-add-dialog,
@@ -172,9 +172,11 @@ tr:nth-child(even){
 }
 
 
-
-/* #file-picker__file-name{
-  border: 1px solid rgb(203, 213, 224);
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-} */
+/* fix for chrome: let the header of the table be displayed at scrolling */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+  th { 
+    position: sticky;
+     top: 0; 
+     background: white;
+  }
+}

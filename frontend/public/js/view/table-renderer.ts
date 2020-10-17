@@ -1,8 +1,17 @@
-import { createHTMLElement } from './util/util-function';
+import { createHTMLElement, clearInnerHTML } from './util/util-function';
 
 import ListItem from '../interfaces/list-item';
 
 const tbody: HTMLElement = document.querySelector('tbody');
+
+/**
+ * return a star-icon as svg-string
+ * based on the isFavorite boolean the icon is different filled
+ * - isFavorite === true => yellow
+ * - isFavorite === false => white
+ * @param _id string
+ * @param isFavorite boolean
+ */
 function createFavoriteSVG(
 	_id = '',
 	isFavorite: boolean = undefined,
@@ -37,6 +46,12 @@ function createFavoriteSVG(
   `;
 }
 
+/**
+ * Render the tags-array of a listItem as ul
+ * if one tag is 'top' the tag will have a more salient color
+ * @param tags Array<string>
+ * @param name string
+ */
 function renderTagList(tags: Array<string> = [], name = ''): string {
 	let list = `
     <ul
@@ -46,7 +61,7 @@ function renderTagList(tags: Array<string> = [], name = ''): string {
 		for (let i = 0; i < tags.length; i += 1) {
 			list += `
           <li
-            class="mx-1 px-4 py-2 tag bg-gray-300"
+            class="mx-1 px-4 py-2 tag ${tags[i] === 'top' ? 'bg-yellow-500' : 'bg-gray-300'}"
             aria-label="tag for item ${name}: ${tags[i]}" 
             tabindex=0">
             ${tags[i]} 
@@ -61,8 +76,7 @@ function renderTagList(tags: Array<string> = [], name = ''): string {
 // function to render the actual table
 export default function createTable(itemList: Array<ListItem> = []): void {
 	// clear child nodes
-	tbody.textContent = '';
-
+	clearInnerHTML(tbody);
 	for (let i = 0; i < itemList.length; i += 1) {
 		const {
 			name, _id, isFavorite, tags,
@@ -95,10 +109,10 @@ export default function createTable(itemList: Array<ListItem> = []): void {
       </td>
       <td class="p-4 text-center">${renderTagList(tags, name)}</td>
       <td class="flex justify-center items-center p-4 options-row">
-        <button class="btn--options edit-btn mr-4 h-full" aria-label="click to update item ${name}">
+        <button class="btn--options edit-btn mr-4 h-full text-blue-700" aria-label="click to update item ${name}">
           Edit
         </button>
-        <button class="btn--options open-delete-dialog h-full" aria-label="Click to delete item ${name}">
+        <button class="btn--options open-delete-dialog h-full text-blue-700" aria-label="Click to delete item ${name}">
           Delete
         </button>
       </td>`;

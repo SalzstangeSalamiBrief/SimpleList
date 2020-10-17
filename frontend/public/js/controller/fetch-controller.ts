@@ -14,7 +14,6 @@ export default class FetchHandler {
   }
 
   public async deleteEntryOnServer(_id: string): Promise<void> {
-  	console.log(_id);
   	try {
   		await fetch(`${this.backendURL}/api${this.listItemRoute}`, {
   			method: 'DELETE',
@@ -113,11 +112,10 @@ export default class FetchHandler {
   		});
   		if (response.status === 200) {
   			const { route: routeForCSVFile } = await response.json();
-  			console.log(routeForCSVFile);
   			this.downloadCSVFile(routeForCSVFile);
   		}
   	} catch (err) {
-  		console.log(err);
+  		console.error(err);
   	}
   }
 
@@ -128,7 +126,6 @@ export default class FetchHandler {
   private downloadCSVFile(routeForCSVFile: string) {
   	const a: HTMLAnchorElement = document.createElement('a');
   	a.style.display = 'none';
-  	console.log(`${this.backendURL}${routeForCSVFile}`);
   	a.href = `${this.backendURL}${routeForCSVFile}`;
   	a.setAttribute('download', 'simpleListExportedCSV');
   	document.body.appendChild(a);
@@ -141,11 +138,9 @@ export default class FetchHandler {
 	 * @param fileToUpload File
 	 */
   public async postImportFile(fileToUpload: File): Promise<boolean> {
-  	console.log(fileToUpload.type);
   	try {
   		const fileData = new FormData();
   		fileData.append('file', fileToUpload);
-  		console.log(fileData);
   		const response = await fetch(`${this.backendURL}/api${this.csvRoutes}`, {
   			method: 'POST',
   			mode: 'cors',

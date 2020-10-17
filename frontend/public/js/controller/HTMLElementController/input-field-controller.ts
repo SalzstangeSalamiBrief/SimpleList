@@ -23,7 +23,6 @@ export default class FormHandler {
   	this.filterInput = <HTMLInputElement>(
       document.querySelector('input[name="tag-search-input"]')
     );
-  	this.importFileInput = <HTMLInputElement>document.querySelector('input#file-import-input');
   }
 
   /**
@@ -66,7 +65,8 @@ export default class FormHandler {
   	}
   }
 
-  public getFileForImport() {
-  	return <HTMLInputElement>document.querySelector('input#file-import-input').files[0];
+  public getFileForImport(): File {
+  	const fileInput = <HTMLInputElement>document.querySelector('input#file-import-input');
+  	return fileInput.files[0];
   }
 }

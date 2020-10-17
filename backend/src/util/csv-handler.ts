@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import ListItem from '../interfaces/list-item';
 import { createListItem, clearDB } from '../database/queries/queries';
-// todo error with import
 
 /**
  * function which takes an Array of ListItems
