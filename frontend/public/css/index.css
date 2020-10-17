@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root{
-  --main-bg-color: #f5fdff;
+  --main-bg-color: #fffcf5;
 }
 
 body {
@@ -169,4 +169,14 @@ input#file-import-input {
 
 tr:nth-child(even){
   background-color: #fbfeff;
+}
+
+
+/* fix for chrome: let the header of the table be displayed at scrolling */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+  th { 
+    position: sticky;
+     top: 0; 
+     background: white;
+  }
 }
