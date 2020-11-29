@@ -4,7 +4,7 @@
   "description": "Backend for simpleList",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "npm run build && npm run start",
     "build": "tsc",
     "watch": "tsc -w",
     "start": "node ./dist/app.js",
@@ -29,7 +29,6 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "mongoose": "^5.10.0",
-    "morgan": "^1.10.0",
-    "nodemon": "^2.0.4"
+    "morgan": "^1.10.0"
   }
 }
