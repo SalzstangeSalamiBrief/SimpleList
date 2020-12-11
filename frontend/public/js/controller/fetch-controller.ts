@@ -28,12 +28,11 @@ export default class FetchHandler {
   }
 
   public async updateEntryOnServer(itemToUpdate: ListItem): Promise<ListItem> {
-  	if (
-  		itemToUpdate.name === ''
-      || !Array.isArray(itemToUpdate.tags)
-      || itemToUpdate._id === undefined
-      || itemToUpdate.isFavorite === undefined
-  	) {
+  	const isItemInbalid = 	itemToUpdate.name === ''
+		|| !Array.isArray(itemToUpdate.tags)
+		|| itemToUpdate._id === undefined
+		|| itemToUpdate.isFavorite === undefined;
+  	if (isItemInbalid) {
   		return null;
   	}
   	try {

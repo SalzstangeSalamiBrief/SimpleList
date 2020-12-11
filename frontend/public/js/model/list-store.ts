@@ -67,7 +67,7 @@ export default class Store {
   	// Update only fields who are passed
   	if (tagsToUpdate) objectToUpdate.tags = tagsToUpdate;
   	if (updateIsFavorite !== undefined) { objectToUpdate.isFavorite = updateIsFavorite; }
-  	if (name !== undefined) objectToUpdate.name = nameToUpdate;
+  	if (nameToUpdate !== undefined) objectToUpdate.name = nameToUpdate;
   	this.selectedListItems = this.sortListsByFav(this.allListItems);
   	return objectToUpdate;
   }
@@ -122,12 +122,14 @@ export default class Store {
   }
 
   public addItem(newItem: ListItem): ListItem {
-  	if (newItem.name && newItem.tags.length > 0 && newItem._id !== undefined) {
-  		if (newItem.isFavorite === undefined) {
-  			newItem.isFavorite = false;
+  	const isNewItemValid = newItem.name && newItem.tags.length > 0 && newItem._id !== undefined;
+  	if (isNewItemValid) {
+  		const itemToAdd: ListItem = newItem;
+  		if (itemToAdd.isFavorite === undefined) {
+  			itemToAdd.isFavorite = false;
   		}
   		// add to all ListItems
-  		this.allListItems.push(newItem);
+  		this.allListItems.push(itemToAdd);
   		// sort allListItems and set selectedListItems
   		this.selectedListItems = this.sortListsByFav(this.allListItems);
   		return newItem;
