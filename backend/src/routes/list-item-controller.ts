@@ -32,7 +32,8 @@ export async function getListItem(req: Request, res: Response): Promise<void> {
 	const _idForSearch = String(req.params._id);
 	const responseObject: ResponseBody = { err: '', succ: '' };
 	let status = 404;
-	if (_idForSearch && typeof _idForSearch === 'string') {
+	const isIdValid = _idForSearch && typeof _idForSearch === 'string';
+	if (isIdValid) {
 		const listItem: ListItem = await findListItemByID(_idForSearch);
 		if (listItem === null) {
 			responseObject.err = 'Item does not exist';
@@ -56,9 +57,7 @@ export async function createNewListItem(req: Request, res: Response): Promise<vo
 		try {
 			const {
 				name, tags, isFavorite, _id,
-			}: ListItem = await createListItem(
-				newListItem,
-			);
+			}: ListItem = await createListItem(newListItem);
 			status = 201;
 			responseObject.succ = {
 				name, tags, isFavorite, _id,
@@ -94,12 +93,8 @@ export async function updateSelectedListItem(req: Request, res: Response): Promi
 	const { body } = req;
 	let status = 400;
 	const responseObject: ResponseBody = { err: '', succ: '' };
-	if (
-		body.name
-    && body.tags
-    && typeof body.isFavorite !== 'undefined'
-    && body._id
-	) {
+	const isBodyValid = 	body.name && body.tags && typeof body.isFavorite !== 'undefined' && body._id;
+	if (isBodyValid) {
 		try {
 			await updateListItem(body);
 			// send updated record back to the client
