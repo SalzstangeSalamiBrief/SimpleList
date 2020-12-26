@@ -33,9 +33,7 @@ export default class FormHandler {
   	const tempTags: Array<string> = tagString.trim().split(' ');
   	const tags: Array<string> = [];
   	for (let i = 0; i < tempTags.length; i += 1) {
-  		// trim teach tag
   		const tempEntry = tempTags[i].trim();
-  		// only add tag to results, if it is not an empty string
   		if (tempEntry !== '') {
   			tags.push(tempEntry);
   		}

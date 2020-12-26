@@ -27,14 +27,13 @@ export default class FetchHandler {
   	}
   }
 
-  public async updateEntryOnServer(itemToUpdate: ListItem): Promise<ListItem> {
-  	const isItemInbalid = 	itemToUpdate.name === ''
+  public async updateEntryOnServer(itemToUpdate: ListItem): Promise<ListItem> | null {
+  	const isItemInvalid = 	itemToUpdate.name === ''
 		|| !Array.isArray(itemToUpdate.tags)
 		|| itemToUpdate._id === undefined
 		|| itemToUpdate.isFavorite === undefined;
-  	if (isItemInbalid) {
-  		return null;
-  	}
+  	if (isItemInvalid) return null;
+
   	try {
   		const response = await fetch(`${this.backendURL}/api${this.listItemRoute}`, {
   			method: 'PUT',
@@ -44,11 +43,12 @@ export default class FetchHandler {
   			},
   			body: JSON.stringify(itemToUpdate),
   		});
-  		if (response.status !== 200) {
-  			return null;
+
+  		if (response.status === 200) {
+  			const { succ } = await response.json();
+  			return succ;
   		}
-  		const { succ } = await response.json();
-  		return succ;
+  			return null;
   	} catch (err) {
   		console.error(err);
   		return null;
@@ -93,14 +93,14 @@ export default class FetchHandler {
   			// return all entries
   			return succ;
   		}
-  		return null;
+  		return [];
   	} catch (err) {
   		console.error(err);
   	}
   	return [];
   }
 
-  public async initDownloadOfCSV(): void {
+  public async initDownloadOfCSV(): Promise<void> {
   	try {
   		const response = await fetch(`${this.backendURL}/api${this.csvRoutes}`, {
   			method: 'GET',
@@ -151,7 +151,7 @@ export default class FetchHandler {
   		return false;
   	} catch (err) {
   		console.error(err);
-  		return null;
+  		return false;
   	}
   }
 }

@@ -5,13 +5,13 @@ export default class ErrorNotification {
 
   private isErrorActive: boolean;
 
-  private TIME_IN_MS_TO_DISPLAY_ERROR: number;
+  private DisplayErrorTimeInMS: number;
 
   constructor() {
   	this.errorContainer = document.querySelector('div.error-container');
   	this.errorTxt = document.querySelector('p#error-text');
   	this.isErrorActive = false;
-  	this.TIME_IN_MS_TO_DISPLAY_ERROR = 2000;
+  	this.DisplayErrorTimeInMS = 2000;
   }
 
   /**
@@ -36,7 +36,7 @@ export default class ErrorNotification {
   		this.setErrorMessage('');
   		this.toggleErrorVisibility();
   		this.isErrorActive = false;
-  	}, this.TIME_IN_MS_TO_DISPLAY_ERROR);
+  	}, this.DisplayErrorTimeInMS);
   }
 
   /**

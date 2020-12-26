@@ -4,16 +4,15 @@ import { parseCSVFromListItemArray, parseListItemArrayFromCSV } from '../util/cs
 
 export async function importList(req: Request, res: Response): Promise<void> {
 	let status = 400;
-	const { file } = req.files;
-	if (file.mimetype === 'application/vnd.ms-excel') {
+	const { file: { mimetype, data } } = req.files;
+	if (mimetype === 'application/vnd.ms-excel') {
 		try {
-			await parseListItemArrayFromCSV(file.data);
+			await parseListItemArrayFromCSV(data);
 			status = 200;
 		} catch (err) {
 			console.log(err);
 		}
 	}
-
 	res.status(status).end();
 }
 

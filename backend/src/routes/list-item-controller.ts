@@ -76,7 +76,7 @@ export async function deleteSelectedListItem(req: Request, res: Response): Promi
 	const itemToDelete = String(req.body._id);
 	let status = 400;
 	const responseObject: ResponseBody = { err: '', succ: '' };
-	if (typeof itemToDelete === 'string') {
+	if (itemToDelete) {
 		try {
 			const result = await deleteListItem(itemToDelete);
 			status = 202;

@@ -4,6 +4,19 @@ import ListItem from '../interfaces/list-item';
 
 const tbody: HTMLElement = document.querySelector('tbody');
 
+interface bodyOfEntryInterface{
+  ariaLabel: string;
+  _id: string;
+  isFavorite: boolean;
+  name: string;
+  tags: Array<string>
+}
+
+interface AriaLabelInterface{
+  isFavorite: boolean;
+  name: string;
+}
+
 /**
  * return a star-icon as svg-string
  * based on the isFavorite boolean the icon is different filled
@@ -73,50 +86,64 @@ function renderTagList(tags: Array<string> = [], name = ''): string {
 	return list;
 }
 
-// function to render the actual table
+function createBodyOfEntry({
+	ariaLabel = '', _id = '',	isFavorite = false,	name = '', tags = [],
+}: bodyOfEntryInterface): string {
+	return `
+  <td class="py-4">
+    <button class="flex justify-center item-center w-12 btn-fav-img"
+         aria-label="${ariaLabel}">
+      ${createFavoriteSVG(_id, isFavorite)}
+    </button>        
+  </td>
+  <td class="p-4 text-center">
+    <button class="row-item-name w-full h-full overflow-hidden">
+      ${name}
+    </button>      
+  </td>
+  <td class="p-4 text-center">${renderTagList(tags, name)}</td>
+  <td class="flex justify-center items-center p-4 options-row">
+    <button class="btn--options edit-btn mr-4 h-full text-blue-700" aria-label="click to update item ${name}">
+      Edit
+    </button>
+    <button class="btn--options open-delete-dialog h-full text-blue-700" aria-label="Click to delete item ${name}">
+      Delete
+    </button>
+  </td>`;
+}
+
+function generateAriaLabel({ name = '', isFavorite = false }: AriaLabelInterface): string {
+	return `${name} is ${isFavorite ? '' : 'not'
+	} a favorite of yours. If you want to change that click this icon`;
+}
+
+function createRow({ _id = '', name = '' }: {_id: string; name: string}): HTMLTableRowElement {
+	const classListRow = [
+		'hover:bg-gray-200',
+	];
+	const row = <HTMLTableRowElement>createHTMLElement({
+		type: 'tr',
+		classList: classListRow,
+		attributeList: {},
+		textContent: '',
+	});
+	row.dataset._id = _id;
+	row.dataset.name = name;
+	return row;
+}
+
 export default function createTable(itemList: Array<ListItem> = []): void {
-	// clear child nodes
 	clearInnerHTML(tbody);
+
 	for (let i = 0; i < itemList.length; i += 1) {
 		const {
 			name, _id, isFavorite, tags,
 		}: ListItem = itemList[i];
-		const classListRow = [
-			'hover:bg-gray-200',
-		];
-		const entry = <HTMLTableRowElement>createHTMLElement({
-			type: 'tr',
-			classList: classListRow,
-			attributeList: {},
-			textContent: '',
+		const row = createRow({ _id, name });
+		const ariaLabel = generateAriaLabel({ name, isFavorite });
+		row.innerHTML = createBodyOfEntry({
+			_id, ariaLabel, isFavorite, name, tags,
 		});
-		entry.dataset._id = _id;
-		entry.dataset.name = name;
-
-		const ariaLabel = `${name} is ${isFavorite ? '' : 'not'
-		} a favorite of yours. If you want to change that click this icon`;
-		const entryBody = `
-      <td class="py-4">
-        <button class="flex justify-center item-center w-12 btn-fav-img"
-             aria-label="${ariaLabel}">
-          ${createFavoriteSVG(_id, isFavorite)}
-        </button>        
-      </td>
-      <td class="p-4 text-center">
-        <button class="row-item-name w-full h-full overflow-hidden">
-          ${name}
-        </button>      
-      </td>
-      <td class="p-4 text-center">${renderTagList(tags, name)}</td>
-      <td class="flex justify-center items-center p-4 options-row">
-        <button class="btn--options edit-btn mr-4 h-full text-blue-700" aria-label="click to update item ${name}">
-          Edit
-        </button>
-        <button class="btn--options open-delete-dialog h-full text-blue-700" aria-label="Click to delete item ${name}">
-          Delete
-        </button>
-      </td>`;
-		entry.innerHTML = entryBody;
-		tbody.insertAdjacentElement('beforeend', entry);
+		tbody.insertAdjacentElement('beforeend', row);
 	}
 }

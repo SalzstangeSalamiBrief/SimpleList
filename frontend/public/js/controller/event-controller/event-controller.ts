@@ -5,6 +5,10 @@ import Validator from '../util/validator';
 
 import DialogController from '../HTMLElementController/dialog-controller';
 import InputFieldController from '../HTMLElementController/input-field-controller';
+import Store from '../../model/list-store';
+import TableRenderer from '../../view/table-renderer';
+import FetchController from '../fetch-controller';
+import ErrorController from '../error-controller';
 
 export default class EventController {
 	private dialogController;
@@ -23,22 +27,25 @@ export default class EventController {
 
 	private favClassListRegex: RegExp;
 
-	constructor(
-		tableRenderer, store, errorController, fetchController,
-	) {
+	constructor() {
 		this.dialogController = new DialogController();
 		this.inputFieldController = new InputFieldController();
-		this.tableRenderer = tableRenderer;
-		this.errorController = errorController;
-		this.fetchController = fetchController;
-		this.store = store;
-		this.inputFieldController.setStore(store);
+		this.tableRenderer = TableRenderer;
+		this.errorController = new ErrorController();
+		this.fetchController = new FetchController();
+		this.store = new Store();
 		this.idOfSelectedItem = '';
 		this.favClassListRegex = new RegExp(
 			'fav(__(inner|outer)|-img)|btn-fav-img',
 		);
 		this.addClickEventListenerToBody();
 		this.addKeyUpEventHandlerToBody();
+		this.inputFieldController.setStore(this.store);
+		this.store.initOnSideLoad(
+			this.fetchController,
+			this.errorController,
+			this.tableRenderer,
+		);
 	}
 
 	/**

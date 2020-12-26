@@ -1,8 +1,6 @@
-// /* eslint-disable */
 import * as mongoose from 'mongoose';
 import ListItemInterface from '../../interfaces/list-item';
 
-// register schemas
 require('../schemas/list-item');
 
 const ListItem = mongoose.model('listItems');

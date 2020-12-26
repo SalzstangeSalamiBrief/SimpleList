@@ -1,14 +1,16 @@
 import ListItem from '../interfaces/list-item';
 
+import ErrorController from '../controller/error-controller';
+import FetchController from '../controller/fetch-controller';
+import TableRenderer from '../view/table-renderer';
+
 export default class Store {
   private allListItems: Array<ListItem>;
 
   public selectedListItems: Array<ListItem>;
 
   constructor(newListItemArray: Array<ListItem> = []) {
-  	// sort and add to allListItems-Array
   	this.allListItems = [...this.sortByName(newListItemArray)];
-  	// Copy allListItems into selectedListItems
   	this.selectedListItems = [...this.allListItems];
   }
 
@@ -35,7 +37,6 @@ export default class Store {
    * @param arr Array<ListItem>
    */
   public sortListsByFav(arr: Array<ListItem>): Array<ListItem> {
-  	// 1. split list into favorites and not favorites
   	const isFavList = [];
   	const notFavList = [];
 
@@ -46,15 +47,16 @@ export default class Store {
   			notFavList.push(arr[i]);
   		}
   	}
-  	// 2. sort both lists by name
   	const sortedIsFavList = this.sortByName(isFavList);
   	const sortedNotFavList = this.sortByName(notFavList);
-  	// 3. merge both lists into one and return the result;
+
   	return sortedIsFavList.concat(sortedNotFavList);
   }
 
   /**
-   *
+	 *	Update a ListItem
+	 *	Select an Item by id
+	 *	If a value for a field is passed as argument, then update that field
    * @param ListItem ListItem
    */
   public updateItem({
@@ -82,15 +84,14 @@ export default class Store {
    * @param tagsToSearch string
    */
   public filterByTags(tagsToSearch: Array<string>): void {
-  	// case if the tagsToSearch array is empty: display all items
   	if (tagsToSearch.length === 0) {
   		this.selectedListItems = this.sortListsByFav(this.allListItems);
   		return;
   	}
-  	// case: tagsToSearch.length is greater than 1
+
   	const tempArray: Array<ListItem> = [...this.allListItems];
   	const indexArrayToAdd: Array<number> = [];
-  	// for each item in tagsArray
+
   	for (let i = 0; i < tempArray.length; i += 1) {
   		// for each item in tempArray
   		const { tags: tagsOfEntry } = tempArray[i];
@@ -116,7 +117,8 @@ export default class Store {
   	// add each item from tempArray to resultArray
   	// with the corresponding index saved in indexArrayToAdd
   	for (let k = 0; k < indexArrayToAdd.length; k += 1) {
-  		resultArray.push(tempArray[indexArrayToAdd[k]]);
+  		const itemFromTempArray = tempArray[indexArrayToAdd[k]];
+  		resultArray.push(itemFromTempArray);
   	}
   	this.selectedListItems = this.sortListsByFav(resultArray);
   }
@@ -128,9 +130,7 @@ export default class Store {
   		if (itemToAdd.isFavorite === undefined) {
   			itemToAdd.isFavorite = false;
   		}
-  		// add to all ListItems
   		this.allListItems.push(itemToAdd);
-  		// sort allListItems and set selectedListItems
   		this.selectedListItems = this.sortListsByFav(this.allListItems);
   		return newItem;
   	}
@@ -143,25 +143,26 @@ export default class Store {
 	 * @param errorController ErrorController
 	 * @param tableRenderer TableController
 	 */
-  public async initOnSideLoad(fetchController, errorController, tableRenderer): Promise<void> {
-  	// fetch all ListItems from the server
+  public async initOnSideLoad(fetchController: FetchController,
+  	errorController: ErrorController,
+  	tableRenderer: typeof TableRenderer): Promise<void> {
   	const initListEntries = <Array<ListItem>>(
 			await fetchController.getAllEntriesFromServer()
 		);
-  	// if the response is null, then display an error
+
   	if (initListEntries === null) {
   		return errorController.setErrorMessage(
   			'An error happened on loading the content. Please refresh the site.',
   		);
   	}
-  	// clear this items
+
   	this.allListItems = [];
   	this.selectedListItems = [];
-  	// add each item in initListEntries to the store
+
   	for (let i = 0; i < initListEntries.length; i += 1) {
   		this.addItem(initListEntries[i]);
   	}
-  	// render stable
+
   	return tableRenderer(this.getSelectedListItems());
   }
 
@@ -172,13 +173,11 @@ export default class Store {
   public deleteItemByID(_id: string): void {
   	const temp = [];
   	for (let i = 0; i < this.allListItems.length; i += 1) {
-  		// push every item, which does not have the wanted _id into temp
-  		//  skip the entry with the wanted _id;
-  		if (this.allListItems[i]._id !== _id) {
+  		const itemIsNotSearched = this.allListItems[i]._id !== _id;
+  		if (itemIsNotSearched) {
   			temp.push(this.allListItems[i]);
   		}
   	}
-  	// set allListItems with the temp (result of the for-of loop)
   	this.allListItems = temp;
   	this.selectedListItems = this.sortListsByFav(this.allListItems);
   }

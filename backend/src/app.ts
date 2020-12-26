@@ -8,7 +8,7 @@ import * as cors from 'cors';
 import * as Logger from 'morgan';
 import * as FileUpload from 'express-fileupload';
 import CorsOptions from './config/CorsConfig';
-import Blocklist from './middleware/blocklist';
+import BlockList from './middleware/blocklist';
 
 import 'dotenv/config';
 import ListItemRouter from './routes/list-item-router';
@@ -16,9 +16,7 @@ import ListRouter from './routes/list-router';
 
 const port = process.env.PORT;
 
-function startServer() {
-	const app = Express();
-	// add event handler for errors
+function addEventHandlerForErrors(): void{
 	process.on('uncaughtException', (err: Error, origin: string) => {
 		console.log(
 			`uncaught exception: ${err.toString()}`,
@@ -36,6 +34,10 @@ function startServer() {
 		);
 		process.exit(1);
 	});
+}
+function startServer() {
+	const app = Express();
+	addEventHandlerForErrors();
 
 	// Add middlewares
 	app.use(cors(CorsOptions));
@@ -44,9 +46,10 @@ function startServer() {
 	app.use(FileUpload());
 	app.use(bodyParser.urlencoded({ extended: false }));
 	app.use(bodyParser.json());
-	// serve index file via koa-static
-	app.use('/api/list-item', Blocklist, ListItemRouter);
-	app.use('/api/list', Blocklist, ListRouter);
+
+	// add routes
+	app.use('/api/list-item', BlockList, ListItemRouter);
+	app.use('/api/list', BlockList, ListRouter);
 
 	// start server
 	app.listen(process.env.PORT);

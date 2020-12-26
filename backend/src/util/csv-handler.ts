@@ -47,7 +47,7 @@ export async function parseListItemArrayFromCSV(fileDataBuffer: Buffer): Promise
 	const arrOfRows: Array<string> = fileData.split('\r\n');
 	// remove heading
 	arrOfRows.shift();
-	// loop through the array of rows and create entries in the database
+
 	const promiseArray = [];
 	let i = 0;
 	while (i < arrOfRows.length) {
