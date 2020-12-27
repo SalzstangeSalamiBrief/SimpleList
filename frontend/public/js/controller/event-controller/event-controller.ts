@@ -380,10 +380,9 @@ export default class EventController {
 	 * create a tag-array and filter the store by the resulting entries in the array
 	 */
 	private filterTags() {
-		const tagsToFilter: Array<string> = this.inputFieldController
-			.createTagsArray(
-				this.inputFieldController.getFilterInputValue(),
-			);
+		const tagsToFilter: Array<string> = this.inputFieldController.createTagsArray(
+			this.inputFieldController.getFilterInputValue(),
+		);
 		this.store.filterByTags(tagsToFilter);
 		this.tableRenderer(this.store.getSelectedListItems());
 	}
@@ -416,12 +415,10 @@ export default class EventController {
 	 */
 	private async submitFileUpload() {
 		let errorHappened = false;
-		const fileForImport: File = this.inputFieldController
-			.getFileForImport();
+		const fileForImport: File = this.inputFieldController.getFileForImport();
 		if (fileForImport) {
 			try {
-				const isFileUploaded = await this.fetchController
-					.postImportFile(fileForImport);
+				const isFileUploaded = await this.fetchController.postImportFile(fileForImport);
 				if (isFileUploaded) {
 					this.dialogController.closeDialog();
 					this.store.initOnSideLoad(

@@ -30,10 +30,7 @@ export async function updateListItem({
 	_id, name, tags = [], isFavorite = false,
 }: ListItemInterface): Promise<ListItemInterface> {
 	const updatedItem = 	<ListItemInterface>
-	await ListItem.updateOne(
-		{ _id },
-		{ name, tags, isFavorite },
-	).lean();
+	await ListItem.updateOne({ _id }, { name, tags, isFavorite }).lean();
 	return updatedItem;
 }
 

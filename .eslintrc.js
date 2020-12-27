@@ -35,12 +35,11 @@ module.exports = {
 		'no-mixed-spaces-and-tabs': 0,
 		'no-shadow': 0,
 		'max-len': ['error', {
-			code: 70,
+			code: 100,
 			tabWidth: 2,
 			ignoreStrings: true,
 			ignoreTemplateLiterals: true,
 			ignoreRegExpLiterals: true,
-			comments: 100,
 			 }],
 	},
 	settings: {
