@@ -132,7 +132,9 @@ function createRow({ _id = '', name = '' }: {_id: string; name: string}): HTMLTa
 	return row;
 }
 
-export default function createTable(itemList: Array<ListItem> = []): void {
+export default function createTable(
+	itemList: Array<ListItem> = [],
+): void {
 	clearInnerHTML(tbody);
 
 	for (let i = 0; i < itemList.length; i += 1) {

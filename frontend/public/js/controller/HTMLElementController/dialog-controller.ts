@@ -30,7 +30,9 @@ export default class DialogHandler {
    * @param type PossibleDialogues
    * @param item ListItem
    */
-  public openDialog(typeofDialog: PossibleDialogues, item: ListItem): void {
+  public openDialog(
+  	typeofDialog: PossibleDialogues, item: ListItem,
+  ): void {
   	const selectedType = typeofDialog.toLowerCase();
   	if (this.isDialogOpen === false) {
   		clearInnerHTML(dialogContainer);

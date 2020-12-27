@@ -8,7 +8,9 @@ import { createListItem, clearDB } from '../database/queries/queries';
  * and parse it into an exportedData.csv file in ./csv-output/ folder
  * @param arr Array<ListItem>
  */
-export function parseCSVFromListItemArray(arr: Array<ListItem>): Promise<void> {
+export function parseCSVFromListItemArray(
+	arr: Array<ListItem>,
+): Promise<void> {
 	return new Promise((resolve, reject) => {
 		const writeStream: fs.WriteStream = fs.createWriteStream(
 			path.resolve(__dirname, '../public/exportedData.csv'),
@@ -41,7 +43,9 @@ export function parseCSVFromListItemArray(arr: Array<ListItem>): Promise<void> {
  * Function which takes a uploaded filepath,
  * reads the file at the filepath and fills the database with corresponding values
  */
-export async function parseListItemArrayFromCSV(fileDataBuffer: Buffer): Promise<void> {
+export async function parseListItemArrayFromCSV(
+	fileDataBuffer: Buffer,
+): Promise<void> {
 	const fileData = fileDataBuffer.toString('utf8');
 	await clearDB();
 	const arrOfRows: Array<string> = fileData.split('\r\n');

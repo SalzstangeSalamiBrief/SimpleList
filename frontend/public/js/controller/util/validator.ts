@@ -6,7 +6,9 @@ class Validator {
 		);
 	}
 
-	public validateTagsArray(tagsToValidate: Array<string> = []): boolean {
+	public validateTagsArray(
+		tagsToValidate: Array<string> = [],
+	): boolean {
 		if (!Array.isArray(tagsToValidate)) {
 			return false;
 		}

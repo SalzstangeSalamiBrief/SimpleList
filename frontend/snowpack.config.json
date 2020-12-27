@@ -11,5 +11,8 @@
   ],
   "installOptions": {
     "installTypes": true
+  },
+  "devOptions": {
+    "port": 9090
   }
 }

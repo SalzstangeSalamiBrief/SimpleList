@@ -32,7 +32,8 @@ export default class Store {
 
   /**
    * Take an array of list-items and sort them
-   * first split both lists  by isFavorite and then sort both lists by name.
+   * first split both lists  by isFavorite
+	 * 	and then sort both lists by name.
    * return a merged result of both lists
    * @param arr Array<ListItem>
    */
@@ -56,7 +57,8 @@ export default class Store {
   /**
 	 *	Update a ListItem
 	 *	Select an Item by id
-	 *	If a value for a field is passed as argument, then update that field
+	 *	If a value for a field is passed as argument,
+	 *		then update that field
    * @param ListItem ListItem
    */
   public updateItem({
@@ -67,9 +69,17 @@ export default class Store {
   }: ListItem): ListItem {
   	const objectToUpdate = this.getItemByID(_id);
   	// Update only fields who are passed
-  	if (tagsToUpdate) objectToUpdate.tags = tagsToUpdate;
-  	if (updateIsFavorite !== undefined) { objectToUpdate.isFavorite = updateIsFavorite; }
-  	if (nameToUpdate !== undefined) objectToUpdate.name = nameToUpdate;
+  	if (tagsToUpdate) {
+  		objectToUpdate.tags = tagsToUpdate;
+  	}
+
+  	if (updateIsFavorite !== undefined) {
+  		objectToUpdate.isFavorite = updateIsFavorite;
+  	}
+
+  	if (nameToUpdate !== undefined) {
+  		objectToUpdate.name = nameToUpdate;
+  	}
   	this.selectedListItems = this.sortListsByFav(this.allListItems);
   	return objectToUpdate;
   }
@@ -104,10 +114,10 @@ export default class Store {
             && !tagsOfEntry.includes(actualTag.split('!')[1]);
   			} else {
   				//  else case: item has to include the tag
-  				shallEntryBeIncluded = shallEntryBeIncluded && tagsOfEntry.includes(actualTag);
+  				shallEntryBeIncluded = shallEntryBeIncluded
+						&& tagsOfEntry.includes(actualTag);
   			}
   		}
-  		// if an item shall be included, push the index of the item to indexArrayToAdd
   		if (shallEntryBeIncluded) {
   			indexArrayToAdd.push(i);
   		}
@@ -124,7 +134,10 @@ export default class Store {
   }
 
   public addItem(newItem: ListItem): ListItem {
-  	const isNewItemValid = newItem.name && newItem.tags.length > 0 && newItem._id !== undefined;
+  	const isNewItemValid = newItem.name
+			&& newItem.tags.length > 0
+			&& newItem._id !== undefined;
+
   	if (isNewItemValid) {
   		const itemToAdd: ListItem = newItem;
   		if (itemToAdd.isFavorite === undefined) {
@@ -152,7 +165,8 @@ export default class Store {
 
   	if (initListEntries === null) {
   		return errorController.setErrorMessage(
-  			'An error happened on loading the content. Please refresh the site.',
+  			`An error happened on loading the content. 
+				Please refresh the site.`,
   		);
   	}
 
@@ -167,7 +181,8 @@ export default class Store {
   }
 
   /**
-   * delete an entry from the allListItems-Array and re-sort the selectedListItems Array
+   * delete an entry from the allListItems-Array
+	 * 	and re-sort the selectedListItems Array
    * @param _id string
    */
   public deleteItemByID(_id: string): void {

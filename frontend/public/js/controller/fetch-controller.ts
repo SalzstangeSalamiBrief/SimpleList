@@ -27,7 +27,9 @@ export default class FetchHandler {
   	}
   }
 
-  public async updateEntryOnServer(itemToUpdate: ListItem): Promise<ListItem> | null {
+  public async updateEntryOnServer(
+  	itemToUpdate: ListItem,
+  ): Promise<ListItem> | null {
   	const isItemInvalid = 	itemToUpdate.name === ''
 		|| !Array.isArray(itemToUpdate.tags)
 		|| itemToUpdate._id === undefined
