@@ -51,6 +51,13 @@ function startServer() {
 	app.use('/api/list-item', BlockList, ListItemRouter);
 	app.use('/api/list', BlockList, ListRouter);
 
+	const pathToFrontend = path.resolve(__dirname, '../../frontend/build/');
+
+	app.use(Express.static(pathToFrontend));
+	app.use('/', BlockList, (req, res) => {
+		res.sendFile(path.resolve(pathToFrontend, 'index.html'));
+	});
+
 	// start server
 	app.listen(process.env.PORT);
 	console.log(`App is Listening on ${port}`);
