@@ -1,6 +1,6 @@
 import { Request } from 'express';
 // Array for whitelisted URLs
-const whitelist = ['http://localhost:8081', 'http://localhost:8080'];
+const whitelist = ['http://localhost:9090'];
 
 interface CorsOptions {
 	origin: boolean;
@@ -14,9 +14,7 @@ interface CorsOptions {
 export default function corsConfig(
 	req: Request, callback: (a: null, b: CorsOptions) => void,
 ): void {
-	const corsOptions:CorsOptions = { origin: false };
-	if (whitelist.includes(req.header('Origin'))) {
-		corsOptions.origin = true;
-	}
-	callback(null, corsOptions);
+	const origin = req.header('Origin');
+	const isOriginWhitelisted = whitelist.includes(origin);
+	callback(null, { origin: isOriginWhitelisted });
 }

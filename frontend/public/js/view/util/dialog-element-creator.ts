@@ -28,7 +28,8 @@ export default function createDialogElement(
 		}
 
 		const classList = [
-			'w-1/2',
+			'w-11/12',
+			'lg:w-1/2',
 			'flex',
 			'flex-col',
 			'justify-center',
