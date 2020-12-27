@@ -104,8 +104,7 @@ export default class EventController {
 				try {
 					// copy name of the button/entry/row into the clipboard
 					// eslint-disable-next-line no-await-in-loop
-					await navigator.clipboard
-						.writeText(target.textContent.trim());
+					await navigator.clipboard.writeText(target.textContent.trim());
 				} catch (err) {
 					console.log(err);
 				}
@@ -221,8 +220,7 @@ export default class EventController {
 				this.inputFieldController.getTagsInputValue(),
 			),
 			_id: this.idOfSelectedItem,
-			isFavorite: this.store
-				.getItemByID(this.idOfSelectedItem).isFavorite,
+			isFavorite: this.store.getItemByID(this.idOfSelectedItem).isFavorite,
 		};
 		// check if the name is valid
 		const isNameValid = Validator.validateName(newItem.name);
@@ -262,13 +260,9 @@ export default class EventController {
 	 * is send and in the local list-store an item will be added
 	 */
 	private async submitAddForm() {
-		const name: string = this.inputFieldController
-			.getNameInputValue();
-
+		const name: string = this.inputFieldController.getNameInputValue();
 		const tags: Array<string> = this.inputFieldController
-			.createTagsArray(
-				this.inputFieldController.getTagsInputValue(),
-			);
+			.createTagsArray(this.inputFieldController.getTagsInputValue());
 
 		const isNameValid = Validator.validateName(name);
 		if (!isNameValid) {
@@ -286,10 +280,7 @@ export default class EventController {
 
 		try {
 			// post new entry to server
-			const newItem = await this.fetchController.postNewEntryToServer(
-				name,
-				tags,
-			);
+			const newItem = await this.fetchController.postNewEntryToServer(name,	tags);
 			if (newItem === null) {
 				this.errorController.setErrorMessage(
 					'Item already exists! Please try another to add another item. ',
@@ -310,8 +301,7 @@ export default class EventController {
 	 * delete the selected entry in the list-store and on the backend-server
 	 */
 	private async submitDeleteDialog() {
-		await this.fetchController
-			.deleteEntryOnServer(this.idOfSelectedItem);
+		await this.fetchController.deleteEntryOnServer(this.idOfSelectedItem);
 		this.store.deleteItemByID(this.idOfSelectedItem);
 		this.dialogController.closeDialog();
 		this.idOfSelectedItem = '';
@@ -333,10 +323,7 @@ export default class EventController {
 	 */
 	private prepareUpdateDialog(target) {
 		this.idOfSelectedItem = this.loopThroughParentsToGetID(target);
-		this.dialogController.openDialog(
-			'update',
-			this.store.getItemByID(this.idOfSelectedItem),
-		);
+		this.dialogController.openDialog('update', this.store.getItemByID(this.idOfSelectedItem));
 	}
 
 	/**
@@ -357,9 +344,7 @@ export default class EventController {
 	 */
 	private async toggleIsFavorite(target) {
 		const _id: string = this.loopThroughParentsToGetID(target);
-		document
-			.querySelector(`svg[data-_id="${_id}"].fav-img`)
-			.classList.toggle('marked-as-fav');
+		document.querySelector(`svg[data-_id="${_id}"].fav-img`).classList.toggle('marked-as-fav');
 		const selectedItem: ListItem = this.store.getItemByID(_id);
 		selectedItem.isFavorite = !selectedItem.isFavorite;
 		await this.fetchController.updateEntryOnServer(selectedItem);
@@ -424,7 +409,7 @@ export default class EventController {
 					this.store.initOnSideLoad(
 						this.fetchController,
 						this.errorController,
-						 this.tableRenderer,
+						this.tableRenderer,
 					);
 					errorHappened = true;
 				}

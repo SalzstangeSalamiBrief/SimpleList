@@ -2,9 +2,7 @@ import { Request, Response } from 'express';
 import { findAllListItems } from '../database/queries/queries';
 import { parseCSVFromListItemArray, parseListItemArrayFromCSV } from '../util/csv-handler';
 
-export async function importList(
-	req: Request, res: Response,
-): Promise<void> {
+export async function importList(req: Request, res: Response): Promise<void> {
 	let status = 400;
 	const { file: { mimetype, data } } = req.files;
 	if (mimetype === 'application/vnd.ms-excel') {
@@ -18,9 +16,7 @@ export async function importList(
 	res.status(status).end();
 }
 
-export async function exportList(
-	req: Request, res: Response,
-): Promise<void> {
+export async function exportList(req: Request, res: Response): Promise<void> {
 	const responseObject = { err: '', route: '' };
 	let status;
 	try {

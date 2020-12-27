@@ -30,9 +30,7 @@ export async function getAll(
 	res.status(status).json(responseObject);
 }
 
-export async function getListItem(
-	req: Request, res: Response,
-): Promise<void> {
+export async function getListItem(req: Request, res: Response): Promise<void> {
 	const _idForSearch = String(req.params._id);
 	const responseObject: ResponseBody = { err: '', succ: '' };
 	let status = 404;
@@ -51,9 +49,7 @@ export async function getListItem(
 	res.status(status).json(responseObject);
 }
 
-export async function createNewListItem(
-	req: Request, res: Response,
-): Promise<void> {
+export async function createNewListItem(req: Request, res: Response): Promise<void> {
 	const newListItem: ListItem = req.body;
 	newListItem.name = String(newListItem.name);
 	let status = 400;
@@ -78,9 +74,7 @@ export async function createNewListItem(
 	res.status(status).json(responseObject);
 }
 
-export async function deleteSelectedListItem(
-	req: Request, res: Response,
-): Promise<void> {
+export async function deleteSelectedListItem(req: Request, res: Response): Promise<void> {
 	const itemToDelete = String(req.body._id);
 	let status = 400;
 	const responseObject: ResponseBody = { err: '', succ: '' };
@@ -97,9 +91,7 @@ export async function deleteSelectedListItem(
 	res.status(status).json(responseObject);
 }
 
-export async function updateSelectedListItem(
-	req: Request, res: Response,
-): Promise<void> {
+export async function updateSelectedListItem(req: Request, res: Response): Promise<void> {
 	const { body } = req;
 	let status = 400;
 	const responseObject: ResponseBody = { err: '', succ: '' };

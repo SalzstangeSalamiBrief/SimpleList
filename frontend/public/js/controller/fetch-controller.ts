@@ -57,10 +57,7 @@ export default class FetchHandler {
   	}
   }
 
-  public async postNewEntryToServer(
-  	name: string,
-  	tags: Array<string>,
-  ): Promise<ListItem> | null {
+  public async postNewEntryToServer(name: string, tags: Array<string>): Promise<ListItem> | null {
   	try {
   		const response = await fetch(`${this.backendURL}/api${this.listItemRoute}`, {
   			method: 'POST',
