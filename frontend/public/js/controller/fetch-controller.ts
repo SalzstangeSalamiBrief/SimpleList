@@ -8,7 +8,7 @@ export default class FetchHandler {
   private listItemRoute: string;
 
   constructor() {
-  	this.backendURL = 'http://127.0.0.1:8081';
+  	this.backendURL = 'http://127.0.0.1:9091';
   	this.csvRoutes = '/list';
   	this.listItemRoute = '/list-item/';
   }
