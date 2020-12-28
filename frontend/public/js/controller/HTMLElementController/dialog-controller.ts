@@ -6,13 +6,7 @@ import createImportDialog from '../../view/import-dialog-renderer';
 
 import ListItem from '../../interfaces/list-item';
 
-enum PossibleDialogues {
-  updateDialog = 'update',
-  addDialog = 'add',
-  deleteDialog = 'delete',
-	exportDialog = 'export',
-	importDialog = 'import'
-}
+type PossibleDialogues = 'update'| 'add' | 'delete' | 'export' | 'import'
 
 const dialogContainer = <HTMLDivElement>(
   document.querySelector('div#dialog-container')
@@ -37,19 +31,19 @@ export default class DialogHandler {
   	if (this.isDialogOpen === false) {
   		clearInnerHTML(dialogContainer);
   		switch (selectedType) {
-  		case PossibleDialogues.addDialog:
+  		case 'add':
   			createAddUpdateDialog(selectedType, item);
   			break;
-  		case PossibleDialogues.updateDialog:
+  		case 'update':
   			createAddUpdateDialog(selectedType, item);
   			break;
-  		case PossibleDialogues.deleteDialog:
+  		case 'delete':
   			createDeleteDialog(item.name);
   			break;
-  		case PossibleDialogues.exportDialog:
+  		case 'export':
   			createExportDialog();
   			break;
-  		case PossibleDialogues.importDialog:
+  		case 'import':
   			createImportDialog();
   			break;
   		default:

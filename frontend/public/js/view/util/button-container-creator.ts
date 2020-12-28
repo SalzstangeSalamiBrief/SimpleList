@@ -1,12 +1,6 @@
 import { createHTMLElement } from './util-function';
 
-enum TypeOfAction {
-  add = 'add',
-  update = 'update',
-  delete = 'delete',
-  import = 'import',
-  export = 'export',
-}
+type TypeOfAction = 'add' | 'update' | 'delete' | 'import' | 'export'
 
 /**
  * Select the colors of a button based on the type of action
@@ -16,13 +10,13 @@ function selectConfirmButtonColors(typeOfAction: TypeOfAction): Array<string> {
 	let classesForButtonColors: Array<string> = [];
 	if (typeOfAction) {
 		switch (typeOfAction.toLowerCase()) {
-		case TypeOfAction.add:
+		case 'add':
 			classesForButtonColors = ['bg-green-500', 'hover:bg-green-700'];
 			break;
-		case TypeOfAction.import:
+		case 'import':
 			classesForButtonColors = ['bg-green-500', 'hover:bg-green-700'];
 			break;
-		case TypeOfAction.delete:
+		case 'delete':
 			classesForButtonColors = ['bg-red-500', 'hover:bg-red-700'];
 			break;
 		default:
@@ -51,32 +45,32 @@ function createAttributeListAndTextContentAndType(typeOfAction: TypeOfAction, na
 	};
 	if (typeOfAction) {
 		switch (typeOfAction.toLowerCase()) {
-		case TypeOfAction.add:
+		case 'add':
 			result.attributeList.id = 'submit-add-form';
 			result.attributeList.value = 'submit';
 			result.attributeList['aria-label'] = 'Click to add a new item to your list';
 			result.textContent = 'Add';
 			break;
-		case TypeOfAction.update:
+		case 'update':
 			result.attributeList.id = 'submit-update-form';
 			result.attributeList.value = 'update item';
 			result.attributeList['aria-label'] = `Click to update the selected item ${nameOfItem}`;
 			result.textContent = 'Update';
 			break;
-		case TypeOfAction.delete:
+		case 'delete':
 			result.attributeList.id = 'submit-delete-dialog';
 			result.attributeList.value = 'delete item';
 			result.attributeList['aria-label'] = `Click to delete the selected item ${nameOfItem}`;
 			result.textContent = 'Delete';
 			break;
-		case TypeOfAction.import:
+		case 'import':
 			result.attributeList.id = 'submit-import-form';
 			result.attributeList.value = 'submit';
 			result.attributeList['aria-label'] = '';
 			result.type = 'a';
 			result.textContent = 'import';
 			break;
-		case TypeOfAction.export:
+		case 'export':
 			result.attributeList.id = 'export-list';
 			result.attributeList.value = 'submit';
 			result.attributeList['aria-label'] = 'Click to download your list as .csv file';
@@ -161,10 +155,10 @@ export default function createButtonContainer(typeOfAction: TypeOfAction, nameOf
 
 	// calc width of the button-container and add the selected class to classList
 	switch (typeOfAction.toLowerCase()) {
-	case TypeOfAction.export:
+	case 'export':
 		classList.push('w-full');
 		break;
-	case TypeOfAction.import:
+	case 'import':
 		classList.push('w-full');
 		break;
 	default:

@@ -4,14 +4,11 @@ import createButtonContainer from './util/button-container-creator';
 
 import ListItem from '../interfaces/list-item';
 
-enum FormAction {
-  add = 'add',
-  update = 'update',
-}
+type FormAction = 'add' | 'update';
+type InputSelection = 'name' | 'tags';
 
-enum InputSelection {
-  name = 'name',
-  tags = 'tags',
+interface AttributeListInput {
+	[key: string]: string | boolean;
 }
 
 const divToAppendDialog = <HTMLDivElement>(
@@ -29,8 +26,8 @@ function createInputContainer(
 ): HTMLDivElement {
 	const selectedTypeOfInput: string = typeOfInput.toLowerCase();
 	if (
-		selectedTypeOfInput === InputSelection.name
-    || selectedTypeOfInput === InputSelection.tags
+		selectedTypeOfInput === 'name'
+    || selectedTypeOfInput === 'tags'
 	) {
 		const tagsContainer = <HTMLDivElement>createHTMLElement({
 			type: 'div',
@@ -68,7 +65,8 @@ function createInputContainer(
 			'placeholder-gray-500',
 			'placeholder-opacity-100',
 		];
-		const attributeListInput = {
+
+		const attributeListInput: AttributeListInput = {
 			type: 'text',
 			name: `dialog__${selectedTypeOfInput}`,
 			placeholder: `Add ${
@@ -104,8 +102,8 @@ function createForm(
 ): HTMLFormElement {
 	const selectedTypeOfAction = typeOfAction.toLowerCase();
 	if (
-		selectedTypeOfAction === FormAction.add
-    || selectedTypeOfAction === FormAction.update
+		selectedTypeOfAction === 'add'
+    || selectedTypeOfAction === 'update'
 	) {
 		// create form
 		const classListForm = [
@@ -125,11 +123,11 @@ function createForm(
 
 		// create the container for the name and tags input-fields
 		const nameInputContainer: HTMLDivElement = createInputContainer(
-			InputSelection.name,
+			'name',
 			name,
 		);
 		const tagsInputContainer: HTMLDivElement = createInputContainer(
-			InputSelection.tags,
+			'tags',
 			tags.join(' '),
 		);
 
@@ -152,7 +150,7 @@ function createHeading(
 ): HTMLHeadingElement {
 	const classList: Array<string> = ['text-center', 'mb-5', 'flex', 'flex-col'];
 	const attributeList = { id: 'form__title' };
-	const textContent: string = typeOfAction.toLowerCase() === FormAction.add
+	const textContent: string = typeOfAction.toLowerCase() === 'add'
     	? 'Add a new Item'
     	: 'Update the selected item: ';
 	const headingElement = <HTMLHeadingElement>createHTMLElement({
@@ -179,23 +177,23 @@ function createHeading(
  * @param typeOfAction string
  * @param item ListITem
  */
-export default function ComposeAddUpdateDialog(typeOfAction: string, item: ListItem): void {
+export default function ComposeAddUpdateDialog(typeOfAction: FormAction, item: ListItem): void {
 	if (
-		typeOfAction.toLowerCase() === FormAction.add
-    || typeOfAction.toLowerCase() === FormAction.update
+		typeOfAction.toLowerCase() === 'add'
+    || typeOfAction.toLowerCase() === 'update'
 	) {
 		const dialog = <HTMLDialogElement>createDialogElement('add-update');
 
 		// create heading
 		const heading: HTMLHeadingElement = createHeading(
-			FormAction[typeOfAction],
+			typeOfAction,
 			item.name,
 		);
 		// create form
-		const form: HTMLFormElement = createForm(FormAction[typeOfAction], item);
+		const form: HTMLFormElement = createForm(typeOfAction, item);
 		// create button-container
 		const buttonContainer: HTMLDivElement = createButtonContainer(
-			FormAction[typeOfAction],
+			typeOfAction,
 			item.name,
 		);
 		// append children

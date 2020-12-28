@@ -24,10 +24,14 @@ $ npm run dev
 
 ## Production
 ```
+$ npm run build
+
+// if you want to use pm2
+$ pm2 start ./backend/dist/app.js --name "SimpleList"
 ```
 
 ## TODO
-- add build command
+-- snowpack .env for backend port => maybe only /
 
 ## Possible Improvements
 1. Add responsiveness for mobile devices (+refactor table)
