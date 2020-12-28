@@ -21,6 +21,3 @@ $ npm run init
 // run app
 $ npm run start
 ```
-
-## Possible Improvements
-1. Add responsiveness for mobile devices (+refactor table)
