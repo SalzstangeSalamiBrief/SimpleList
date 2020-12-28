@@ -86,7 +86,6 @@ function createAttributeListAndTextContentAndType(typeOfAction: TypeOfAction, na
 
 function createActionButton(typeOfAction: TypeOfAction, nameOfItem = '') {
 	if (typeOfAction) {
-		// create classList
 		const buttonColors = selectConfirmButtonColors(typeOfAction);
 		const classList: Array<string> = [
 			'text-white',
@@ -153,7 +152,6 @@ function createCancelButton(typeOfAction: TypeOfAction): HTMLButtonElement {
 export default function createButtonContainer(typeOfAction: TypeOfAction, nameOfItem = ''): HTMLDivElement {
 	const classList: Array<string> = ['flex', 'justify-around'];
 
-	// calc width of the button-container and add the selected class to classList
 	switch (typeOfAction.toLowerCase()) {
 	case 'export':
 		classList.push('w-full');
