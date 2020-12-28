@@ -10,9 +10,8 @@ export function createHTMLElement({
 	classList = [],
 	attributeList = {},
 	textContent = '',
-}: CreateDOMElementParams): HTMLElement {
-	// check if a type is specified
-	if (type === '') return;
+}: CreateDOMElementParams): HTMLElement | void{
+	if (type === '') return undefined;
 	const elementToCreate = document.createElement(type);
 	// add classes
 	if (Array.isArray(classList)) {

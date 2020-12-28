@@ -10,7 +10,6 @@ const divToAppendDialog = <HTMLDivElement>(
  * function for creating the info-container of the delete-dialog
  */
 function createDeleteInfoContainer(nameOfItem: string): HTMLDivElement {
-	// create container
 	const classListContainer = [
 		'flex',
 		'flex-col',
@@ -24,14 +23,13 @@ function createDeleteInfoContainer(nameOfItem: string): HTMLDivElement {
 		textContent: '',
 	});
 
-	// descriptionParagraph
 	const descriptionParagraph = <HTMLParagraphElement>createHTMLElement({
 		type: 'p',
 		classList: ['mt-5'],
 		attributeList: {},
 		textContent: 'Do you really want to delete the Item:',
 	});
-	// nameParagraph
+
 	const nameParagraph = <HTMLParagraphElement>createHTMLElement({
 		type: 'p',
 		classList: ['delete-text__id', 'mb-5', 'form__title'],

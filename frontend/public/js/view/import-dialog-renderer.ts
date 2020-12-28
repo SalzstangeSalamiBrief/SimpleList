@@ -10,7 +10,6 @@ const divToAppendDialog = <HTMLDivElement>(
  * create the input
  */
 function createImportInput(): HTMLDivElement {
-	// create container
 	const containerDiv = <HTMLDivElement>createHTMLElement({
 		type: 'div',
 		classList: ['flex', 'w-full', 'mb-4'],
@@ -18,7 +17,6 @@ function createImportInput(): HTMLDivElement {
 		textContent: '',
 	});
 
-	// create label
 	const labelClassList = [
 		'bg-blue-500',
 		'hover:bg-blue-700',
@@ -42,7 +40,6 @@ function createImportInput(): HTMLDivElement {
 		textContent: 'Select a File',
 	});
 
-	// create input
 	const inputAttributeList = {
 		id: 'file-import-input',
 		type: 'file',
@@ -56,7 +53,6 @@ function createImportInput(): HTMLDivElement {
 		textContent: '',
 	});
 
-	// create paragraph
 	const paragraphClassList = [
 		'flex',
 		'justify-start',
@@ -76,7 +72,6 @@ function createImportInput(): HTMLDivElement {
 		textContent: 'No File Selected',
 	});
 
-	// append children
 	containerDiv.appendChild(p);
 	containerDiv.appendChild(label);
 	containerDiv.appendChild(input);
@@ -88,7 +83,6 @@ function createImportInput(): HTMLDivElement {
  * create the import form
  */
 function createImportForm(): HTMLFormElement {
-	// create form element
 	const attributeListForm = {
 		action: '#',
 		id: 'import-form',

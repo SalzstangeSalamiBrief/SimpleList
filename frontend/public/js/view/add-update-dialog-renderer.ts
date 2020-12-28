@@ -36,7 +36,6 @@ function createInputContainer(
 			textContent: '',
 		});
 
-		// create label for the input
 		const classListLabel = ['w-2/6', 'flex', 'items-center', 'justify-start'];
 		const label = <HTMLLabelElement>createHTMLElement({
 			type: 'label',
@@ -47,7 +46,6 @@ function createInputContainer(
 			}`,
 		});
 
-		// create input
 		const classListInput = [
 			'bg-white',
 			'focus:outline-none',
@@ -84,7 +82,7 @@ function createInputContainer(
 			attributeList: attributeListInput,
 			textContent: '',
 		});
-		// append label and input
+
 		tagsContainer.appendChild(label);
 		tagsContainer.appendChild(inputField);
 		return tagsContainer;
@@ -121,7 +119,6 @@ function createForm(
 			textContent: '',
 		});
 
-		// create the container for the name and tags input-fields
 		const nameInputContainer: HTMLDivElement = createInputContainer(
 			'name',
 			name,
@@ -131,7 +128,6 @@ function createForm(
 			tags.join(' '),
 		);
 
-		// append container as children
 		form.appendChild(nameInputContainer);
 		form.appendChild(tagsInputContainer);
 		return form;
@@ -184,14 +180,13 @@ export default function ComposeAddUpdateDialog(typeOfAction: FormAction, item: L
 	) {
 		const dialog = <HTMLDialogElement>createDialogElement('add-update');
 
-		// create heading
 		const heading: HTMLHeadingElement = createHeading(
 			typeOfAction,
 			item.name,
 		);
-		// create form
+
 		const form: HTMLFormElement = createForm(typeOfAction, item);
-		// create button-container
+
 		const buttonContainer: HTMLDivElement = createButtonContainer(
 			typeOfAction,
 			item.name,
