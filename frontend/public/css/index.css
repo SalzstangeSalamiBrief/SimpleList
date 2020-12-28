@@ -16,11 +16,6 @@ body {
   background: var(--main-bg-color);
 }
 
-/* .btn--options {
-  color: #0954ab;
-} */
-
-/* .btn--options, */
 button#open-add-dialog,
 .btn-form {
   min-width: 100px;
@@ -131,10 +126,6 @@ td {
   height: 70px;
   overflow: hidden;
 }
-
-/* td.text-center {
-  padding: 1rem 2rem;
-} */
 
 input#file-import-input {
   position: absolute !important;
