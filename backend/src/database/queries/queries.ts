@@ -9,7 +9,8 @@ export async function createListItem(
 	item: ListItemInterface,
 ): Promise<ListItemInterface> {
 	const newListItem = new ListItem(item);
-	const createdListItem = (await newListItem.save()).toObject();
+	const createdListItem = (await newListItem.save()).toObject({ versionKey: false });
+	console.log(createdListItem);
 	return createdListItem;
 }
 
@@ -30,7 +31,7 @@ export async function updateListItem({
 	_id, name, tags = [], isFavorite = false,
 }: ListItemInterface): Promise<ListItemInterface> {
 	const updatedItem = 	<ListItemInterface>
-	await ListItem.updateOne({ _id }, { name, tags, isFavorite }).lean();
+		await ListItem.updateOne({ _id }, { name, tags, isFavorite }).lean();
 	return updatedItem;
 }
 

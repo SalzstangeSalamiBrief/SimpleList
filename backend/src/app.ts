@@ -72,7 +72,6 @@ mongoose
 	})
 	.then(() => console.log('connected to MongoDB'))
 	.then(() => {
-		// config and start server
 		startServer();
 	})
 	.catch((err) => console.log(err));

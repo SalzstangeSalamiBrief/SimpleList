@@ -243,7 +243,7 @@ export default class EventController {
 			.updateEntryOnServer(
 				newItem,
 			);
-		if (updatedItem === null) {
+		if (!updatedItem) {
 			return this.errorController.setErrorMessage(
 				'Could not Update the item on the server. Please try another name for your item.',
 			);
@@ -266,7 +266,7 @@ export default class EventController {
 
 		const isNameValid = Validator.validateName(name);
 		if (!isNameValid) {
-			return	this.errorController.setErrorMessage(
+			return this.errorController.setErrorMessage(
 				'The value of the name-field is invalid!',
 			);
 		}

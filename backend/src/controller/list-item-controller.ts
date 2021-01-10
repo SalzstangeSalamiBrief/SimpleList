@@ -11,13 +11,13 @@ import ListItem from '../interfaces/list-item';
 
 interface ResponseBody {
   err: unknown;
-  succ: unknown;
+  succ: ListItem | Array<ListItem>;
 }
 
 export async function getAll(
 	req: Request, res: Response,
 ): Promise<void> {
-	const responseObject: ResponseBody = { err: '', succ: '' };
+	const responseObject: ResponseBody = { err: '', succ: [] };
 	let status = 404;
 	try {
 		const itemList: Array<ListItem> = await findAllListItems();
@@ -32,7 +32,7 @@ export async function getAll(
 
 export async function getListItem(req: Request, res: Response): Promise<void> {
 	const _idForSearch = String(req.params._id);
-	const responseObject: ResponseBody = { err: '', succ: '' };
+	const responseObject: ResponseBody = { err: '', succ: [] };
 	let status = 404;
 	const isIdValid = _idForSearch && typeof _idForSearch === 'string';
 	if (isIdValid) {
@@ -53,17 +53,13 @@ export async function createNewListItem(req: Request, res: Response): Promise<vo
 	const newListItem: ListItem = req.body;
 	newListItem.name = String(newListItem.name);
 	let status = 400;
-	const responseObject: ResponseBody = { err: '', succ: '' };
+	const responseObject: ResponseBody = { err: '', succ: [] };
 	const listItem = await findListItemByID(newListItem._id);
 	if (!listItem) {
 		try {
-			const {
-				name, tags, isFavorite, _id,
-			}: ListItem = await createListItem(newListItem);
+			const createdListItem: ListItem = await createListItem(newListItem);
 			status = 201;
-			responseObject.succ = {
-				name, tags, isFavorite, _id,
-			};
+			responseObject.succ = createdListItem;
 		} catch (err) {
 			console.log(err);
 			responseObject.err = err;
@@ -77,12 +73,11 @@ export async function createNewListItem(req: Request, res: Response): Promise<vo
 export async function deleteSelectedListItem(req: Request, res: Response): Promise<void> {
 	const itemToDelete = String(req.body._id);
 	let status = 400;
-	const responseObject: ResponseBody = { err: '', succ: '' };
+	const responseObject: ResponseBody = { err: '', succ: [] };
 	if (itemToDelete) {
 		try {
-			const result = await deleteListItem(itemToDelete);
+			await deleteListItem(itemToDelete);
 			status = 202;
-			responseObject.succ = result;
 		} catch (err) {
 			console.log(err);
 			responseObject.err = err;
@@ -94,15 +89,14 @@ export async function deleteSelectedListItem(req: Request, res: Response): Promi
 export async function updateSelectedListItem(req: Request, res: Response): Promise<void> {
 	const { body } = req;
 	let status = 400;
-	const responseObject: ResponseBody = { err: '', succ: '' };
+	const responseObject: ResponseBody = { err: '', succ: [] };
 	const isBodyValid = 	body.name && body.tags && typeof body.isFavorite !== 'undefined' && body._id;
 	if (isBodyValid) {
 		try {
 			await updateListItem(body);
-			// send updated record back to the client
-			const result = await findListItemByID(body._id);
+			const updatedItem = await findListItemByID(body._id);
 			status = 200;
-			responseObject.succ = { desc: 'updated successful', result };
+			responseObject.succ = updatedItem;
 		} catch (err) {
 			console.log(err);
 			responseObject.err = err;
